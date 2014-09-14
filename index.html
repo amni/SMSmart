@@ -17,7 +17,7 @@
     <!-- Custom CSS -->
     <link href="css/landing-page.css" rel="stylesheet">
 
-    <!-- Animate CSS --> 
+    <!-- Animate CSS -->
     <link href="css/animate.css" rel="stylesheet">
 
     <!-- Custom Fonts -->
@@ -36,7 +36,7 @@
 <body>
     <!-- Header -->
     <div class="intro-header background-image1">
-        <div class="overlay"> 
+        <div class="overlay">
             <div class="container">
                 <div class="row">
                     <div class="col-lg-12">
@@ -45,13 +45,13 @@
                                 <h3>Control the Web with Texts</h3>
                                 <hr class="intro-divider">
                                 <br>
-                                <div class="text-wrapper"> 
-                                    <p class="text user-text triangle-isosceles right bounceIn" style="width:200px; margin-top: 0px; margin-left:auto; margin-right:auto;"> </p> 
+                                <div class="text-wrapper">
+                                    <p class="text user-text triangle-isosceles right bounceIn" style="width:200px; margin-top: 0px; margin-left:auto; margin-right:auto;"> </p>
                                     <p class="text smsmart-text triangle-isosceles left bounceIn" style="width:200px; margin-left:auto; margin-right:auto;"> </p>
-                                </div> 
-                                <input style="background-color: rgba(0, 0, 0, 0); border:0; border-bottom: 1px solid white; font-size:24px; height:34px; width:350px; margin-right:10px" type="textbox" placeholder="Enter Email"></input>
-                                <input type="button" class="btn btn-default" style="border:none" value="Get Early Access"></input> 
-                            </div> 
+                                </div>
+                                <input id = "emailForm" style="background-color: rgba(0, 0, 0, 0); border:0; border-bottom: 1px solid white; font-size:24px; height:34px; width:350px; margin-right:10px" type="textbox" placeholder="Enter Email"></input>
+                                <input id = "submitEmail" type="button" class="btn btn-default" style="border:none" value="Get Early Access"></input>
+                            </div>
                         </div>
                 </div>
 
@@ -93,13 +93,13 @@
                     </p>
                 </div>
                 <div class="col-lg-5 col-sm-pull-6  col-sm-6">
-                    <h1> Get directions anywhere </h1> 
+                    <h1> Get directions anywhere </h1>
                     <hr class="section-heading-spacer">
                 </div>
             </div>
             <div class="row">
                 <div class="col-lg-5 col-lg-offset-1 col-sm-push-6  col-sm-6">
-                    <h1> Find restaurants nearby </h1> 
+                    <h1> Find restaurants nearby </h1>
                     <hr class="section-heading-spacer">
                 </div>
                 <div class="col-lg-5 col-sm-pull-6  col-sm-6">
@@ -115,11 +115,11 @@
             <div class="row">
                 <div class="col-lg-5 col-lg-offset-1 col-sm-push-6  col-sm-6">
                     <p class="triangle-isosceles right">venmo pay 12.00 to John Doe for sushi</p>
-                    <p class="triangle-isosceles left"> You just paid John Doe $12 for sushi </p> 
+                    <p class="triangle-isosceles left"> You just paid John Doe $12 for sushi </p>
                     </p>
                 </div>
                 <div class="col-lg-5 col-sm-pull-6  col-sm-6">
-                    <h1>Split costs with friends</h1> 
+                    <h1>Split costs with friends</h1>
                     <hr class="section-heading-spacer">
                 </div>
             </div>
@@ -128,7 +128,7 @@
 
     </div>
     <!-- /.content-section-b -->
-    
+
 
     <!-- jQuery Version 1.11.0 -->
     <script src="js/jquery-1.11.0.js"></script>
@@ -136,7 +136,13 @@
     <!-- Bootstrap Core JavaScript -->
     <script src="js/bootstrap.min.js"></script>
 
+    <script src="https://cdn.firebase.com/js/client/1.0.21/firebase.js"></script>
+
     <script src="js/transitions.js"></script>
+
+    <script src="js/db.js"></script>
+
+    <script src="js/signup.js"></script>
 
 
 </body>
