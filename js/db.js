@@ -25,7 +25,6 @@ var signup = (function(){
      for(var id in signups){
        existingSignups.push(signups[id].email);
      }
-     console.log(existingSignups);
    }, function (errorObject) {
      console.log('The read failed: ' + errorObject.code);
    });
@@ -37,7 +36,6 @@ var signup = (function(){
              emails.push({email: emailAddress});
          }
          else{
-
          }
 
          return true;
