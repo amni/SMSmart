@@ -63,8 +63,6 @@ input:focus{
   background-color: rgba(0, 0, 0, 0.4);
   width: 100%;
   height:100%;
-  margin-left: auto;
-  margin-right: auto;
 }
 /*.background-image1 {
     background-image: url('../img/map.jpg');
@@ -96,15 +94,23 @@ input:focus{
     font-size: 5em;
 }
 
+.text{
+  display: none;
+}
+
 .intro-divider {
     width: 400px;
     border-top: 1px solid #f8f8f8;
     border-bottom: 1px solid rgba(0,0,0,0.2);
 }
 
+.signup-container {
+    position: fixed;
+    bottom: 150px;
+    width: 75%;
+    left: 50%;
+    margin: 0 0 0 -37.5%;
 
-.text-wrapper{
-  min-height: 300px
 }
 
 .intro-message > h3 {
