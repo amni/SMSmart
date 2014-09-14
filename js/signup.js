@@ -13,4 +13,11 @@
 
    });
 
+   document.addEventListener("keypress", function(e){
+      var key = e.which || e.keyCode;
+       if (key == 13) { // 13 is enter
+         signup(emailBox.value);
+       }
+   });
+
 })();
