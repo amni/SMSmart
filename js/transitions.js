@@ -1,6 +1,4 @@
 function changeBg(img_name) {
-    $('.intro-header').fadeOut(1000);  
-    $('.intro-header').fadeIn(1000);  
     $('.intro-header').css('backgroundImage', function () {
         return "url('img/" + img_name + ".jpg')";
     });
