@@ -46,12 +46,32 @@ input:focus{
     font-weight: 400;
 }
 
+.hide{
+  display: none;
+}
+
 .intro-header {
-	height: 70%;
-	background-image: radial-gradient( circle at bottom right, #2c3e50, #2980b9);
-    text-align: center;
-    color: #f8f8f8;
-    background-size: cover;
+	height: 100%;
+  text-align: center;
+  color: #f8f8f8;
+  background-size: cover;
+  background-color: rgba(0, 0, 0, 0.7);
+  width:100%;
+}
+
+.overlay {
+  background-color: rgba(0, 0, 0, 0.4);
+  width: 100%;
+  height:100%;
+  margin-left: auto;
+  margin-right: auto;
+}
+/*.background-image1 {
+    background-image: url('../img/map.jpg');
+}
+*/
+.background-image2 {
+    background-image: url('../img/directions.jpg');
 }
 
 .intro-message {
