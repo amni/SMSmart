@@ -4,7 +4,8 @@
    submitButton.addEventListener("click", function(){
       console.log(emailBox.value);
       if(signup(emailBox.value)){
-         console.log("signed up!");
+         $('.signup-container').fadeOut(400);
+         $('.thank-you-message').fadeIn(400);
       }
       else{
          console.log("not valid email");
