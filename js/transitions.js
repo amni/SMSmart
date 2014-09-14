@@ -8,11 +8,11 @@ function changeBg(img_name) {
 };
 
 function addTextBubble(text_input, is_user) {
-  console.log(text_input);
   if (is_user){
     $('.text').hide(); 
+    setTimeout(function () {
     $('.user-text').text(text_input);
-    $('.user-text').show(); 
+    $('.user-text').show();}, 200); 
   } else {
     $('.smsmart-text').text(text_input);
     $('.smsmart-text').show(); 
@@ -21,7 +21,6 @@ function addTextBubble(text_input, is_user) {
 
 
 (function callTransitions() {
-    console.log('hits call transition');
     var interval = 5000, 
         index = 0,
         is_user = true, 

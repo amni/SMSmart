@@ -92,6 +92,11 @@ input:focus{
     border-bottom: 1px solid rgba(0,0,0,0.2);
 }
 
+
+.text-wrapper{
+  min-height: 300px
+}
+
 .intro-message > h3 {
     text-shadow: 2px 2px 3px rgba(0,0,0,0.6);
 }
@@ -213,13 +218,13 @@ p.copyright {
   position:relative;
   padding:15px;
   margin:1em 0 3em;
-  color:#000;
-  background:#2e88c4; /* default background for browsers without gradient support */
+  color:#336689;
+  background:rgba(255, 255, 255, 0.8); /* default background for browsers without gradient support */
   /* css3 */
-  background:-webkit-gradient(linear, 0 0, 0 100%, from(#075698), to(#2e88c4));
-  background:-moz-linear-gradient(#075698, #2e88c4);
-  background:-o-linear-gradient(#075698, #2e88c4);
-  background:linear-gradient(#075698, #2e88c4);
+  background:-webkit-gradient(linear, 0 0, 0 100%, from(#075698), to(rgba(255, 255, 255, 0.8)));
+  background:-moz-linear-gradient(#075698, rgba(255, 255, 255, 0.8));
+  background:-o-linear-gradient(#075698, rgba(255, 255, 255, 0.8));
+  background:linear-gradient(#075698, rgba(255, 255, 255, 0.8));
   -webkit-border-radius:10px;
   -moz-border-radius:10px;
   border-radius:10px;
@@ -229,10 +234,10 @@ p.copyright {
 ------------------------------------------ */
 
 .triangle-isosceles.top {
-  background:-webkit-gradient(linear, 0 0, 0 100%, from(#2e88c4), to(#075698));
-  background:-moz-linear-gradient(#2e88c4, #075698);
-  background:-o-linear-gradient(#2e88c4, #075698);
-  background:linear-gradient(#2e88c4, #075698);
+  background:-webkit-gradient(linear, 0 0, 0 100%, from(rgba(255, 255, 255, 0.8)), to(#075698));
+  background:-moz-linear-gradient(rgba(255, 255, 255, 0.8), #075698);
+  background:-o-linear-gradient(rgba(255, 255, 255, 0.8), #075698);
+  background:linear-gradient(rgba(255, 255, 255, 0.8), #075698);
 }
 
 /* Variant : for left/right positioned triangle
@@ -240,7 +245,7 @@ p.copyright {
 
 .triangle-isosceles.left {
   margin-left:50px;
-  background:#2e88c4;
+  background:rgba(255, 255, 255, 0.8);
 }
 
 /* Variant : for right positioned triangle
@@ -248,7 +253,7 @@ p.copyright {
 
 .triangle-isosceles.right {
   margin-right:50px;
-  background:#2e88c4;
+  background:rgba(255, 255, 255, 0.8);
 }
 
 
@@ -263,7 +268,7 @@ p.copyright {
   left:50px; /* controls horizontal position */
   border-width:15px 15px 0; /* vary these values to change the angle of the vertex */
   border-style:solid;
-  border-color:#2e88c4 transparent;
+  border-color:rgba(255, 255, 255, 0.8) transparent;
   /* reduce the damage in FF3.0 */
   display:block;
   width:0;
@@ -278,7 +283,7 @@ p.copyright {
   bottom:auto;
   left:auto;
   border-width:0 15px 15px; /* vary these values to change the angle of the vertex */
-  border-color:#2e88c4 transparent;
+  border-color:rgba(255, 255, 255, 0.8) transparent;
 }
 
 /* Variant : left
@@ -289,7 +294,7 @@ p.copyright {
   left:-50px; /* value = - border-left-width - border-right-width */
   bottom:auto;
   border-width:10px 50px 10px 0;
-  border-color:transparent #2e88c4;
+  border-color:transparent rgba(255, 255, 255, 0.8);
 }
 
 /* Variant : right
@@ -301,6 +306,6 @@ p.copyright {
   bottom:auto;
   left:auto;
   border-width:10px 0 10px 50px;
-  border-color:transparent #2e88c4;
+  border-color:transparent rgba(255, 255, 255, 0.8);
 }
 
