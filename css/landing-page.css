@@ -99,26 +99,16 @@ input:focus{
 }
 
 .intro-divider {
-    width: 400px;
+    width: 600px;
     border-top: 1px solid #f8f8f8;
     border-bottom: 1px solid rgba(0,0,0,0.2);
 }
 
-.signup-container {
-    position: fixed;
-    bottom: 150px;
-    width: 75%;
-    left: 50%;
-    margin: 0 0 0 -37.5%;
-
+.text-message-container{
+  height: 300px;
 }
 
 .thank-you-message {
-    position: fixed;
-    bottom: 150px;
-    width: 75%;
-    left: 50%;
-    margin: 0 0 0 -37.5%;
     display:none;
 }
 
