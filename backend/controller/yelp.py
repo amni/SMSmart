@@ -1,7 +1,11 @@
-class Yelp():
+from api import Api
+
+class Yelp(Api):
     #Program names - use decorators?
+    def find_results(self, **kwargs):
+        print kwargs.keys()
+    	pass 
     def search(self, near, category, distance):
-        print "hello world"
         pass
     def info(self):
         pass
