@@ -127,6 +127,7 @@ def query_api(term, location, radius, verbose, index):
     if not businesses:
         return
 
+    print businesses[0]
     business_id = businesses[0]['id']
     return getLocations(businesses, location, verbose, index);
     #response = get_business(business_id)

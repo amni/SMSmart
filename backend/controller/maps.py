@@ -1,6 +1,6 @@
-from api import Api
+from base import Base
 
-class Maps(Api):
+class Maps(Base):
 	def find_results(self, **kwargs):
 		pass 
 		

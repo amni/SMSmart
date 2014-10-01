@@ -26,6 +26,10 @@ class Tokenizer():
 
         self.arguments_dict = results
 
+    def replace_variables(self, query):
+        #TODO: look at every 
+        # (set('near', 'here', 'there'), 'location')
+        pass
 if __name__ == "__main__":
     t = Tokenizer("Yelp: near: Chapel Hill, NC distance: 100")
     tokens = t.tokenize("Yelp: near: Chapel Hill, NC distance: 100")
