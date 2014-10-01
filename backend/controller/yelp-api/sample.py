@@ -120,7 +120,7 @@ def query_api(term, location, radius, verbose, index):
         term (str): The search term to query.
         location (str): The location of the business to query.
     """
-    response = search(term, location, 5, radius)
+    response = search(term, location, 1, radius)
 
     businesses = response.get('businesses')
 
@@ -200,3 +200,4 @@ def main():
         query_api(input_values.term, input_values.location)
     except urllib2.HTTPError as error:
         sys.exit('Encountered HTTP error {0}. Abort program.'.format(error.code)) """
+
