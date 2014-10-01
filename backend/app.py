@@ -10,17 +10,16 @@ app = Flask(__name__)
 def receive_message():
     user_text_message = request.values.get('Body')
     phone_number = request.values.get('From')
-    response_text_message = process_message(user_text_message)
+    print 'hits here'
+    response_text_message = "test"
     resp = twilio.twiml.Response()
     resp.message(response_text_message)
     return str(resp)
 
 def process_message(user_text_message):
 	#Send it to the parser
-	print user_text_message
 	tokenizer = Tokenizer(user_text_message)
 	api = create_subprogram(tokenizer.api)
-	print tokenizer.arguments_dict
 	return api.find_results(**tokenizer.arguments_dict)
 
 def create_subprogram(type):
