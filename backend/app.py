@@ -2,6 +2,8 @@ from flask import Flask, request
 
 from parser.tokenizer import Tokenizer 
 from controller.yelp import Yelp
+import twilio.twiml
+
 
 app = Flask(__name__)
 
@@ -10,8 +12,7 @@ app = Flask(__name__)
 def receive_message():
     user_text_message = request.values.get('Body')
     phone_number = request.values.get('From')
-    print 'hits here'
-    response_text_message = "test"
+    response_text_message = process_message(user_text_message)
     resp = twilio.twiml.Response()
     resp.message(response_text_message)
     return str(resp)
