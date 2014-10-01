@@ -42,13 +42,10 @@ def getDistance(start, end):
     return str(response[0]['legs'][0]['distance']['text'])
 
 def query(startLoc, endLoc):
-	print "Maps got query"
 	response = getDirections(startLoc, endLoc)
 	instructionsList = response[0]['legs'][0]['steps']
-
 	output = 'Directions to ' + endLoc + token
 	counter = 0
-
 
 	for insn in instructionsList:
 		counter += 1
@@ -56,9 +53,7 @@ def query(startLoc, endLoc):
 		cur_dist = insn['distance']['text']
 		output += str(counter) + '. ' + cur_insn + " | " + cur_dist + token
 		#print cur_insn + " | " + cur_dist
-
-	print
-	print '---- Output -----'
-	print output
-
 	return output
+
+print query('Duke University, Durham, NC', 'UNC Chapel Hill, Chapel Hill, NC')
+print 'Total Distance: ' + getDistance('Duke University, Durham, NC', 'UNC Chapel Hill, Chapel Hill, NC')

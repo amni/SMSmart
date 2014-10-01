@@ -21,9 +21,11 @@ import pprint
 import sys
 import urllib
 import urllib2
-import maps
+import sys
 import oauth2
+import maps
 
+sys.path.append('../maps/')
 
 API_HOST = 'api.yelp.com'
 DEFAULT_TERM = 'dinner'
@@ -127,7 +129,7 @@ def query_api(term, location, radius, verbose, index):
     if not businesses:
         return
 
-    print businesses[0]
+    #print businesses[0]
     business_id = businesses[0]['id']
     return getLocations(businesses, location, verbose, index);
     #response = get_business(business_id)
