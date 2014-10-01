@@ -19,19 +19,21 @@ class Tokenizer():
 
         self.tokens = tokens
         self.api = tokens[0][0]
-        self.argument_tokens = results
+        if(len(tokens[0])>1):
+            self.program = tokens[0][1]
+        else:
+            self.program = 'default'
+
+        self.arguments_dict = results
 
 if __name__ == "__main__":
     t = Tokenizer("Yelp: near: Chapel Hill, NC distance: 100")
     tokens = t.tokenize("Yelp: near: Chapel Hill, NC distance: 100")
-    # print t.arguments_dict
+    print t.arguments_dict, t.api, t.program
     # t.tokenize("Maps: from: Chapel Hill, to: Alan")
     # print t.arguments_dict
     # t.tokenize("more")
     # print t.arguments_dict
-
-
-
 
 
 
