@@ -4,6 +4,7 @@ import pprint
 import re
 
 direct = Directions()
+geo = Geocoding()
 
 TAG_RE = re.compile(r'<[^>]+>')
 startLoc = '2121 S. El Camino Real, San Mateo CA'
@@ -41,6 +42,10 @@ def getDistance(start, end):
     #pprint.pprint(response)
     return str(response[0]['legs'][0]['distance']['text'])
 
+def getGeocode(location):
+	response = geo.geocode(location)
+	return str(response[0]['geometry']['location']['lat']) + ',' + str(response[0]['geometry']['location']['lng'])
+
 def query(startLoc, endLoc):
 	response = getDirections(startLoc, endLoc)
 	instructionsList = response[0]['legs'][0]['steps']
@@ -55,5 +60,5 @@ def query(startLoc, endLoc):
 		#print cur_insn + " | " + cur_dist
 	return output
 
-print query('Duke University, Durham, NC', 'UNC Chapel Hill, Chapel Hill, NC')
-print 'Total Distance: ' + getDistance('Duke University, Durham, NC', 'UNC Chapel Hill, Chapel Hill, NC')
+#print query('Duke University, Durham, NC', 'UNC Chapel Hill, Chapel Hill, NC')
+#print 'Total Distance: ' + getDistance('Duke University, Durham, NC', 'UNC Chapel Hill, Chapel Hill, NC')
