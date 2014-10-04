@@ -31,7 +31,7 @@ from restaurant import Restaurant
 API_HOST = 'api.yelp.com'
 DEFAULT_TERM = 'dinner'
 DEFAULT_LOCATION = 'San Francisco, CA'
-SEARCH_LIMIT = 5
+SEARCH_LIMIT = 10
 SEARCH_PATH = '/v2/search/'
 BUSINESS_PATH = '/v2/business/'
 token = '\n'
@@ -139,9 +139,7 @@ def formatPhone(phone):
     end = phone[-4:]
     return areaCode + begin + '-' + end
 
-def getDistance(start, end):
-    return maps.getDistance(start, end)
-
+# z
 #Todo: make robust to missing fields
 def buildResponse(response, counter, location, verbose):
     count = str(counter) + '. '
@@ -150,7 +148,7 @@ def buildResponse(response, counter, location, verbose):
     if 'categories' in response:
         name +=  ' (' + response['categories'][0][0]+ ')' 
     if 'location' in response:
-        endLocation = response['location']['address'][0] + ', ' + response['location']['city'] + ', ' + response['location']['state_code'] + ' ' + response['location']['postal_code']
+        endLocation = response['location']['display_address'][0] + ', ' + response['location']['city'] + ', ' + response['location']['state_code'] + ' ' + response['location']['postal_code']
     else:
         endLocation = 'location unavailable'
     if 'phone' in response:
@@ -161,7 +159,6 @@ def buildResponse(response, counter, location, verbose):
         rating = str(response['rating']) + " stars" 
     else:
         rating = 'rating unavailable'
-    distance = getDistance(location, endLocation)
     status = 'open' if (str(response['is_closed']) == 'False') else 'closed'
     isClosed = 'currently ' + status 
     #neighborhood = response['location']['neighborhoods'][0]
@@ -170,7 +167,7 @@ def buildResponse(response, counter, location, verbose):
     return ret
     """
     if (not verbose):
-        return count + name + ' | ' + distance + ' | ' + phone + ' | ' + rating  + token
+        return count + name + ' | '  + phone + ' | ' + rating  + token
     else:
         return name + ' | ' +  endLocation +  ' | ' + distance + ' | ' + phone + ' | ' + rating + ' | ' + isClosed + token"""
 
