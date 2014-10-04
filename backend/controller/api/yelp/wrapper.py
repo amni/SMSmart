@@ -16,9 +16,6 @@ def getLocation(location, distance, index, category='restaurant'):
     parse = response.split(' | ')
     return parse[1]
 
-ret = query('San Jose, CA', 8.0, 'indian')
-
-
 #print verbose('San Jose, CA', 8.0, 1, 'indian')
 #print query('San Jose, CA', 8.0, 'indian')
 # print verbose('San Jose, CA', 8.0, 1, 'indian')

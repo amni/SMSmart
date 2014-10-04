@@ -160,10 +160,10 @@ def buildResponse(response, counter, location, verbose):
     else:
         rating = 'rating unavailable'
     status = 'open' if (str(response['is_closed']) == 'False') else 'closed'
-    isClosed = 'currently ' + status 
+    isClosed = status 
     #neighborhood = response['location']['neighborhoods'][0]
 
-    ret = Restaurant(name, endLocation, phone, rating, isClosed)
+    ret = Restaurant(counter, name, endLocation, phone, rating, isClosed)
     return ret
     """
     if (not verbose):
