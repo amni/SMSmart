@@ -22,10 +22,10 @@ import sys
 import urllib
 import urllib2
 import sys
+sys.path.append('../maps/')
 import oauth2
 import maps
 
-sys.path.append('../maps/')
 
 API_HOST = 'api.yelp.com'
 DEFAULT_TERM = 'dinner'
