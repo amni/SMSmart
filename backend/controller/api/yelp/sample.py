@@ -163,7 +163,7 @@ def buildResponse(response, counter, location, verbose):
     isClosed = 'currently ' + status 
     #neighborhood = response['location']['neighborhoods'][0]
 
-    ret = Restaurant(name, endLocation, distance, phone, rating, isClosed)
+    ret = Restaurant(name, endLocation, phone, rating, isClosed)
     return ret
     """
     if (not verbose):
@@ -188,17 +188,5 @@ def getLocations(businesses, location, verbose, index):
             #pprint.pprint(response, indent=2)
             output.append(buildResponse(response, counter, location, verbose))
     return output 
-"""
-def main():
-    parser = argparse.ArgumentParser()
 
-    parser.add_argument('-q', '--term', dest='term', default=DEFAULT_TERM, type=str, help='Search term (default: %(default)s)')
-    parser.add_argument('-l', '--location', dest='location', default=DEFAULT_LOCATION, type=str, help='Search location (default: %(default)s)')
-
-    input_values = parser.parse_args()
-
-    try:
-        query_api(input_values.term, input_values.location)
-    except urllib2.HTTPError as error:
-        sys.exit('Encountered HTTP error {0}. Abort program.'.format(error.code)) """
 
