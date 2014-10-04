@@ -1,0 +1,11 @@
+input: give location // allow for filtering? 
+
+
+
+main categories of info we want:
+
+name
+percent recommend
+rating 
+distance 
+

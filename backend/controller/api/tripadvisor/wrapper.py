@@ -16,7 +16,7 @@ def getAttractions(location):
 	url = buildURL[0] + geoLoc + buildURL[1] + API_KEY
 	resp = requests.get(url=url)
 	data = json.loads(resp.text)
-	pprint.pprint(data, indent=2)
+	#pprint.pprint(data, indent=2)
 
-getAttractions('Oslo, Norway')
+getAttractions('Nakholmen, Oslo, Norway')
 

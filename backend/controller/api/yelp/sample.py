@@ -25,6 +25,7 @@ import sys
 sys.path.append('../maps/')
 import oauth2
 import maps
+from restaurant import Restaurant
 
 
 API_HOST = 'api.yelp.com'
@@ -123,14 +124,10 @@ def query_api(term, location, radius, verbose, index):
         location (str): The location of the business to query.
     """
     response = search(term, location, 1, radius)
-
     businesses = response.get('businesses')
 
     if not businesses:
         return
-
-    #print businesses[0]
-    business_id = businesses[0]['id']
     return getLocations(businesses, location, verbose, index);
     #response = get_business(business_id)
     #print 'Result for business "{0}" found:'.format(business_id)
@@ -168,27 +165,31 @@ def buildResponse(response, counter, location, verbose):
     status = 'open' if (str(response['is_closed']) == 'False') else 'closed'
     isClosed = 'currently ' + status 
     #neighborhood = response['location']['neighborhoods'][0]
+
+    ret = Restaurant(name, endLocation, distance, phone, rating, isClosed)
+    return ret
+    """
     if (not verbose):
         return count + name + ' | ' + distance + ' | ' + phone + ' | ' + rating  + token
     else:
-        return name + ' | ' +  endLocation +  ' | ' + distance + ' | ' + phone + ' | ' + rating + ' | ' + isClosed + token
+        return name + ' | ' +  endLocation +  ' | ' + distance + ' | ' + phone + ' | ' + rating + ' | ' + isClosed + token"""
 
 def getLocations(businesses, location, verbose, index):
-    output = 'Results: ' + token
+    output = []
     counter = 0
     if verbose:
         business = businesses[int(index) - 1]
         bizId = business['id']
         response = get_business(bizId)
         #pprint.pprint(response, indent=2)
-        output += buildResponse(response, counter, location, verbose)
+        output.append(buildResponse(response, counter, location, verbose))
     else:
         for business in businesses:
             counter += 1
             bizId = business['id']
             response = get_business(bizId)
             #pprint.pprint(response, indent=2)
-            output += buildResponse(response, counter, location, verbose)
+            output.append(buildResponse(response, counter, location, verbose))
     return output 
 """
 def main():

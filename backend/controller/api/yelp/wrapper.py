@@ -1,4 +1,5 @@
 import sample
+from restaurant import Restaurant
 
 def query(location, radius = 5.0, category='restaurant'):
     print 'Arguments: ' + category + " | " + location
@@ -15,6 +16,9 @@ def getLocation(location, radius, index, category='restaurant'):
 	parse = response.split(' | ')
 	return parse[1]
 
-#print query('San Jose, CA', 8.0, 'indian')
-print verbose('San Jose, CA', 8.0, 1, 'indian')
+ret = query('San Jose, CA', 8.0, 'indian')
+for restaurant in ret:
+	print restaurant.to_string()
+
+#print verbose('San Jose, CA', 8.0, 1, 'indian')
 #print getLocation('San Jose, CA', 8.0, 1, 'indian')
