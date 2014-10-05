@@ -27,7 +27,7 @@ class Yelp(Base):
                 optional_params[keyword] = kwargs[keyword]
         results = yelp_wrapper.query(kwargs["near"], **optional_params)
         if kwargs["format"] == "android":
-                return '\n'.join([result.to_android_string() for result in results])
+                return "Yelp | Search\n" + "\n".join([result.to_android_string() for result in results])
         self.store_results(user, results)
         return '\n'.join([result.to_string() for result in results])
 
