@@ -60,5 +60,3 @@ def query(startLoc, endLoc):
 		#print cur_insn + " | " + cur_dist
 	return output
 
-#print query('Duke University, Durham, NC', 'UNC Chapel Hill, Chapel Hill, NC')
-#print 'Total Distance: ' + getDistance('Duke University, Durham, NC', 'UNC Chapel Hill, Chapel Hill, NC')

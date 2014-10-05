@@ -5,18 +5,32 @@ import yelp.wrapper
 #import tripadvisor.wrapper
 import maps.maps
 
-class TestParser(unittest.TestCase):
-	def test_yelp(self):
-		places = yelp.wrapper.query('San Jose, CA', 8.0, 'indian')
-		for restaurant in places:
-			print restaurant.to_string()
-		print
+class TestAPI(unittest.TestCase):
+    def test_yelp(self):
+        print '--- Test Yelp ---'
+        places = yelp.wrapper.query('San Jose, CA', 8.0, 'baseball')
+        for restaurant in places:
+            print restaurant.to_string()
+        print ' ----------------'
 
-	def test_yelp_verbose(self):
-		places = yelp.wrapper.query('San Jose, CA', 8.0, 'indian')
-		for restaurant in places:
-			print restaurant.to_string_verbose()		
-		print
+    def test_yelp_verbose(self):
+        print '--- Test Yelp Verbose ---'
+        places = yelp.wrapper.query('San Jose, CA', 8.0, 'indian')
+        for restaurant in places:
+            print restaurant.to_string_verbose()        
+        print ' ----------------'
+
+    def test_maps_directions(self):
+        print '--- Test Maps Directions ---'
+        directions = maps.maps.query('Duke University, Durham, NC', 'UNC Chapel Hill, Chapel Hill, NC')
+        print directions
+        print ' ----------------'
+
+    def test_maps_get_distance(self):
+        print '--- Test Maps Distance ---'        
+        distance = maps.maps.getDistance('Duke University, Durham, NC', 'UNC Chapel Hill, Chapel Hill, NC')
+        print distance
+        print ' ----------------'
 
 if __name__ == "__main__":
     unittest.main()
