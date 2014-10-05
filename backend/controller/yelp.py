@@ -26,6 +26,12 @@ class Yelp(Base):
             if keyword in kwargs:
                 optional_params[keyword] = kwargs[keyword]
         results = yelp_wrapper.query(kwargs["near"], **optional_params)
+        if kwargs["format"] == "android":
+                return '\n'.join([result.to_android_string() for result in results])
+        self.store_results(user, results)
+        return '\n'.join([result.to_string() for result in results])
+
+    def store_results(self, user, results):
         for result in results:
             stored_result = Variable.objects(keyword = str(result.counter), program = "yelp", user = user).first()
             if stored_result:
@@ -34,8 +40,7 @@ class Yelp(Base):
             else:
                 result = Variable(keyword = str(result.counter), value = result.to_string_verbose(), program = "yelp", user = user)
                 result.save()
-        return '\n'.join([result.to_string() for result in results])
-
+    
     def more(self, user, **kwargs):
         more_results = Variable.objects(keyword= "more", program = "yelp", user = user).first()
         if more_results:
@@ -51,8 +56,8 @@ class Yelp(Base):
     def help(self, user, **kwargs):
         return """
         \tHere are some example texts!
-        To get restaurants near San Francisco, text - yelp: near: Mission District San Francisco, CA\n
-        To get bars, entertainment, and other venues near San Francisco, text - yelp: near: Mission District San Francisco, CA category: bars\n
-        To get these within a certain distance, text - yelp: near: (your location) distance: (your chosen distance)\n
+        To get restaurants near San Francisco, text - yelp: near: San Francisco, CA\n
+        To get bars near San Francisco, text - yelp: near: San Francisco, CA category: bars\n
+        To get bars within 0.1 miles the Mission District of San Francsico, text - yelp: near: Mission District, San Francisco distance: 5\n
         Don't forget to use colons!
         """

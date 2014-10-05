@@ -5,6 +5,10 @@ class Tokenizer():
         self.tokenize(query)
 
     def tokenize(self, query):
+        self.format = "default"
+        if query[0] == "@":
+            self.format = "android"
+            query = query[1:]
         tokens = [token.strip().split() for token in query.split(":")]
         results = {}
         for i, token in enumerate(tokens[:-1]):
@@ -21,8 +25,9 @@ class Tokenizer():
         if(len(tokens[0])>1):
             self.program = tokens[0][1]
         else:
-            self.program = 'default'
+            self.program = "default"
         self.arguments_dict = results
+        self.arguments_dict["format"] = self.format
 
     def replace_variables(self, query):
         pass
