@@ -18,10 +18,6 @@ class TestParser(unittest.TestCase):
         print app.process_message(default_user, "Yelp search: near: chapel hill, NC distance: 5")
         print app.process_message(default_user, "maps directions: from: chapel hill, NC to: Durham, NC")
 
-
-
-
-
     def test_parse_module(self):
         """Checks that the parser parses the first word correctly"""
         pass
