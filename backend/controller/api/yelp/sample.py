@@ -139,11 +139,8 @@ def formatPhone(phone):
     end = phone[-4:]
     return areaCode + begin + '-' + end
 
-# z
 #Todo: make robust to missing fields
 def buildResponse(response, counter, location, verbose):
-    count = str(counter) + '. '
-
     name = response['name']
     if 'categories' in response:
         name +=  ' (' + response['categories'][0][0]+ ')' 

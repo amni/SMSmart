@@ -56,7 +56,7 @@ def query(startLoc, endLoc):
 		counter += 1
 		cur_insn = remove_tags(insn['html_instructions'])
 		cur_dist = insn['distance']['text']
-		output += str(counter) + '. ' + cur_insn + " | " + cur_dist + token
+		output += str(counter) + ' | ' + cur_insn + " | " + cur_dist + token
 		#print cur_insn + " | " + cur_dist
 	return output
 

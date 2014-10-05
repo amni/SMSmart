@@ -4,8 +4,21 @@ input: give location // allow for filtering?
 
 main categories of info we want:
 
-name
-percent recommend
-rating 
-distance 
+'name'
+'percent_recommended'
+'rating' 
+'distance'
+'address_obj' : {
+	'address_string'
+	'city'
+	'country'
+	'postalcode'
+} 
+'attraction_types' : {
+	'localized_name'
+}
+
+
+
+
 
