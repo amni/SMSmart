@@ -5,9 +5,12 @@ import re
 
 
 class Maps(Base):
+    def default(self, user, **kwargs):
+        return self.directions(user, **kwargs)
+
     def find_results(self, **kwargs):
         pass 
-        
+    
     def remove_tags(self, text):
         TAG_RE = re.compile(r'<[^>]+>')
         return TAG_RE.sub('', text)
@@ -34,7 +37,7 @@ class Maps(Base):
 
     def directions(self, user, **kwargs):
         if not "from" or not "to" in kwargs:
-            return "Please make the text in the form of maps directions: from:location to:location"
+            return "Please make the text in the form of maps directions: from:(your starting location) to: (your destination)"
         response = self.get_directions(kwargs["from"], kwargs["to"])
         instructionsList = response[0]['legs'][0]['steps']
 
@@ -48,3 +51,10 @@ class Maps(Base):
             output += str(counter) + '. ' + cur_insn + " | " + cur_dist + "\n"
 
         return output
+
+    def help(self, user, **kwargs):
+        return """
+        Here is an example text!\n
+        To get directions from Mountain View to San Francisco, text - maps: from: Mountain View, CA to: San Francisco, CA
+        Don't forget to use colons!
+        """
