@@ -13,6 +13,13 @@ class TestAPI(unittest.TestCase):
             print restaurant.to_string()
         print ' ----------------'
 
+    def test_yelp_geo(self):
+        print '--- Test Yelp from Geo ---'
+        places = yelp.wrapper.query_geo(37.253, -121.90, 8.0, 'indian')
+        for restaurant in places:
+            print restaurant.to_string()
+        print ' ----------------'
+
     def test_yelp_verbose(self):
         print '--- Test Yelp Verbose ---'
         places = yelp.wrapper.query('San Jose, CA', 8.0, 'indian')
@@ -34,7 +41,7 @@ class TestAPI(unittest.TestCase):
 
     def test_maps_convert_geo_location(self):
         print '--- Test Maps Geo Location Conversion ---'        
-        location = maps.maps.getLocation(37.253,-121.90)
+        location = maps.maps.get_location_string(37.253,-121.90)
         print location
         print ' ----------------'        
 
