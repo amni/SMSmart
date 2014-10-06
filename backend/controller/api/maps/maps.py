@@ -46,6 +46,10 @@ def getGeocode(location):
 	response = geo.geocode(location)
 	return str(response[0]['geometry']['location']['lat']) + ',' + str(response[0]['geometry']['location']['lng'])
 
+def getLocation(lat, lng):
+	location = geo.reverse(lat,lng);
+	return location[0]['formatted_address'] 
+
 def query(startLoc, endLoc):
 	response = getDirections(startLoc, endLoc)
 	instructionsList = response[0]['legs'][0]['steps']

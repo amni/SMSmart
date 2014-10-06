@@ -32,5 +32,11 @@ class TestAPI(unittest.TestCase):
         print distance
         print ' ----------------'
 
+    def test_maps_convert_geo_location(self):
+        print '--- Test Maps Geo Location Conversion ---'        
+        location = maps.maps.getLocation(37.253,-121.90)
+        print location
+        print ' ----------------'        
+
 if __name__ == "__main__":
     unittest.main()
