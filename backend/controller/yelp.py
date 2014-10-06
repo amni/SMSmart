@@ -19,14 +19,28 @@ class Yelp(Base):
 
     def search(self, user, **kwargs):
         if not "near" in kwargs:
-            return "Please make the text in the form of yelp search: near: location"
+            return "Please make the text in the form of yelp search: near: (your location)"
         keywords = ["distance", "category"]
         optional_params = {}
         for keyword in keywords:
             if keyword in kwargs:
                 optional_params[keyword] = kwargs[keyword]
-        return yelp_wrapper.query(kwargs["near"], **optional_params)
+        results = yelp_wrapper.query(kwargs["near"], **optional_params)
+        if kwargs["format"] == "android":
+                return "Yelp | Search\n" + "\n".join([result.to_android_string() for result in results])
+        self.store_results(user, results)
+        return '\n'.join([result.to_string() for result in results])
 
+    def store_results(self, user, results):
+        for result in results:
+            stored_result = Variable.objects(keyword = str(result.counter), program = "yelp", user = user).first()
+            if stored_result:
+                stored_result.value = result.to_string_verbose()
+                stored_result.save()
+            else:
+                result = Variable(keyword = str(result.counter), value = result.to_string_verbose(), program = "yelp", user = user)
+                result.save()
+    
     def more(self, user, **kwargs):
         more_results = Variable.objects(keyword= "more", program = "yelp", user = user).first()
         if more_results:
@@ -35,4 +49,15 @@ class Yelp(Base):
 
 
     def info(self, user, **kwargs):
-        pass
+        if not "place" in kwargs:
+            return "Please make the text in the form of yelp info: place: (your location)"
+        return Variable.objects(keyword = kwargs["place"], program = "yelp", user = user).first().value
+
+    def help(self, user, **kwargs):
+        return """
+        \tHere are some example texts!
+        To get restaurants near San Francisco, text - yelp: near: San Francisco, CA\n
+        To get bars near San Francisco, text - yelp: near: San Francisco, CA category: bars\n
+        To get bars within 0.1 miles the Mission District of San Francsico, text - yelp: near: Mission District, San Francisco distance: 5\n
+        Don't forget to use colons!
+        """

@@ -4,6 +4,7 @@ from mongoengine import *
 from parser.tokenizer import Tokenizer 
 from controller.yelp import Yelp
 from controller.maps import Maps
+from controller.default import Default
 import twilio.twiml
 from models import User, Variable
 
@@ -40,20 +41,32 @@ def receive_message():
     phone_number = request.values.get('From')
     user = User.objects(phone_number=phone_number).first()
     if not user:
+    	response_text_message = get_onboard_message()
     	user = User(phone_number=phone_number)
     	user.save()
-    # TODO: check to see if it exists, if not create a new user with this phone number 
-    response_text_message = process_message(user, user_text_message)
-    user.last_query_response = response_text_message
-    user.save()
-    resp = twilio.twiml.Response()
-    resp.message(response_text_message)
+    else: 
+    	response_text_message = process_message(user, user_text_message)
+    	user.last_query_response = response_text_message
+    	user.save()
+    resp = send_text(response_text_message)
     return str(resp)
+
+def send_text(message):
+	resp = twilio.twiml.Response()
+	resp.message(message)
+	return resp
 
 def process_message(user, user_text_message):
 	tokenizer = Tokenizer(user_text_message)
 	api = create_subprogram(tokenizer.api)
 	return getattr(api, tokenizer.program)(user, **tokenizer.arguments_dict)
+
+def get_onboard_message():
+	return """
+	\tWelcome to SMSMart \n
+	You can look up restaurants, get directions, or find attractions here!\n
+	To try it out text us back with yelp help, maps help, or trip help
+	"""
 
 def create_subprogram(type):
 	if type == "yelp": return Yelp() 

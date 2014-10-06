@@ -59,7 +59,7 @@ def request(host, path, url_params=None):
     """
     url_params = url_params or {}
     encoded_params = urllib.urlencode(url_params)
-
+    
     url = 'http://{0}{1}?{2}'.format(host, path, encoded_params)
 
     consumer = oauth2.Consumer(CONSUMER_KEY, CONSUMER_SECRET)
