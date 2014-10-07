@@ -4,6 +4,7 @@ from mongoengine import *
 from parser.tokenizer import Tokenizer 
 from controller.yelp import Yelp
 from controller.maps import Maps
+from controller.attractions import Attractions
 from controller.default import Default
 import twilio.twiml
 from models import User, Variable
@@ -63,7 +64,7 @@ def process_message(user, user_text_message):
 
 def get_onboard_message():
 	return """
-	\tWelcome to SMSMart \n
+	Welcome to SMSMart\n
 	You can look up restaurants, get directions, or find attractions here!\n
 	To try it out text us back with yelp help, maps help, or trip help
 	"""
@@ -71,6 +72,7 @@ def get_onboard_message():
 def create_subprogram(type):
 	if type == "yelp": return Yelp() 
 	if type == "maps": return Maps()
+	if type == "attractions": return Attractions()
 	assert 0, "Invalid string " + type 
 	return None 
 

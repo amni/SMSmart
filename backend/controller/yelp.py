@@ -55,7 +55,7 @@ class Yelp(Base):
 
     def help(self, user, **kwargs):
         return """
-        \tHere are some example texts!
+        Here are some example texts!
         To get restaurants near San Francisco, text - yelp: near: San Francisco, CA\n
         To get bars near San Francisco, text - yelp: near: San Francisco, CA category: bars\n
         To get bars within 0.1 miles the Mission District of San Francsico, text - yelp: near: Mission District, San Francisco distance: 5\n

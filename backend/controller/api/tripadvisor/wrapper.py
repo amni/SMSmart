@@ -1,6 +1,6 @@
 import sys
 sys.path.append('../maps/')
-import maps
+from ..maps import maps
 import requests 
 import urllib2
 import json
@@ -10,7 +10,7 @@ from attraction import Attraction
 API_KEY = 'b70c2406e27642e5b1fe2c21f3dfabc8'
 API_ENDPOINT = 'http://api.tripadvisor.com/api/partner/2.0/map/*/attractions?key=' # * is long, lat coordinate
 
-def get_attractions(location):
+def query(location):
 	data = make_request(location)
 	ret = []
 	counter = 1
@@ -36,7 +36,7 @@ def build_object(attraction, counter):
 	attraction_type = attraction['attraction_types'][0]['localized_name'] if attraction['attraction_types'] else ''
 	return Attraction(str(counter), name, recommend, rating, distance, address, attraction_type)
 
-attrs = get_attractions('Durham, NC, USA')
+attrs = query('Durham, NC, USA')
 
 for attr in attrs:
 	print attr.to_string()
