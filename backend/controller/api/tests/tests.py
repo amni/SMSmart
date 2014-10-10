@@ -41,7 +41,7 @@ class TestAPI(unittest.TestCase):
 
     def test_maps_convert_geo_location(self):
         print '--- Test Maps Geo Location Conversion ---'        
-        location = maps.maps.get_location_string(37.253,-121.90)
+        location = maps.maps.get_location_string(37.2530000,-121.9000000000000)
         print location
         print ' ----------------'        
 

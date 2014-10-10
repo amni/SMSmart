@@ -4,7 +4,6 @@ from ..maps import maps
 import requests 
 import urllib2
 import json
-import pprint
 from attraction import Attraction
 
 API_KEY = 'b70c2406e27642e5b1fe2c21f3dfabc8'
@@ -36,7 +35,4 @@ def build_object(attraction, counter):
 	attraction_type = attraction['attraction_types'][0]['localized_name'] if attraction['attraction_types'] else ''
 	return Attraction(str(counter), name, recommend, rating, distance, address, attraction_type)
 
-attrs = query('Durham, NC, USA')
 
-for attr in attrs:
-	print attr.to_string()
