@@ -3,7 +3,7 @@ import sys
 sys.path.append('..')
 import yelp.wrapper
 import maps.wrapper
-#import tripadvisor.wrapper
+import tripadvisor.wrapper
 
 class TestAPI(unittest.TestCase):
     def test_yelp(self):
@@ -44,6 +44,28 @@ class TestAPI(unittest.TestCase):
         location = maps.wrapper.get_location_string(37.253,-121.90)
         print location
         print ' ----------------'        
+
+    def test_tripadvisor(self):
+        print '--- Test Tripadvisor ---'
+        places = tripadvisor.wrapper.query('Durham, NC, USA')
+        for attr in places:
+            print attr.to_string()
+        print ' ----------------'
+
+
+    def test_tripadvisor_geo(self):
+        print '--- Test Tripadvisor from Geo ---'
+        places = tripadvisor.wrapper.query_geo(37.253, -121.90)
+        for restaurant in places:
+            print restaurant.to_string()
+        print ' ----------------'
+
+    def test_tripadvisor_verbose(self):
+        print '--- Test Tripadvisor Verbose ---'
+        places = tripadvisor.wrapper.query('Durham, NC, USA')
+        for restaurant in places:
+            print restaurant.to_string_verbose()        
+        print ' ----------------' 
 
 if __name__ == "__main__":
     unittest.main()
