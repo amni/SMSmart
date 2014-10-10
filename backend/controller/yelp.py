@@ -25,6 +25,9 @@ class Yelp(Base):
         for keyword in keywords:
             if keyword in kwargs:
                 optional_params[keyword] = kwargs[keyword]
+        if "longlat" in kwargs: 
+            longlat = kwargs["near"].split(',')
+            results = yelp_wrapper.query_geo(float(longlat[0]), float(longlat[1]), **optional_params)
         results = yelp_wrapper.query(kwargs["near"], **optional_params)
         if kwargs["format"] == "android":
                 return "Yelp | Search\n" + "\n".join([result.to_android_string() for result in results])

@@ -13,6 +13,7 @@ class TestParser(unittest.TestCase):
     def test_process_message(self):
         """Checks that that modules are loading correctly"""
         default_user = User.objects(phone_number="5734894023").first()
+        print app.process_message(default_user, "yelp: near: 37.253,-121.90 longlat: true")
         print app.process_message(default_user, "attractions help")
         print app.process_message(default_user, "attractions search: near: paris")
         print app.process_message(default_user, "@Yelp: near: Durham, NC category: bars")

@@ -15,7 +15,7 @@ class Attractions(Base):
         return '\n'.join([result.to_string() for result in results])
 
     def help(self, user, **kwargs):
-        return """
+        return """      
         Here is an example text!
         To get attractions near San Francisco, you would text - attractions search: near: San Francisco, CA\n
         Don't forget to use colons!
