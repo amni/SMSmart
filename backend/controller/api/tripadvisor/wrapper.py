@@ -1,6 +1,6 @@
 import sys
 sys.path.append('../maps/')
-from ..maps import maps
+from ..maps import wrapper
 import requests 
 import urllib2
 import json

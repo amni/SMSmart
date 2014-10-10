@@ -2,8 +2,8 @@ import unittest
 import sys
 sys.path.append('..')
 import yelp.wrapper
+import maps.wrapper
 #import tripadvisor.wrapper
-import maps.maps
 
 class TestAPI(unittest.TestCase):
     def test_yelp(self):
@@ -29,19 +29,19 @@ class TestAPI(unittest.TestCase):
 
     def test_maps_directions(self):
         print '--- Test Maps Directions ---'
-        directions = maps.maps.query('Duke University, Durham, NC', 'UNC Chapel Hill, Chapel Hill, NC')
+        directions = maps.wrapper.query('Duke University, Durham, NC', 'UNC Chapel Hill, Chapel Hill, NC')
         print directions
         print ' ----------------'
 
     def test_maps_get_distance(self):
         print '--- Test Maps Distance ---'        
-        distance = maps.maps.getDistance('Duke University, Durham, NC', 'UNC Chapel Hill, Chapel Hill, NC')
+        distance = maps.wrapper.getDistance('Duke University, Durham, NC', 'UNC Chapel Hill, Chapel Hill, NC')
         print distance
         print ' ----------------'
 
     def test_maps_convert_geo_location(self):
         print '--- Test Maps Geo Location Conversion ---'        
-        location = maps.maps.get_location_string(37.253,-121.90)
+        location = maps.wrapper.get_location_string(37.253,-121.90)
         print location
         print ' ----------------'        
 

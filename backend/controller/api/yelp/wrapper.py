@@ -1,6 +1,6 @@
+import maps 
 import sample
 from restaurant import Restaurant
-import maps
 
 def query(location, distance = 5.0, category='restaurant'):
     return sample.query_api(category, location, distance, False, 1)
@@ -14,3 +14,4 @@ def getLocation(location, distance, index, category='restaurant'):
     return parse[1]
 
 
+#print(query_geo(37.253,-121.90))
