@@ -8,7 +8,7 @@ import tripadvisor.wrapper
 class TestUnicode(unittest.TestCase):
     def test_yelp(self):
         print '--- Test Yelp ---'
-        places = yelp.wrapper.query('Tribeca, New York City, NY')
+        places = yelp.wrapper.query('San Francisco, CA', 5.0, 'restaurants', 20)
         if places is None:
         	print 'HTTP Error: Couldn\'t handle'
         	return 
