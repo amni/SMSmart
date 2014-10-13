@@ -31,6 +31,12 @@ if 'PORT' in os.environ:
     # now connect
     connect(data['database'], host=data['host'], port=int(data['port']), username=data['username'], password=data['password'])
 
+    import logging
+    from logging import StreamHandler
+    file_handler = StreamHandler()
+    app.logger.setLevel(logging.DEBUG)  # set the desired logging level here
+    app.logger.addHandler(file_handler)
+
 else:
     # not heroku (dev env)
     # connect to mongo
@@ -47,8 +53,6 @@ def receive_message():
     	user.save()
     else: 
     	response_text_message = process_message(user, user_text_message)
-    	user.last_query_response = response_text_message
-    	user.save()
     resp = send_text(response_text_message)
     return str(resp)
 
