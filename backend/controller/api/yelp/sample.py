@@ -26,6 +26,7 @@ sys.path.append('../maps/')
 import oauth2
 import maps
 from restaurant import Restaurant
+from urllib2 import HTTPError
 
 
 API_HOST = 'api.yelp.com'
@@ -76,11 +77,12 @@ def request(host, path, url_params=None):
     oauth_request.sign_request(oauth2.SignatureMethod_HMAC_SHA1(), consumer, token)
     signed_url = oauth_request.to_url()
 
-    conn = urllib2.urlopen(signed_url, None)
     try:
+        conn = urllib2.urlopen(signed_url, None)
         response = json.loads(conn.read())
-    finally:
         conn.close()
+    except HTTPError:
+        response = None
 
     return response
 
@@ -97,7 +99,7 @@ def search(term, location, limit, radius):
     url_params = {
         'term': term,
         'location': location,
-        'limit': SEARCH_LIMIT,
+        'limit': limit,
         'radius': radius
     }
 
@@ -116,14 +118,17 @@ def get_business(business_id):
 
     return request(API_HOST, business_path)
 
-def query_api(term, location, radius, verbose, index):
+def query_api(term, location, radius, verbose, index, search_limit):
     """Queries the API by the input values from the user.
 
     Args:
         term (str): The search term to query.
         location (str): The location of the business to query.
     """
-    response = search(term, location, 1, radius)
+    response = search(term, location, search_limit, radius)
+    if response is None:
+        return 
+        
     businesses = response.get('businesses')
 
     if not businesses:

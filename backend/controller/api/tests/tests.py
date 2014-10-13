@@ -8,21 +8,21 @@ import tripadvisor.wrapper
 class TestAPI(unittest.TestCase):
     def test_yelp(self):
         print '--- Test Yelp ---'
-        places = yelp.wrapper.query('San Jose, CA', 8.0, 'baseball')
+        places = yelp.wrapper.query('San Jose, CA', 8.0, 'baseball', 7)
         for restaurant in places:
             print restaurant.to_string()
         print ' ----------------'
 
     def test_yelp_geo(self):
         print '--- Test Yelp from Geo ---'
-        places = yelp.wrapper.query_geo(37.253, -121.90, 8.0, 'indian')
+        places = yelp.wrapper.query_geo(37.253, -121.90, 8.0, 'indian', 4)
         for restaurant in places:
             print restaurant.to_string()
         print ' ----------------'
 
     def test_yelp_verbose(self):
         print '--- Test Yelp Verbose ---'
-        places = yelp.wrapper.query('San Jose, CA', 8.0, 'indian')
+        places = yelp.wrapper.query('San Jose, CA', 8.0, 'indian', 6)
         for restaurant in places:
             print restaurant.to_string_verbose()        
         print ' ----------------'
@@ -32,7 +32,7 @@ class TestAPI(unittest.TestCase):
         directions = maps.wrapper.query('Duke University, Durham, NC', 'UNC Chapel Hill, Chapel Hill, NC')
         print directions
         print ' ----------------'
-
+        
     def test_maps_get_distance(self):
         print '--- Test Maps Distance ---'        
         distance = maps.wrapper.getDistance('Duke University, Durham, NC', 'UNC Chapel Hill, Chapel Hill, NC')
