@@ -26,6 +26,9 @@ sys.path.append('../maps/')
 import oauth2
 import maps
 from restaurant import Restaurant
+from urllib2 import HTTPError
+import unicodedata
+
 
 
 API_HOST = 'api.yelp.com'
@@ -59,7 +62,7 @@ def request(host, path, url_params=None):
     """
     url_params = url_params or {}
     encoded_params = urllib.urlencode(url_params)
-
+    path = unicodedata.normalize('NFKD', unicode(path)).encode('ascii','ignore')
     url = 'http://{0}{1}?{2}'.format(host, path, encoded_params)
 
     consumer = oauth2.Consumer(CONSUMER_KEY, CONSUMER_SECRET)
@@ -76,11 +79,12 @@ def request(host, path, url_params=None):
     oauth_request.sign_request(oauth2.SignatureMethod_HMAC_SHA1(), consumer, token)
     signed_url = oauth_request.to_url()
 
-    conn = urllib2.urlopen(signed_url, None)
     try:
+        conn = urllib2.urlopen(signed_url, None)
         response = json.loads(conn.read())
-    finally:
         conn.close()
+    except HTTPError as error:
+        sys.exit('Encountered HTTP error {0}. Abort program.'.format(error.code))
 
     return response
 
@@ -97,7 +101,7 @@ def search(term, location, limit, radius):
     url_params = {
         'term': term,
         'location': location,
-        'limit': SEARCH_LIMIT,
+        'limit': limit,
         'radius': radius
     }
 
@@ -113,17 +117,16 @@ def get_business(business_id):
         dict: The JSON response from the request.
     """
     business_path = BUSINESS_PATH + business_id
-
     return request(API_HOST, business_path)
 
-def query_api(term, location, radius, verbose, index):
+def query_api(term, location, radius, verbose, index, search_limit):
     """Queries the API by the input values from the user.
 
     Args:
         term (str): The search term to query.
         location (str): The location of the business to query.
     """
-    response = search(term, location, 1, radius)
+    response = search(term, location, search_limit, radius)
     businesses = response.get('businesses')
 
     if not businesses:
