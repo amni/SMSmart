@@ -36,21 +36,24 @@ class Maps(Base):
         return str(response[0]['legs'][0]['distance']['text'])
 
     def directions(self, user, **kwargs):
-        if not "from" or not "to" in kwargs:
-            return "Please make the text in the form of maps directions: from:(your starting location) to: (your destination)"
-        response = self.get_directions(kwargs["from"], kwargs["to"])
-        instructionsList = response[0]['legs'][0]['steps']
+        try: 
+            if not "from" or not "to" in kwargs:
+                return "Please make the text in the form of maps directions: from:(your starting location) to: (your destination)"
+            response = self.get_directions(kwargs["from"], kwargs["to"])
+            instructionsList = response[0]['legs'][0]['steps']
 
-        output = 'Directions to ' + kwargs["to"] + "\n"
-        counter = 0
+            output = 'Directions to ' + kwargs["to"] + "\n"
+            counter = 0
 
-        for insn in instructionsList:
-            counter += 1
-            cur_insn = self.remove_tags(insn['html_instructions'])
-            cur_dist = insn['distance']['text']
-            output += str(counter) + '. ' + cur_insn + " | " + cur_dist + "\n"
+            for insn in instructionsList:
+                counter += 1
+                cur_insn = self.remove_tags(insn['html_instructions'])
+                cur_dist = insn['distance']['text']
+                output += str(counter) + '. ' + cur_insn + " | " + cur_dist + "\n"
 
-        return output
+            return output
+        except:
+            return "Couldn't find a route please try with more specific locations"
 
     def help(self, user, **kwargs):
         return """
