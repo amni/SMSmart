@@ -8,14 +8,14 @@ import tripadvisor.wrapper
 class TestAPI(unittest.TestCase):
     def test_yelp(self):
         print '--- Test Yelp ---'
-        places = yelp.wrapper.query('San Jose, CA', 8.0, 'baseball', 7)
+        places = yelp.wrapper.query('San Francisco, CA', 8.0, 'baseball', 7)
         for restaurant in places:
             print restaurant.to_string()
         print ' ----------------'
 
     def test_yelp_geo(self):
         print '--- Test Yelp from Geo ---'
-        places = yelp.wrapper.query_geo(37.253, -121.90, 8.0, 'indian', 4)
+        places = yelp.wrapper.query_geo(36.00532112,-78.9260447, 8.0, 'indian', 4)
         for restaurant in places:
             print restaurant.to_string()
         print ' ----------------'
@@ -41,7 +41,7 @@ class TestAPI(unittest.TestCase):
 
     def test_maps_convert_geo_location(self):
         print '--- Test Maps Geo Location Conversion ---'        
-        location = maps.wrapper.get_location_string(37.253,-121.90)
+        location = maps.wrapper.get_location_string(36.00532112,-78.9260447)
         print location
         print ' ----------------'        
 

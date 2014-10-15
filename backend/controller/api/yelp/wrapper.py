@@ -6,7 +6,9 @@ def query(location, distance = 5.0, category='restaurant', search_limit = 3):
     return sample.query_api(category, location, distance, False, 1, search_limit)
 
 def query_geo(lat, lng, distance = 5.0, category='restaurant', search_limit = 5):
-    return query(str(maps.get_location_string(lat, lng)), distance, category, search_limit)
+    #print str(maps.get_location_string(lat, lng)
+    geo = str(lat)+','+str(lng)
+    return sample.query_api_geo(category, geo, distance, False, 1, search_limit)
 
 def getLocation(location, distance, index, category='restaurant'):
     response = verbose(location, distance, index, category)

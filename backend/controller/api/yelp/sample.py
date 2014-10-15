@@ -107,6 +107,31 @@ def search(term, location, limit, radius):
 
     return request(API_HOST, SEARCH_PATH, url_params=url_params)
 
+
+
+def search_geo(term, geo, limit, radius):
+    """Query the Search API by a search term and location.
+
+    Args:
+        term (str): The search term passed to the API.
+        location (str): The search location passed to the API.
+        geo (str): form of 'lat,lng'
+
+    Returns:
+        dict: The JSON response from the request.
+    """
+
+    url_params = {
+        'term': term,
+        #'limit': limit,
+        #'radius': radius,
+        'll': geo
+    }
+
+
+    return request(API_HOST, SEARCH_PATH, url_params=url_params)
+
+
 def get_business(business_id):
     """Query the Business API by a business ID.
 
@@ -118,6 +143,21 @@ def get_business(business_id):
     """
     business_path = BUSINESS_PATH + business_id
     return request(API_HOST, business_path)
+
+def query_api_geo(term, geo, radius, verbose, index, search_limit):
+    """Queries the API by the input values from the user.
+
+    Args:
+        term (str): The search term to query.
+        location (str): The location of the business to query.
+    """
+    response = search_geo(term, geo, search_limit, radius)
+    businesses = response.get('businesses')
+
+    if not businesses:
+        return
+    return getLocations(businesses, location, verbose, index);
+
 
 def query_api(term, location, radius, verbose, index, search_limit):
     """Queries the API by the input values from the user.
