@@ -15,3 +15,4 @@ def getLocation(location, distance, index, category='restaurant'):
     parse = response.split(' | ')
     return parse[1]
 
+

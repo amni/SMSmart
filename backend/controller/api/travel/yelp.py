@@ -24,7 +24,7 @@ import urllib2
 import sys
 sys.path.append('../maps/')
 import oauth2
-import maps
+import maps_wrapper as maps
 from restaurant import Restaurant
 from urllib2 import HTTPError
 import unicodedata
