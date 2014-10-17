@@ -21,15 +21,11 @@ import pprint
 import sys
 import urllib
 import urllib2
-import sys
-sys.path.append('../maps/')
 import oauth2
 import maps_wrapper as maps
 from restaurant import Restaurant
 from urllib2 import HTTPError
 import unicodedata
-
-
 
 API_HOST = 'api.yelp.com'
 DEFAULT_TERM = 'dinner'
@@ -47,19 +43,6 @@ TOKEN_SECRET = 'n2oQBgUhBUq-PNjKxXvmlysmRwo'
 
 
 def request(host, path, url_params=None):
-    """Prepares OAuth authentication and sends the request to the API.
-
-    Args:
-        host (str): The domain host of the API.
-        path (str): The path of the API after the domain.
-        url_params (dict): An optional set of query parameters in the request.
-
-    Returns:
-        dict: The JSON response from the request.
-
-    Raises:
-        urllib2.HTTPError: An error occurs from the HTTP request.
-    """
     url_params = url_params or {}
     encoded_params = urllib.urlencode(url_params)
     path = unicodedata.normalize('NFKD', unicode(path)).encode('ascii','ignore')
@@ -89,92 +72,40 @@ def request(host, path, url_params=None):
     return response
 
 def search(term, location, limit, radius):
-    """Query the Search API by a search term and location.
-
-    Args:
-        term (str): The search term passed to the API.
-        location (str): The search location passed to the API.
-
-    Returns:
-        dict: The JSON response from the request.
-    """
     url_params = {
         'term': term,
         'location': location,
         'limit': limit,
         'radius': radius
     }
-
     return request(API_HOST, SEARCH_PATH, url_params=url_params)
-
-
 
 def search_geo(term, geo, limit, radius):
-    """Query the Search API by a search term and location.
-
-    Args:
-        term (str): The search term passed to the API.
-        location (str): The search location passed to the API.
-        geo (str): form of 'lat,lng'
-
-    Returns:
-        dict: The JSON response from the request.
-    """
-
     url_params = {
         'term': term,
-        #'limit': limit,
-        #'radius': radius,
-        'll': geo
+        'll': geo,
+        'limit': limit,
+        'radius': radius
     }
-
-
     return request(API_HOST, SEARCH_PATH, url_params=url_params)
 
-
 def get_business(business_id):
-    """Query the Business API by a business ID.
-
-    Args:
-        business_id (str): The ID of the business to query.
-
-    Returns:
-        dict: The JSON response from the request.
-    """
     business_path = BUSINESS_PATH + business_id
     return request(API_HOST, business_path)
 
 def query_api_geo(term, geo, radius, verbose, index, search_limit):
-    """Queries the API by the input values from the user.
-
-    Args:
-        term (str): The search term to query.
-        location (str): The location of the business to query.
-    """
     response = search_geo(term, geo, search_limit, radius)
     businesses = response.get('businesses')
-
     if not businesses:
         return
-    return getLocations(businesses, location, verbose, index);
-
+    return getLocations(businesses, geo, verbose, index);
 
 def query_api(term, location, radius, verbose, index, search_limit):
-    """Queries the API by the input values from the user.
-
-    Args:
-        term (str): The search term to query.
-        location (str): The location of the business to query.
-    """
     response = search(term, location, search_limit, radius)
     businesses = response.get('businesses')
-
     if not businesses:
         return
     return getLocations(businesses, location, verbose, index);
-    #response = get_business(business_id)
-    #print 'Result for business "{0}" found:'.format(business_id)
-    #print response['location']['address'][0] + ', ' + response['location']['city'] + ' ' + response['location']['postal_code']
 
 def formatPhone(phone):
     areaCode = '(' + phone[:3] + ') '
@@ -182,7 +113,6 @@ def formatPhone(phone):
     end = phone[-4:]
     return areaCode + begin + '-' + end
 
-#Todo: make robust to missing fields
 def buildResponse(response, counter, location, verbose):
     name = response['name']
     if 'categories' in response:
@@ -201,15 +131,9 @@ def buildResponse(response, counter, location, verbose):
         rating = 'rating unavailable'
     status = 'open' if (str(response['is_closed']) == 'False') else 'closed'
     isClosed = status 
-    #neighborhood = response['location']['neighborhoods'][0]
-
     ret = Restaurant(counter, name, endLocation, phone, rating, isClosed)
     return ret
-    """
-    if (not verbose):
-        return count + name + ' | '  + phone + ' | ' + rating  + token
-    else:
-        return name + ' | ' +  endLocation +  ' | ' + distance + ' | ' + phone + ' | ' + rating + ' | ' + isClosed + token"""
+
 
 def getLocations(businesses, location, verbose, index):
     output = []
