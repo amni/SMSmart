@@ -1,5 +1,5 @@
 from base import Base
-import api.yelp.wrapper as yelp_wrapper
+import api.travel.yelp_wrapper as yelp_wrapper
 from models import Variable, User
 
 class Yelp(Base):
