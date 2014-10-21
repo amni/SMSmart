@@ -13,4 +13,4 @@ class Attraction:
         return str(self.counter) + ' | ' + self.name + ' | ' + self.distance + ' | ' + self.attraction_type
 
     def to_string_verbose(self):
-        return str(self.counter) + ' | ' + self.name + ' | ' +  self.percent_recommended + ' | ' + self.rating + ' | ' + self.distance + ' | ' + self.address + ' | ' + self.attraction_type        
+        return str(self.counter) + ' | ' + self.name + ' | ' +  str(self.percent_recommended) + ' | ' + str(self.rating) + ' | ' + self.distance + ' | ' + self.address + ' | ' + self.attraction_type        
