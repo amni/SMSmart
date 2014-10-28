@@ -62,6 +62,11 @@ def receive_message():
     distribute(str(phone_number), str(response_text_message))
     return ''
 
+def get_phone_number():
+    from_number = numbers.pop(0)
+    numbers.append(from_number)
+    return from_number
+
 def distribute(phone_number, output):
     position = 0
     remainder = len(output)
@@ -69,14 +74,10 @@ def distribute(phone_number, output):
         message = output[position:position+157]
         remainder -= 157
         position += 157
-        from_number = numbers.pop(0)
-        numbers.append(from_number)
-        client.messages.create(to=phone_number, from_=from_number, body=message)
+        client.messages.create(to=phone_number, from_=get_phone_number(), body=message)
     if remainder > 0:
         message = output[position:]
-        from_number = numbers.pop(0)
-        numbers.append(from_number)
-        client.messages.create(to=phone_number, from_=from_number, body=message)
+        client.messages.create(to=phone_number, from_=get_phone_number(), body=message)
 
 def send_text(message):
 	resp = twilio.twiml.Response()
