@@ -8,10 +8,15 @@ from controller.attractions import Attractions
 from controller.default import Default
 import twilio.twiml
 from models import User, Variable
+from twilio.rest import TwilioRestClient
 
 import os
 
 app = Flask(__name__)
+account_sid = "AC171ca34ca45bf15bb3f369b1ae5e9a9f"
+auth_token = "1d3ef112c1407035c6c6f5e5e17f75ad"
+client = TwilioRestClient(account_sid, auth_token)
+numbers = ["+15738182146", "+19738280148"]
 
 #for heroku
 if 'PORT' in os.environ: 
@@ -54,7 +59,24 @@ def receive_message():
     else: 
     	response_text_message = process_message(user, user_text_message)
     resp = send_text(response_text_message)
-    return str(resp)
+    distribute(str(phone_number), str(response_text_message))
+    return ''
+
+def distribute(phone_number, output):
+    position = 0
+    remainder = len(output)
+    while remainder > 160:
+        message = output[position:position+157]
+        remainder -= 157
+        position += 157
+        from_number = numbers.pop(0)
+        numbers.append(from_number)
+        client.messages.create(to=phone_number, from_=from_number, body=message)
+    if remainder > 0:
+        message = output[position:]
+        from_number = numbers.pop(0)
+        numbers.append(from_number)
+        client.messages.create(to=phone_number, from_=from_number, body=message)
 
 def send_text(message):
 	resp = twilio.twiml.Response()
