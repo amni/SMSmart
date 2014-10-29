@@ -16,7 +16,7 @@ app = Flask(__name__)
 account_sid = "AC171ca34ca45bf15bb3f369b1ae5e9a9f"
 auth_token = "1d3ef112c1407035c6c6f5e5e17f75ad"
 client = TwilioRestClient(account_sid, auth_token)
-numbers = ["+15738182146", "+19738280148"]
+numbers = ["+15738182146", "+19738280148", "+16503534855", "+18704740576", "+18702802312"]
 
 #for heroku
 if 'PORT' in os.environ: 
