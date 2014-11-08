@@ -18,6 +18,7 @@ class Yelp(Base):
         return spliced_results
 
     def search(self, user, **kwargs):
+        key = kwargs["key"]
         if not "near" in kwargs:
             return "Please make the text in the form of yelp search: near: (your location)"
         keywords = ["distance", "category"]
@@ -31,9 +32,9 @@ class Yelp(Base):
         else:
             results = yelp_wrapper.query(kwargs["near"], **optional_params)
         if kwargs["format"] == "android":
-                return "Yelp | Search\n" + "\n".join([result.to_android_string() for result in results])
+                return key + "^" + "^".join([result.to_android_string() for result in results])
         self.store_results(user, results)
-        return '\n'.join([result.to_string() for result in results])
+        return '^'.join([result.to_string() for result in results])
 
     def store_results(self, user, results):
         for result in results:

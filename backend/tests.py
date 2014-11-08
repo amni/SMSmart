@@ -29,6 +29,9 @@ class TestParser(unittest.TestCase):
         """Checks that the parser parses the first word correctly"""
         pass
 
+    def test_distribute(self):
+        """Checks that the parser parses handles distributed texting properly"""
+        pass
     
 if __name__ == "__main__":
     unittest.main()

@@ -17,7 +17,8 @@ account_sid = "AC171ca34ca45bf15bb3f369b1ae5e9a9f"
 auth_token = "1d3ef112c1407035c6c6f5e5e17f75ad"
 client = TwilioRestClient(account_sid, auth_token)
 numbers = ["+15738182146", "+19738280148", "+16503534855", "+18704740576", "+18702802312"]
-
+SMS_LENGTH = 160
+MSG_SEGMENT_LENGTH = 150
 #for heroku
 if 'PORT' in os.environ: 
     print os.environ
@@ -58,7 +59,7 @@ def receive_message():
     	user.save()
     else: 
     	response_text_message = process_message(user, user_text_message)
-    resp = send_text(response_text_message)
+    #resp = send_text(response_text_message)
     distribute(str(phone_number), str(response_text_message))
     return ''
 
@@ -68,16 +69,26 @@ def get_phone_number():
     return from_number
 
 def distribute(phone_number, output):
+    key_position = output.find('^')
+    key = output[:key_position]
+    output = output[key_position+1:]
     position = 0
     remainder = len(output)
-    while remainder > 160:
-        message = output[position:position+157]
-        remainder -= 157
-        position += 157
-        client.messages.create(to=phone_number, from_=get_phone_number(), body=message)
+    msg_number = 1
+    temp = remainder/MSG_SEGMENT_LENGTH
+    total_msg = temp + 1 if (remainder%MSG_SEGMENT_LENGTH != 0) else temp
+    while remainder > SMS_LENGTH:
+        message = output[position:position+MSG_SEGMENT_LENGTH]
+        metadata = key + '(' + str(msg_number) + '/' + str(total_msg) + ')' + '|'
+        msg_number += 1        
+        remainder -= MSG_SEGMENT_LENGTH
+        position += MSG_SEGMENT_LENGTH
+        client.messages.create(to=phone_number, from_=get_phone_number(), body=metadata+message)
     if remainder > 0:
         message = output[position:]
-        client.messages.create(to=phone_number, from_=get_phone_number(), body=message)
+        metadata = key + '(' + str(msg_number) + '/' + str(total_msg) + ')'
+        msg_number += 1   
+        client.messages.create(to=phone_number, from_=get_phone_number(), body=metadata+message)
 
 def send_text(message):
 	resp = twilio.twiml.Response()
