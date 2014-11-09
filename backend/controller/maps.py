@@ -3,7 +3,6 @@ from gmaps import Directions
 from gmaps import Geocoding
 import re
 
-
 class Maps(Base):
     def default(self, user, **kwargs):
         return self.directions(user, **kwargs)
@@ -15,9 +14,10 @@ class Maps(Base):
         TAG_RE = re.compile(r'<[^>]+>')
         return TAG_RE.sub('', text)
 
-    def get_directions(self, start, end):
+    # supported modes include driving, walking, bicycling, transit 
+    def get_directions(self, start, end, transport="driving"):
         direct = Directions()
-        response = direct.directions(start, end)
+        response = direct.directions(start, end, mode=transport)
         return response
         
     # 1 for City, 0 for State 
@@ -39,19 +39,22 @@ class Maps(Base):
         try: 
             if not "from" or not "to" in kwargs:
                 return "Please make the text in the form of maps directions: from:(your starting location) to: (your destination)"
-            response = self.get_directions(kwargs["from"], kwargs["to"])
+            if "mode" in kwargs:
+                response = self.get_directions(kwargs["from"], kwargs["to"], kwargs["mode"])
+            else:
+                response = self.get_directions(kwargs["from"], kwargs["to"])
             instructionsList = response[0]['legs'][0]['steps']
-
-            output = 'Directions to ' + kwargs["to"] + "\n"
+            key = kwargs["key"]
+            #output = 'Directions to ' + kwargs["to"] + "\n"
+            output = ''
             counter = 0
 
             for insn in instructionsList:
                 counter += 1
                 cur_insn = self.remove_tags(insn['html_instructions'])
                 cur_dist = insn['distance']['text']
-                output += str(counter) + '. ' + cur_insn + " | " + cur_dist + "\n"
-
-            return output
+                output += str(counter) + '|' + cur_insn + '|' + cur_dist + '^'
+            return key + "^" + output
         except:
             return "Couldn't find a route please try with more specific locations"
 
