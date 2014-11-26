@@ -54,7 +54,8 @@ class Maps(Base):
                 cur_insn = self.remove_tags(insn['html_instructions'])
                 cur_dist = insn['distance']['text']
                 output += str(counter) + '|' + cur_insn + '|' + cur_dist + '^'
-            return key + "^" + output
+            result = key + "^" + output
+            return result[:-1]
         except:
             return "Couldn't find a route please try with more specific locations"
 
