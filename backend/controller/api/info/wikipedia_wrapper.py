@@ -1,9 +1,9 @@
 import wikipedia 
 
 
-def summary(term):
+def summary(term, sentences = 3):
     try:
-        result = wikipedia.summary(term)
+        result = wikipedia.summary(term, sentences)
     except:
         result = "Disambiguation Error: Try searching for exactly what you want"
     return result
@@ -13,10 +13,6 @@ def search(term, limit = 3):
     return ret_list
 
 
-results = search("John")
-print results
 
-for r in results:
-    print summary(r)
 
 
