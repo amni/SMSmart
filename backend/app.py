@@ -9,6 +9,7 @@ from controller.default import Default
 import twilio.twiml
 from models import User, Variable
 from twilio.rest import TwilioRestClient
+from controller.wikipedia import Wikipedia
 
 import os
 
@@ -54,11 +55,11 @@ def receive_message():
     phone_number = request.values.get('From')
     user = User.objects(phone_number=phone_number).first()
     if not user:
-    	response_text_message = get_onboard_message()
-    	user = User(phone_number=phone_number)
-    	user.save()
+        response_text_message = get_onboard_message()
+        user = User(phone_number=phone_number)
+        user.save()
     else: 
-    	response_text_message = process_message(user, user_text_message)
+        response_text_message = process_message(user, user_text_message)
     #resp = send_text(response_text_message)
     distribute(str(phone_number), str(response_text_message))
     return ''
@@ -79,40 +80,41 @@ def distribute(phone_number, output):
     total_msg = temp + 1 if (remainder%MSG_SEGMENT_LENGTH != 0) else temp
     while remainder > SMS_LENGTH:
         message = output[position:position+MSG_SEGMENT_LENGTH]
-        metadata = key + '(' + str(msg_number) + '/' + str(total_msg) + ')' + '|'
+        metadata = key + '(' + str(msg_number) + '/' + str(total_msg) + ')' + '*'
         msg_number += 1        
         remainder -= MSG_SEGMENT_LENGTH
         position += MSG_SEGMENT_LENGTH
         client.messages.create(to=phone_number, from_=get_phone_number(), body=metadata+message)
     if remainder > 0:
         message = output[position:]
-        metadata = key + '(' + str(msg_number) + '/' + str(total_msg) + ')'
+        metadata = key + '(' + str(msg_number) + '/' + str(total_msg) + ')' + '*'
         msg_number += 1   
         client.messages.create(to=phone_number, from_=get_phone_number(), body=metadata+message)
 
 def send_text(message):
-	resp = twilio.twiml.Response()
-	resp.message(message)
-	return resp
+    resp = twilio.twiml.Response()
+    resp.message(message)
+    return resp
 
 def process_message(user, user_text_message):
-	tokenizer = Tokenizer(user_text_message)
-	api = create_subprogram(tokenizer.api)
-	return getattr(api, tokenizer.program)(user, **tokenizer.arguments_dict)
+    tokenizer = Tokenizer(user_text_message)
+    api = create_subprogram(tokenizer.api)
+    return getattr(api, tokenizer.program)(user, **tokenizer.arguments_dict)
 
 def get_onboard_message():
-	return """
-	Welcome to SMSMart\n
-	You can look up restaurants, get directions, or find attractions here!\n
-	To try it out text us back with yelp help, maps help, or trip help
-	"""
+    return """
+    Welcome to SMSMart\n
+    You can look up restaurants, get directions, or find attractions here!\n
+    To try it out text us back with yelp help, maps help, or trip help
+    """
 
 def create_subprogram(type):
-	if type == "yelp": return Yelp() 
-	if type == "maps": return Maps()
-	if type == "attractions": return Attractions()
-	assert 0, "Invalid string " + type 
-	return None 
+    if type == "yelp": return Yelp() 
+    if type == "maps": return Maps()
+    if type == "wikipedia": return Wikipedia()
+    if type == "attractions": return Attractions()
+    assert 0, "Invalid string " + type 
+    return None 
 
 if __name__ == '__main__':
-	app.run(debug=True) 
+    app.run(debug=True) 
