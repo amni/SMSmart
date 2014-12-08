@@ -1,6 +1,6 @@
 from base import Base
 import api.travel.tripadvisor_wrapper as trip_wrapper
-from models import Variable, User
+from models import Query, User
 
 class Attractions(Base):
     def default(self, user, **kwargs):

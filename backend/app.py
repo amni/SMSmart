@@ -7,7 +7,7 @@ from controller.maps import Maps
 from controller.attractions import Attractions
 from controller.default import Default
 import twilio.twiml
-from models import User, Variable
+from models import User, Query
 from twilio.rest import TwilioRestClient
 from controller.wikipedia import Wikipedia
 
@@ -51,17 +51,25 @@ else:
 
 @app.route('/', methods=["GET", "POST"])
 def receive_message():
+    print "changes propagagated"
     user_text_message = request.values.get('Body')
     phone_number = request.values.get('From')
     user = User.objects(phone_number=phone_number).first()
     if not user:
-        response_text_message = get_onboard_message()
         user = User(phone_number=phone_number)
         user.save()
-    else: 
-        response_text_message = process_message(user, user_text_message)
-    #resp = send_text(response_text_message)
-    distribute(str(phone_number), str(response_text_message))
+
+    response_text_message = process_message(user, user_text_message)
+    output = str(response_text_message)
+    key_position = output.find('^')
+    key = output[:key_position]
+
+    user_query = Query(query_id = key, response = response_text_message)
+    user_query.save()
+    user.queries.append(user_query)
+    user.save() 
+
+    distribute(str(phone_number), output)
     return ''
 
 def get_phone_number():
@@ -100,13 +108,6 @@ def process_message(user, user_text_message):
     tokenizer = Tokenizer(user_text_message)
     api = create_subprogram(tokenizer.api)
     return getattr(api, tokenizer.program)(user, **tokenizer.arguments_dict)
-
-def get_onboard_message():
-    return """
-    Welcome to SMSMart\n
-    You can look up restaurants, get directions, or find attractions here!\n
-    To try it out text us back with yelp help, maps help, or trip help
-    """
 
 def create_subprogram(type):
     if type == "yelp": return Yelp() 

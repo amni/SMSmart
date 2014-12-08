@@ -1,6 +1,6 @@
 from base import Base
 import api.travel.yelp_wrapper as yelp_wrapper
-from models import Variable, User
+from models import User, Query
 
 class Yelp(Base):
     def default(self, user, **kwargs):
@@ -33,7 +33,7 @@ class Yelp(Base):
             results = yelp_wrapper.query(kwargs["near"], **optional_params)
         if kwargs["format"] == "android":
                 return key + "^" + "^".join([result.to_android_string() for result in results])
-        self.store_results(user, results)
+        #self.store_results(user, results)
         return '^'.join([result.to_string() for result in results])
 
     def store_results(self, user, results):

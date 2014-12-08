@@ -1,6 +1,6 @@
 from base import Base
 import api.info.wikipedia_wrapper as wikipedia_wrapper
-from models import Variable, User
+from models import User, Query
 
 class Wikipedia(Base):
     DEFAULT_LIMIT = 5
