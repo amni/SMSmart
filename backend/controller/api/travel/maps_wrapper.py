@@ -15,15 +15,15 @@ token = '\n'
 def remove_tags(text):
     return TAG_RE.sub('', text)
 
-def getDirections(start, end):
-	direct = Directions()
-	response = direct.directions(start, end)
-	#pprint.pprint(response, indent=2)
-	return response
+# supported modes include driving, walking, bicycling, transit 
+def get_directions(start, end, transport="driving"):
+    direct = Directions()
+    response = direct.directions(start, end, mode=transport)
+    return response
     
 # 1 for City, 0 for State 
-def getLocation(start, typeLoc):
-    response = getDirections(start, DEFAULT)
+def get_location(start, typeLoc):
+    response = get_directions(start, DEFAULT)
     address = response[0]['legs'][0]['start_address']
     tokens = address.split(', ')
     if typeLoc == 1:
@@ -31,18 +31,17 @@ def getLocation(start, typeLoc):
     else:
     	return tokens[len(tokens) - 2][:2]
 
-def getState(start):
-	print getLocation(start, 0)
+def get_state(start):
+	print get_location(start, 0)
 
-def getCity(start):
-	print getLocation(start, 1)
+def get_city(start):
+	print get_location(start, 1)
 
-def getDistance(start, end):
-    response = getDirections(start, end)
-    #pprint.pprint(response)
+def get_distance(start, end):
+    response = get_directions(start, end)
     return str(response[0]['legs'][0]['distance']['text'])
 
-def getGeocode(location):
+def get_geocode(location):
 	response = geo.geocode(location)
 	return str(response[0]['geometry']['location']['lat']) + ',' + str(response[0]['geometry']['location']['lng'])
 
@@ -50,12 +49,12 @@ def get_location_string(lat, lng):
 	location = geo.reverse(lat,lng);
 	return location[0]['formatted_address'] 
 
+# This method is deprecated 
 def query(startLoc, endLoc):
-	response = getDirections(startLoc, endLoc)
+	response = get_directions(startLoc, endLoc)
 	instructionsList = response[0]['legs'][0]['steps']
 	output = 'Directions to ' + endLoc + token
 	counter = 0
-
 	for insn in instructionsList:
 		counter += 1
 		cur_insn = remove_tags(insn['html_instructions'])
