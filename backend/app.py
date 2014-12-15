@@ -51,7 +51,6 @@ else:
 
 @app.route('/', methods=["GET", "POST"])
 def receive_message():
-    print "changes propagagated"
     user_text_message = request.values.get('Body')
     phone_number = request.values.get('From')
     user = User.objects(phone_number=phone_number).first()
@@ -60,7 +59,8 @@ def receive_message():
         user.save()
 
     response_text_message = process_message(user, user_text_message)
-    output = str(response_text_message)
+    output = response_text_message
+    print "OUTPUT:" + output
     key_position = output.find('^')
     key = output[:key_position]
 
@@ -107,8 +107,9 @@ def send_text(message):
 def process_message(user, user_text_message):
     tokenizer = Tokenizer(user_text_message)
     api = create_subprogram(tokenizer.api)
-    return getattr(api, tokenizer.program)(user, **tokenizer.arguments_dict)
-
+    result = (getattr(api, tokenizer.program)(user, **tokenizer.arguments_dict)).encode('utf-8')
+    return result
+    
 def create_subprogram(type):
     if type == "yelp": return Yelp() 
     if type == "maps": return Maps()
