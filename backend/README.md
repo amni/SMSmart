@@ -11,7 +11,7 @@
 - category
 - limit
 
-**Examples: ** 
+**Examples:** 
 ```
 Text - '@Yelp search:  longlat: true near: 40.74503998,-73.99879607 category: Pizza key: z limit: 1'
 Response - 'z^1|NY Pizza Suprema (Pizza)|413 8th Ave, New York, NY 10001|(212) 594-8939|4.0 stars|open'
