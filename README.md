@@ -7,18 +7,18 @@ Here is where out server lives.  This contains all of the Twilio code and Api in
 
 ##### Getting Started
 To run the following project, you must first: 
-1. Install pip
-2. In the backend directory run, pip install -r requirements.txt
-3. In the backend directory run python app.py
+- 1. Install pip
+- 2. In the backend directory run, pip install -r requirements.txt
+- 3. In the backend directory run python app.py
 
 To send a text message to our server, please text **973-828-0148**. 
 
 #####Technology Stack
 Currently, we are using the following:
-1. Flask Web App - Python web framework (http://flask.pocoo.org/)
-2. MongoDB - open source document database (http://www.mongodb.org/)
-3. Mongoengine - Python object data mapper for MongoDB (http://mongoengine.org/) 
-4. Heroku - cloud platform as a service for web hosting (https://www.heroku.com/) 
+- Flask Web App - Python web framework (http://flask.pocoo.org/)
+- MongoDB - open source document database (http://www.mongodb.org/)
+- Mongoengine - Python object data mapper for MongoDB (http://mongoengine.org/) 
+- Heroku - cloud platform as a service for web hosting (https://www.heroku.com/) 
 
 #####Limitations
 Current limitations to our service are that text messages that are served from this number are not in a highly readable form. To use our application, users are expected to download the Android application.  
