@@ -16,16 +16,16 @@ class TestParser(unittest.TestCase):
 
     def test_process_message(self):
         default_user = User.objects(phone_number="5734894023").first()
-        print 'Query: @ Wikipedia search: limit: summary: Ford sentences: 3 key: z'
-        print app.process_message(default_user, "@ Wikipedia search: limit: summary: Ford sentences: 3 key: z")
+        print 'Query: @ Wikipedia search: term: Ford limit: 3 key: z'
+        print app.process_message(default_user, "@ Wikipedia search: term: Ford limit: 3 key: z")
         print 
         print 
-        print 'Query: @ Wikipedia: search: cars limit: 5 key: z'
-        print app.process_message(default_user, "@ Wikipedia: search: cars limit: 5 key: z")
+        print 'Query: @ Wikipedia summary: term: cars limit: 5 key: z'
+        print app.process_message(default_user, "@ Wikipedia summary: term: cars limit: 5 key: z")
         print 
         print
-        print 'Query: @Yelp search:  longlat: true near: 40.74503998,-73.99879607 category: Pizza key: z' 
-        print app.process_message(default_user, "@Yelp search:  longlat: true near: 40.74503998,-73.99879607 category: Pizza key: z")
+        print 'Query: @Yelp search: limit: 1 longlat: true near: 40.74503998,-73.99879607 category: Pizza key: z' 
+        print app.process_message(default_user, "@Yelp search:  longlat: true near: 40.74503998,-73.99879607 category: Pizza key: z limit: 1")
         print 
         print 
         print 'Query: @Yelp: near: Durham, NC category: bars key: z'        
