@@ -21,7 +21,7 @@ class Yelp(Base):
         key = kwargs["key"]
         if not "near" in kwargs:
             return "Please make the text in the form of yelp search: near: (your location)"
-        keywords = ["distance", "category"]
+        keywords = ["distance", "category", "limit"]
         optional_params = {}
         for keyword in keywords:
             if keyword in kwargs:
