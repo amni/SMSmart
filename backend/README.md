@@ -49,7 +49,7 @@ Response - 'z^1|Head southeast on N Columbia St toward W Franklin St|30 ft^2|Tur
 - summary
 - random (*to be implemented*)
 
-**Parameters: **
+**Parameters:**
 - key (*required*)
 - term
 - limit (*default = 5 for search, default = 3 for summary*)
