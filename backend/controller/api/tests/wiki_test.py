@@ -18,8 +18,6 @@ class TestWikipedia(unittest.TestCase):
         for key, value in terms.iteritems():
             result = wiki.search(key, value)
             self.assertNotEqual(result, None)
-            self.assertTrue(len(result) <= value)
-
 
 if __name__ == "__main__":
     unittest.main()

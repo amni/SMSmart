@@ -3,6 +3,8 @@ from mongoengine import *
 
 class Query(Document):
 	query_id = StringField()
+	api = StringField()
+	request = StringField()
 	response = StringField() 
 
 class User(Document):
