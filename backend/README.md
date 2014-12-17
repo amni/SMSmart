@@ -66,9 +66,9 @@ Response - 'z^Ford Motor Company^Gerald Ford^List of Ford vehicles'
 
 ##### 4) Sending Post Requests
 **Paramaters**
--Body - User Query
--From - User Phone Number 
--Wifi - Include a true boolean
+- Body - User Query
+- From - User Phone Number 
+- Wifi - Include a true boolean
 
 **Response**
 ```
