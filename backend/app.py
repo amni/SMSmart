@@ -69,7 +69,8 @@ def receive_message():
     user.queries.append(user_query)
     user.save() 
     if not wifi_request: 
-        distribute(str(phone_number), output)
+        messages_list = split_into_messages(output)
+        distribute(str(phone_number), messages_list)
     return jsonify(results=response_text_message)
 
 def get_phone_number():
@@ -77,7 +78,8 @@ def get_phone_number():
     numbers.append(from_number)
     return from_number
 
-def distribute(phone_number, output):
+def split_into_messages(output):
+    messages_list = []
     key_position = output.find('^')
     key = output[:key_position]
     output = output[key_position+1:]
@@ -86,18 +88,23 @@ def distribute(phone_number, output):
     msg_number = 1
     temp = remainder/MSG_SEGMENT_LENGTH
     total_msg = temp + 1 if (remainder%MSG_SEGMENT_LENGTH != 0) else temp
-    while remainder > MSG_SEGMENT_LENGTH:
+    while remainder > MSG_SEGMENT_LENGTH: 
         message = output[position:position+MSG_SEGMENT_LENGTH]
         metadata = key + '(' + str(msg_number) + '/' + str(total_msg) + ')' + '*'
         msg_number += 1        
         remainder -= MSG_SEGMENT_LENGTH
         position += MSG_SEGMENT_LENGTH
-        client.messages.create(to=phone_number, from_=get_phone_number(), body=metadata+message)
+        messages_list.append(metadata+message)
     if remainder > 0:
         message = output[position:]
         metadata = key + '(' + str(msg_number) + '/' + str(total_msg) + ')' + '*'
         msg_number += 1   
-        client.messages.create(to=phone_number, from_=get_phone_number(), body=metadata+message)
+        messages_list.append(metadata+message)
+    return messages_list
+
+def distribute(phone_number, messages_list):
+    for message in messages_list:
+        client.messages.create(to=phone_number, from_=get_phone_number(), body=message)
 
 def send_text(message):
     resp = twilio.twiml.Response()
