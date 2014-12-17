@@ -4,8 +4,8 @@ class Base(object):
 	def find_results(self, **kwargs):
 		pass
 
-	def distribute(self, results):
-		pass
+	def split_result(self, results):
+		return results
 
 	def save(self, user, results):
 		new_query = Query(response = results)
