@@ -1,4 +1,4 @@
-lfrom base import Base
+from base import Base
 import api.wrapper.maps_wrapper as maps_wrapper
 from models import User, Query
 

@@ -16,13 +16,13 @@ class Wikipedia(Base):
     def summary(self, user, **kwargs):
         return self.wikipedia_query("summary", Wikipedia.SUMMARY_LIMIT, **kwargs)        
 
-    def wikipedia_query(self, query_type, limit, **kwargs):
+    def wikipedia_query(self, query_type, query_limit, **kwargs):
         try:
             key = kwargs["key"]
             results = ''      
             if "limit" in kwargs:
-                limit = kwargs["limit"]
-            results = getattr(wikipedia_wrapper, query_type)(summary, limit)
+                query_limit = kwargs["limit"]
+            results = getattr(wikipedia_wrapper, query_type)(summary, query_limit)
             results = key + "^" + results
         except:
             results = "Wikipedia Query Error: Please try with more specific query"
