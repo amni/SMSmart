@@ -53,7 +53,9 @@ else:
 def receive_message():
     user_text_message = request.values.get('Body')
     phone_number = request.values.get('From')
+    print request.values
     wifi_request = 'Wifi' in request.values
+    print wifi_request
     user = User.objects(phone_number=phone_number).first()
     if not user:
         user = User(phone_number=phone_number)
@@ -84,7 +86,7 @@ def distribute(phone_number, output):
     msg_number = 1
     temp = remainder/MSG_SEGMENT_LENGTH
     total_msg = temp + 1 if (remainder%MSG_SEGMENT_LENGTH != 0) else temp
-    while remainder > SMS_LENGTH:
+    while remainder > MSG_SEGMENT_LENGTH:
         message = output[position:position+MSG_SEGMENT_LENGTH]
         metadata = key + '(' + str(msg_number) + '/' + str(total_msg) + ')' + '*'
         msg_number += 1        
