@@ -9,11 +9,6 @@ class TestParser(unittest.TestCase):
         new_user = User(phone_number="5734894023")
         new_user.save()
 
-    """def test_yelp_splitting(self):
-        default_user = User.objects(phone_number="5734894023").first()
-        output = app.process_message(default_user, "@ Yelp search:  longlat: true near: 36.0053098,-78.9260807 category: Food key: l")
-        app.distribute("4086934876", output)"""
-
     def test_process_message(self):
         default_user = User.objects(phone_number="5734894023").first()
         print 'Query: @ Wikipedia search: term: Ford limit: 3 key: z'

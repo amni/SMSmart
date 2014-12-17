@@ -1,5 +1,5 @@
 from base import Base
-import api.travel.tripadvisor_wrapper as trip_wrapper
+import api.wrapper.tripadvisor_wrapper as trip_wrapper
 from models import Query, User
 
 class Attractions(Base):

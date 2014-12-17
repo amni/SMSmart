@@ -60,7 +60,6 @@ def receive_message():
 
     response_text_message = process_message(user, user_text_message)
     output = response_text_message
-    print "OUTPUT:" + output
     key_position = output.find('^')
     key = output[:key_position]
 

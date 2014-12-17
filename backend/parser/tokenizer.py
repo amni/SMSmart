@@ -34,17 +34,3 @@ class Tokenizer():
 
 if __name__ == "__main__":
     pass
-    # t = Tokenizer("Yelp: near: Chapel Hill, NC distance: 100")
-    # tokens = t.tokenize("Yelp: near: Chapel Hill, NC distance: 100")
-    # print t.arguments_dict, t.api, t.program
-    # t.tokenize("Maps: from: Chapel Hill, to: Alan")
-    # print t.arguments_dict
-    # t.tokenize("more")
-    # print t.arguments_dict
-
-
-
-
-
-
-

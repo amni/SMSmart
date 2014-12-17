@@ -32,10 +32,10 @@ def get_location(start, typeLoc):
     	return tokens[len(tokens) - 2][:2]
 
 def get_state(start):
-	print get_location(start, 0)
+	return get_location(start, 0)
 
 def get_city(start):
-	print get_location(start, 1)
+	return get_location(start, 1)
 
 def get_distance(start, end):
     response = get_directions(start, end)
@@ -60,6 +60,5 @@ def query(startLoc, endLoc):
 		cur_insn = remove_tags(insn['html_instructions'])
 		cur_dist = insn['distance']['text']
 		output += str(counter) + ' | ' + cur_insn + " | " + cur_dist + token
-		#print cur_insn + " | " + cur_dist
 	return output
 

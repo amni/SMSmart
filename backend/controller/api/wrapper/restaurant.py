@@ -9,8 +9,8 @@ class Restaurant:
         self.isClosed = isClosed 
 
     def to_string(self):
-        # return str(self.counter) + ' | ' + self.name + ' | ' + self.rating + ' | ' + self.isClosed
         return self.to_string_verbose()
+        
     def to_string_verbose(self):
         return str(self.counter) + '|' + self.name + '|' +  self.location + '|' + self.phone + '|' + self.rating + '|' + self.isClosed        
 

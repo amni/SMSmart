@@ -1,5 +1,5 @@
-from base import Base
-import api.travel.maps_wrapper as maps_wrapper
+lfrom base import Base
+import api.wrapper.maps_wrapper as maps_wrapper
 from models import User, Query
 
 class Maps(Base):
@@ -28,11 +28,4 @@ class Maps(Base):
             result = key + "^" + output
             return result[:-1]
         except:
-            return "Couldn't find a route please try with more specific locations"
-
-    def help(self, user, **kwargs):
-        return """
-        Here is an example text!\n
-        To get directions from Mountain View to San Francisco, text - maps: from: Mountain View, CA to: San Francisco, CA
-        Don't forget to use colons!
-        """
+            return "Maps Search Error: Couldn't find a route please try with more specific locations"

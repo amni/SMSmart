@@ -1,8 +1,9 @@
 from base import Base
-import api.info.wikipedia_wrapper as wikipedia_wrapper
-from models import User, Query
+import api.wrapper.wikipedia_wrapper as wikipedia_wrapper
+from models import User
 
 class Wikipedia(Base):
+
     SEARCH_LIMIT = 5
     SUMMARY_LIMIT = 3
 
@@ -10,39 +11,19 @@ class Wikipedia(Base):
         return self.search(user, **kwargs)
 
     def search(self, user, **kwargs):
-        key = kwargs["key"]
-        results = ''        
-        term = kwargs["term"]
-        if "limit" in kwargs:
-            limit = kwargs["limit"]
-        else:
-            limit = Wikipedia.SEARCH_LIMIT
-        result = wikipedia_wrapper.search(term, limit)
-        results = "^".join(result)
-        results = key + "^" + results
-        #self.store_results(user, results) #for the shared feature 
-        return results
+        return self.wikipedia_query("search", Wikipedia.SEARCH_LIMIT, **kwargs)        
 
     def summary(self, user, **kwargs):
-        key = kwargs["key"]
-        results = ''        
-        summary = kwargs["term"]
-        if "limit" in kwargs:
-            sentences = kwargs["limit"]
-        else:
-            sentences = Wikipedia.SUMMARY_LIMIT
-        results = wikipedia_wrapper.summary(summary, sentences)
-        results = key + "^" + results
-        #self.store_results(user, results) #for the shared feature 
-        return results        
+        return self.wikipedia_query("summary", Wikipedia.SUMMARY_LIMIT, **kwargs)        
 
-    def store_results(self, user, results):
-        for result in results:
-            stored_result = Variable.objects(keyword = str(result.counter), program = "wikipedia", user = user).first()
-            if stored_result:
-                stored_result.value = result.to_string_verbose()
-                stored_result.save()
-            else:
-                result = Variable(keyword = str(result.counter), value = result.to_string_verbose(), program = "yelp", user = user)
-                result.save()
-
+    def wikipedia_query(self, query_type, limit, **kwargs):
+        try:
+            key = kwargs["key"]
+            results = ''      
+            if "limit" in kwargs:
+                limit = kwargs["limit"]
+            results = getattr(wikipedia_wrapper, query_type)(summary, limit)
+            results = key + "^" + results
+        except:
+            results = "Wikipedia Query Error: Please try with more specific query"
+        return results   
