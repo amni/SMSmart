@@ -20,9 +20,10 @@ class Wikipedia(Base):
         try:
             key = kwargs["key"]
             results = ''      
+            term = kwargs["term"]  
             if "limit" in kwargs:
                 query_limit = kwargs["limit"]
-            results = getattr(wikipedia_wrapper, query_type)(summary, query_limit)
+            results = getattr(wikipedia_wrapper, query_type)(term, query_limit)
             results = key + "^" + results
         except:
             results = "Wikipedia Query Error: Please try with more specific query"
