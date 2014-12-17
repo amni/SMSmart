@@ -1,4 +1,4 @@
-from flask import Flask, request
+from flask import Flask, request, jsonify
 
 from mongoengine import *
 from parser.tokenizer import Tokenizer 
@@ -53,23 +53,22 @@ else:
 def receive_message():
     user_text_message = request.values.get('Body')
     phone_number = request.values.get('From')
+    wifi_request = 'Wifi' in request.values
     user = User.objects(phone_number=phone_number).first()
     if not user:
         user = User(phone_number=phone_number)
         user.save()
-
     response_text_message = process_message(user, user_text_message)
     output = response_text_message
     key_position = output.find('^')
     key = output[:key_position]
-
     user_query = Query(query_id = key, response = response_text_message)
     user_query.save()
     user.queries.append(user_query)
     user.save() 
-
-    distribute(str(phone_number), output)
-    return ''
+    if not wifi_request: 
+        distribute(str(phone_number), output)
+    return jsonify(results=response_text_message)
 
 def get_phone_number():
     from_number = numbers.pop(0)
