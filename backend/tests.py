@@ -14,12 +14,27 @@ class TestDistribute(unittest.TestCase):
         app.distribute("+14086934876", "The Ford Motor Company (colloquially referred to as Ford) is an American multinational automaker headquartered in Dearborn, Michigan, a suburb of Detroit. It was founded by Henry Ford and incorporated on June 16, 1903. The company sells automobiles and commercial vehicles under the Ford brand and most luxury cars under the Lincoln brand. Ford also owns Brazilian SUV manufacturer, Troller, and Australian performance car manufacturer FPV.")
 
 
+class TestUnicode(unittest.TestCase):
+    def setup(self):
+        self.app = app.test_client(use_cookies=True)
+        new_user = User(phone_number="5734894023")
+        new_user.save()    
+
+    def test_unicode(self):
+        default_user = User.objects(phone_number="5734894023").first()
+        print 'Query: @ wikipedia summary : key: ib term : Gerald Ford limit : 3'
+        print app.process_message(default_user, "@ wikipedia summary : key: ib term : Gerald Ford limit : 3")
+        print 
+        print 
+        print 'Query: @ wikipedia summary : key: ob term : Coursera  limit : 3'
+        print app.process_message(default_user, "@ wikipedia summary : key: ob term : Coursera  limit : 3")        
+
 class TestParser(unittest.TestCase):
     def setup(self):
         self.app = app.test_client(use_cookies=True)
         new_user = User(phone_number="5734894023")
         new_user.save()
-    
+
     def test_process_message(self):
         default_user = User.objects(phone_number="5734894023").first()
         print 'Query: @ Wikipedia search: term: Ford limit: 3 key: z'
@@ -58,6 +73,7 @@ class TestParser(unittest.TestCase):
         pass
     
 distribute = TestDistribute
+unicodeTest = TestUnicode
 
 if __name__ == "__main__":
     unittest.main()

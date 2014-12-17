@@ -1,4 +1,4 @@
-from flask import Flask, request, jsonify
+from flask import Flask, request, jsonify, render_template
 
 from mongoengine import *
 from parser.tokenizer import Tokenizer 
@@ -53,9 +53,7 @@ else:
 def receive_message():
     user_text_message = request.values.get('Body')
     phone_number = request.values.get('From')
-    print request.values
     wifi_request = 'Wifi' in request.values
-    print wifi_request
     user = User.objects(phone_number=phone_number).first()
     if not user:
         user = User(phone_number=phone_number)
@@ -114,7 +112,7 @@ def send_text(message):
 def process_message(user, user_text_message):
     tokenizer = Tokenizer(user_text_message)
     api = create_subprogram(tokenizer.api)
-    result = (getattr(api, tokenizer.program)(user, **tokenizer.arguments_dict)).encode('utf-8')
+    result = (getattr(api, tokenizer.program)(user, **tokenizer.arguments_dict)).encode('utf-8', 'ignore')
     return result
     
 def create_subprogram(type):
@@ -124,6 +122,7 @@ def create_subprogram(type):
     if type == "attractions": return Attractions()
     assert 0, "Invalid string " + type 
     return None 
+
 
 if __name__ == '__main__':
     app.run(debug=True) 
