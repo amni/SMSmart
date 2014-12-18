@@ -18,7 +18,6 @@ account_sid = "AC171ca34ca45bf15bb3f369b1ae5e9a9f"
 auth_token = "1d3ef112c1407035c6c6f5e5e17f75ad"
 client = TwilioRestClient(account_sid, auth_token)
 numbers = ["+15738182146", "+19738280148", "+16503534855", "+18704740576", "+18702802312"]
-SMS_LENGTH = 160
 MSG_SEGMENT_LENGTH = 150
 #for heroku
 if 'PORT' in os.environ: 
@@ -60,17 +59,16 @@ def receive_message():
     if not user:
         user = User(phone_number=phone_number)
         user.save()
-    response_text_message = process_message(user, user_text_message)
-    output = response_text_message
-    key_position = output.find('^')
-    key = output[:key_position]
-    user_query = Query(query_id = key, response = response_text_message)
+    results = process_message(user, user_text_message)
+    messages_list = results.get("messages")
+    key = results.get("key", "")
+    user_query = Query(query_id = key)
     user_query.save()
     user.queries.append(user_query)
     user.save() 
     if not wifi_request: 
-        messages_list = split_into_messages(output)
-        distribute(str(phone_number), messages_list)
+        distribute(str(phone_number), messages_list, key)
+        return ""
     return jsonify(results=response_text_message)
 
 def get_phone_number():
@@ -102,8 +100,10 @@ def split_into_messages(output):
         messages_list.append(metadata+message)
     return messages_list
 
-def distribute(phone_number, messages_list):
+def distribute(phone_number, messages_list, key):
     for message in messages_list:
+        message = "".join([key, message])
+        message.encode('utf-8', 'ignore')
         client.messages.create(to=phone_number, from_=get_phone_number(), body=message)
 
 def send_text(message):
@@ -114,7 +114,7 @@ def send_text(message):
 def process_message(user, user_text_message):
     tokenizer = Tokenizer(user_text_message)
     api = create_subprogram(tokenizer.api)
-    result = (getattr(api, tokenizer.program)(user, **tokenizer.arguments_dict)).encode('utf-8', 'ignore')
+    result = getattr(api, tokenizer.program)(user, **tokenizer.arguments_dict)
     return result
     
 def create_subprogram(type):
