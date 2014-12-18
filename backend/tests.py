@@ -11,7 +11,7 @@ class TestDistribute(unittest.TestCase):
         new_user.save()    
 
     def test_distribute(self):
-        app.distribute("+14086934876", "The Ford Motor Company (colloquially referred to as Ford) is an American multinational automaker headquartered in Dearborn, Michigan, a suburb of Detroit. It was founded by Henry Ford and incorporated on June 16, 1903. The company sells automobiles and commercial vehicles under the Ford brand and most luxury cars under the Lincoln brand. Ford also owns Brazilian SUV manufacturer, Troller, and Australian performance car manufacturer FPV.")
+        pass
 
 
 class TestUnicode(unittest.TestCase):
@@ -22,8 +22,8 @@ class TestUnicode(unittest.TestCase):
 
     def test_unicode(self):
         default_user = User.objects(phone_number="5734894023").first()
-        print 'Query: @ wikipedia summary : key: ib term : Gerald Ford limit : 3'
-        print app.process_message(default_user, "@ wikipedia summary : key: ib term : Gerald Ford limit : 3")
+        print 'Query: @ maps directions : key: d  to: Food  from: 37.2531484,-121.9049462 mode: driving'
+        print app.process_message(default_user, "@ maps directions : key: d  to: Food  from: 37.2531484,-121.9049462 mode: driving")
         print 
         print 
         print 'Query: @ wikipedia summary : key: ob term : Coursera  limit : 3'
