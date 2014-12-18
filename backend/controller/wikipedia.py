@@ -27,4 +27,4 @@ class Wikipedia(Base):
             results = key + "^" + results
         except:
             results = 'Wikipedia Error'
-        return results   
+        return self.split_result(results)   

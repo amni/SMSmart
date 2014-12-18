@@ -8,3 +8,4 @@ class Onboard(Base):
     def default(self, user, **kwargs):
         results = [DEFAULT_ONBOARD_STRING for x in range(5)]
         return results 
+        
