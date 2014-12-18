@@ -2,8 +2,6 @@ import app
 import unittest
 from models import User, Query
 
-
-
 class TestDistribute(unittest.TestCase):
     def setup(self):
         self.app = app.test_client(use_cookies=True)
@@ -13,6 +11,32 @@ class TestDistribute(unittest.TestCase):
     def test_distribute(self):
         pass
 
+class TestWikipedia(unittest.TestCase):
+    def setup(self):
+        self.app = app.test_client(use_cookies=True)
+        new_user = User(phone_number="5734894023")
+        new_user.save()    
+
+    def test_wiki(self):
+        default_user = User.objects(phone_number="5734894023").first()
+
+class TestYelp(unittest.TestCase):
+    def setup(self):
+        self.app = app.test_client(use_cookies=True)
+        new_user = User(phone_number="5734894023")
+        new_user.save()    
+
+    def test_yelp(self):
+        default_user = User.objects(phone_number="5734894023").first()
+
+class TestMaps(unittest.TestCase):
+    def setup(self):
+        self.app = app.test_client(use_cookies=True)
+        new_user = User(phone_number="5734894023")
+        new_user.save()    
+
+    def test_maps(self):
+        default_user = User.objects(phone_number="5734894023").first()
 
 class TestUnicode(unittest.TestCase):
     def setup(self):
@@ -29,13 +53,13 @@ class TestUnicode(unittest.TestCase):
         print 'Query: @ wikipedia summary : key: ob term : Coursera  limit : 3'
         print app.process_message(default_user, "@ wikipedia summary : key: ob term : Coursera  limit : 3")        
 
-class TestParser(unittest.TestCase):
+class TestMain(unittest.TestCase):
     def setup(self):
         self.app = app.test_client(use_cookies=True)
         new_user = User(phone_number="5734894023")
         new_user.save()
 
-    def test_process_message(self):
+    def test_main(self):
         default_user = User.objects(phone_number="5734894023").first()
         print 'Query: @ Wikipedia search: term: Ford limit: 3 key: z'
         print app.process_message(default_user, "@ Wikipedia search: term: Ford limit: 3 key: z")
@@ -44,8 +68,6 @@ class TestParser(unittest.TestCase):
         print 'Query: @ Wikipedia summary: term: cars limit: 5 key: z'
         print app.process_message(default_user, "@ Wikipedia summary: term: cars limit: 5 key: z")
         print 
-        print
-        print
         print
         print 'Query: @Yelp search: limit: 1 longlat: true near: 40.74503998,-73.99879607 category: Pizza key: z' 
         print app.process_message(default_user, "@Yelp search:  longlat: true near: 40.74503998,-73.99879607 category: Pizza key: z limit: 1")
@@ -64,16 +86,6 @@ class TestParser(unittest.TestCase):
         print 
         print 
 
-    def test_parse_module(self):
-        """Checks that the parser parses the first word correctly"""
-        pass
-
-    def test_distribute(self):
-        """Checks that the parser parses handles distributed texting properly"""
-        pass
-    
-distribute = TestDistribute
-unicodeTest = TestUnicode
 
 if __name__ == "__main__":
     unittest.main()
