@@ -37,6 +37,8 @@ class TestMaps(unittest.TestCase):
 
     def test_maps(self):
         default_user = User.objects(phone_number="5734894023").first()
+        print 'Query: @ maps directions : key: d  to: Food  from: 37.2531484,-121.9049462 mode: driving'
+        print app.process_message(default_user, "@ maps directions : key: e  to: Castro Street, Mountain View, CA  from: 37.253135,-121.904945 mode: driving")
 
 class TestUnicode(unittest.TestCase):
     def setup(self):
