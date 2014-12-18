@@ -46,8 +46,8 @@ class TestUnicode(unittest.TestCase):
 
     def test_unicode(self):
         default_user = User.objects(phone_number="5734894023").first()
-        print 'Query: @ wikipedia summary : key: ib term : Gerald Ford limit : 3'
-        print app.process_message(default_user, "@ wikipedia summary : key: ib term : Gerald Ford limit : 3")
+        print 'Query: @ maps directions : key: d  to: Food  from: 37.2531484,-121.9049462 mode: driving'
+        print app.process_message(default_user, "@ maps directions : key: d  to: Food  from: 37.2531484,-121.9049462 mode: driving")
         print 
         print 
         print 'Query: @ wikipedia summary : key: ob term : Coursera  limit : 3'
