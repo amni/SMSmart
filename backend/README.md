@@ -11,7 +11,7 @@
 - category
 - limit
 
-**Examples: ** 
+**Examples:** 
 ```
 Text - '@Yelp search:  longlat: true near: 40.74503998,-73.99879607 category: Pizza key: z limit: 1'
 Response - '0z^1|NY Pizza Suprema (Pizza)|413 8th Ave, New York, NY 10001|(212) 594-8939|4.0 stars|open'
@@ -65,12 +65,12 @@ Response - '0z^Ford Motor Company^Gerald Ford^List of Ford vehicles'
 ```
 
 ##### 4) Sending Post Requests
-**Parameters**
+**Parameters:**
 - Body - User Query
 - From - User Phone Number 
 - Wifi - Include a true boolean
 
-**Response**
+**Response:**
 ```
 {"results": "0a^Cat^The domestic cat (Felis catus or Felis silvestris catus) is a small, usually furry, domesticated, and carnivorous mammal. It is often called a housecat when kept as an indoor pet, or simply a cat when there is no need to distinguish it from other felids and felines. Cats are often valued by humans for companionship, and their ability to hunt vermin and household pests."}
 ```
