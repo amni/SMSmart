@@ -97,14 +97,15 @@ def query_api_geo(term, geo, radius, verbose, index, search_limit):
     response = search_geo(term, geo, search_limit, radius)
     businesses = response.get('businesses')
     if not businesses:
-        return
+        return '1'
     return getLocations(businesses, geo, verbose, index);
 
 def query_api(term, location, radius, verbose, index, search_limit):
     response = search(term, location, search_limit, radius)
+    pprint.pprint(response, indent=2)    
     businesses = response.get('businesses')
     if not businesses:
-        return
+        return '1'
     return getLocations(businesses, location, verbose, index);
 
 def formatPhone(phone):
@@ -112,28 +113,6 @@ def formatPhone(phone):
     begin = phone[3:6]
     end = phone[-4:]
     return areaCode + begin + '-' + end
-
-def buildResponse(response, counter, location, verbose):
-    name = response['name']
-    if 'categories' in response:
-        name +=  ' (' + response['categories'][0][0]+ ')' 
-    if 'location' in response:
-        endLocation = response['location']['display_address'][0] + ', ' + response['location']['city'] + ', ' + response['location']['state_code'] + ' ' + response['location']['postal_code']
-    else:
-        endLocation = 'location unavailable'
-    if 'phone' in response:
-        phone = formatPhone(str(response['phone'])) 
-    else:
-        phone = 'phone unavailabe'
-    if 'rating' in response:
-        rating = str(response['rating']) + " stars" 
-    else:
-        rating = 'rating unavailable'
-    status = 'open' if (str(response['is_closed']) == 'False') else 'closed'
-    isClosed = status 
-    ret = Restaurant(counter, name, endLocation, phone, rating, isClosed)
-    return ret
-
 
 def getLocations(businesses, location, verbose, index):
     output = []
