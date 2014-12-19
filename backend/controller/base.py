@@ -2,6 +2,7 @@ from models import User
 
 class Base(object):
     OK = '0'
+    EMPTY_MSG = ' '
 
     def find_results(self, **kwargs):
         pass
