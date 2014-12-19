@@ -13,11 +13,9 @@ class Maps(Base):
         if "mode" in kwargs:
             response = maps_wrapper.get_directions(kwargs["from"], kwargs["to"], kwargs["mode"])
         else:
-            response = maps_wrapper.get_directions(kwargs["from"], kwargs["to"])
-        
-        print response
+            response = maps_wrapper.get_directions(kwargs["from"], kwargs["to"])        
         if self.is_error(response):
-            result = key+"^"+response
+            result = response+key+"^"+self.EMPTY_MSG
             return self.split_result(result)
 
         instructionsList = response[0]['legs'][0]['steps']
@@ -28,5 +26,5 @@ class Maps(Base):
             cur_insn = maps_wrapper.remove_tags(insn['html_instructions'])
             cur_dist = insn['distance']['text']
             output += str(counter) + '|' + cur_insn + '|' + cur_dist + '^'
-        result = (key + self.OK + "^" + output)[:-1]    # do this to remove the last excess ^
+        result = (self.OK + key + "^" + output)[:-1]    # do this to remove the last excess ^
         return self.split_result(result)
