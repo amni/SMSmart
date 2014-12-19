@@ -50,6 +50,8 @@ class TestYelp(unittest.TestCase):
 
     def test_yelp(self):
         default_user = User.objects(phone_number="5734894023").first()
+        print 'Query: @ yelp search : key: c longlat: true near: 37.2530787,-121.9049539 category: burgers' 
+        print app.process_message(default_user, "@ yelp search : key: c longlat: true near: 37.2530787,-121.9049539 category: burgers")
 
     def test_yelp_error(self):
         default_user = User.objects(phone_number="5734894023").first()

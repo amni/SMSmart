@@ -26,6 +26,6 @@ class Yelp(Base):
             result = query_results + key + "^" + self.EMPTY_MSG
             return self.split_result(result)
 
-        results = SELF.OK + key + "^" + "^".join([result.to_android_string() for result in query_results])
+        results = self.OK + key + "^" + "^".join([result.to_android_string() for result in query_results])
         return self.split_result(results)
 
