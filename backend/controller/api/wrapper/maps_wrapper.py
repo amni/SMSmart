@@ -1,5 +1,6 @@
 from gmaps import Geocoding
 from gmaps import Directions
+import gmaps
 import pprint
 import re
 
@@ -17,8 +18,13 @@ def remove_tags(text):
 
 # supported modes include driving, walking, bicycling, transit 
 def get_directions(start, end, transport="driving"):
-    direct = Directions()
-    response = direct.directions(start, end, mode=transport)
+    try:
+        direct = Directions()
+        response = direct.directions(start, end, mode=transport)
+    except gmaps.errors.GmapException as ex:
+        response = '1'
+    except:
+        response = '2'
     return response
     
 # 1 for City, 0 for State 
@@ -27,38 +33,25 @@ def get_location(start, typeLoc):
     address = response[0]['legs'][0]['start_address']
     tokens = address.split(', ')
     if typeLoc == 1:
-    	return tokens[len(tokens) - 3]
+        return tokens[len(tokens) - 3]
     else:
-    	return tokens[len(tokens) - 2][:2]
+        return tokens[len(tokens) - 2][:2]
 
 def get_state(start):
-	return get_location(start, 0)
+    return get_location(start, 0)
 
 def get_city(start):
-	return get_location(start, 1)
+    return get_location(start, 1)
 
 def get_distance(start, end):
     response = get_directions(start, end)
     return str(response[0]['legs'][0]['distance']['text'])
 
 def get_geocode(location):
-	response = geo.geocode(location)
-	return str(response[0]['geometry']['location']['lat']) + ',' + str(response[0]['geometry']['location']['lng'])
+    response = geo.geocode(location)
+    return str(response[0]['geometry']['location']['lat']) + ',' + str(response[0]['geometry']['location']['lng'])
 
 def get_location_string(lat, lng):
-	location = geo.reverse(lat,lng);
-	return location[0]['formatted_address'] 
-
-# This method is deprecated 
-def query(startLoc, endLoc):
-	response = get_directions(startLoc, endLoc)
-	instructionsList = response[0]['legs'][0]['steps']
-	output = 'Directions to ' + endLoc + token
-	counter = 0
-	for insn in instructionsList:
-		counter += 1
-		cur_insn = remove_tags(insn['html_instructions'])
-		cur_dist = insn['distance']['text']
-		output += str(counter) + ' | ' + cur_insn + " | " + cur_dist + token
-	return output
+    location = geo.reverse(lat,lng);
+    return location[0]['formatted_address'] 
 
