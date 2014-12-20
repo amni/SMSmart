@@ -5,6 +5,7 @@ class Tokenizer():
         self.tokenize(query)
 
     def tokenize(self, query):
+        query = query.strip()
         self.format = "default"
         if query[0] == "@":
             self.format = "android"

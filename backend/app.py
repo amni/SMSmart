@@ -68,7 +68,6 @@ def receive_message():
         handle(user, user_text_message[start_pos+1:], phone_number)
     else:
         save(user, phone_number, user_text_message)
-    print "got here" 
     return ""
 
 def get_phone_number():
@@ -81,7 +80,6 @@ def single_text(user_text_message):
     end_position = user_text_message.find(')')
     header = user_text_message[start_position:end_position+1]
     compare = "".join(header.split())
-    print compare
     if (compare == SINGLE_TEXT_MATCH):
         return True
     else:
@@ -117,7 +115,6 @@ def construct_message(messages):
     return output
 
 def handle(user, user_text_message, phone_number):
-    print user_text_message
     results = process_message(user, user_text_message)
     messages_list = results.get("messages")
     key = results.get("key", "")
@@ -139,10 +136,8 @@ def send_text(message):
     return resp
 
 def process_message(user, user_text_message):
-    print "process message: " + user_text_message
     tokenizer = Tokenizer(user_text_message)
     api = create_subprogram(tokenizer.api)
-    print api
     result = getattr(api, tokenizer.program)(user, **tokenizer.arguments_dict)
     return result
     
@@ -151,9 +146,8 @@ def create_subprogram(type):
     if type == "maps": return Maps()
     if type == "wikipedia": return Wikipedia()
     if type == "attractions": return Attractions()
-    #assert 0, "Invalid string " + type 
+    assert 0, "Invalid string " + type 
     return None 
-
 
 if __name__ == '__main__':
     app.run(debug=True) 
