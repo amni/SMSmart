@@ -19,6 +19,9 @@ auth_token = "1d3ef112c1407035c6c6f5e5e17f75ad"
 client = TwilioRestClient(account_sid, auth_token)
 numbers = ["+15738182146", "+19738280148", "+16503534855", "+18704740576", "+18702802312"]
 MSG_SEGMENT_LENGTH = 150
+multi_message_inputs = {}
+SINGLE_TEXT_MATCH = '(1/1)'
+
 #for heroku
 if 'PORT' in os.environ: 
     print os.environ
@@ -56,47 +59,73 @@ def receive_message():
     user = User.objects(phone_number=phone_number).first()
     if not user:
         user = User(phone_number=phone_number)
-        user.save()
-    results = process_message(user, user_text_message)
-    messages_list = results.get("messages")
-    key = results.get("key", "")
-    user_query = Query(query_id = key)
-    user_query.save()
-    user.queries.append(user_query)
-    user.save() 
-    if not wifi_request: 
-        distribute(str(phone_number), messages_list, key)
-        return ""
-    return jsonify(results=response_text_message)
+        user.save()    
+    if wifi_request:
+        return jsonify(results=user_text_message)
+
+    if single_text(user_text_message):
+        start_pos = user_text_message.find(')')
+        handle(user, user_text_message[start_pos+1:], phone_number)
+    else:
+        save(user, phone_number, user_text_message)
+    print "got here" 
+    return ""
 
 def get_phone_number():
     from_number = numbers.pop(0)
     numbers.append(from_number)
     return from_number
 
-def split_into_messages(output):
-    messages_list = []
-    key_position = output.find('^')
-    key = output[:key_position]
-    output = output[key_position+1:]
-    position = 0
-    remainder = len(output)
-    msg_number = 1
-    temp = remainder/MSG_SEGMENT_LENGTH
-    total_msg = temp + 1 if (remainder%MSG_SEGMENT_LENGTH != 0) else temp
-    while remainder > MSG_SEGMENT_LENGTH:
-        message = output[position:position+MSG_SEGMENT_LENGTH]
-        metadata = key + '(' + str(msg_number) + '/' + str(total_msg) + ')' + '*'
-        msg_number += 1        
-        remainder -= MSG_SEGMENT_LENGTH
-        position += MSG_SEGMENT_LENGTH
-        messages_list.append(metadata+message)
-    if remainder > 0:
-        message = output[position:]
-        metadata = key + '(' + str(msg_number) + '/' + str(total_msg) + ')' + '*'
-        msg_number += 1   
-        messages_list.append(metadata+message)
-    return messages_list
+def single_text(user_text_message):
+    start_position = user_text_message.find('(')
+    end_position = user_text_message.find(')')
+    header = user_text_message[start_position:end_position+1]
+    compare = "".join(header.split())
+    print compare
+    if (compare == SINGLE_TEXT_MATCH):
+        return True
+    else:
+        return False
+
+def save(user, phone_number, user_text_message):
+    delimiter_position = user_text_message.find('(')
+    message_key = user_text_message[:delimiter_position]
+    key = message_key+phone_number
+    start_num_messages = user_text_message.find('/')
+    end_num_messages = user_text_message.find(')')
+    num_messages = user_text_message[start_num_messages+1:end_num_messages]
+    messages = list()
+    if key in multi_message_inputs:
+        messages = multi_message_inputs[key]
+        messages.append(user_text_message)
+        multi_message_inputs[key] = messages
+    else:
+        messages.append(user_text_message)
+        multi_message_inputs[key] = messages
+    if len(messages) == int(num_messages):
+        handle(user, construct_message(messages), phone_number)
+        del multi_message_inputs[key]
+
+def construct_message(messages):
+    sorted_messages = {}
+    for msg in messages:
+        index = int(msg[msg.find('(')+1:msg.find('/')])
+        sorted_messages[index] = msg[msg.find(')')+1:]
+    output = ''
+    for key in sorted(sorted_messages):
+        output += sorted_messages[key]
+    return output
+
+def handle(user, user_text_message, phone_number):
+    print user_text_message
+    results = process_message(user, user_text_message)
+    messages_list = results.get("messages")
+    key = results.get("key", "")
+    user_query = Query(query_id = key, response = user_text_message)
+    user_query.save()
+    user.queries.append(user_query)
+    user.save() 
+    distribute(str(phone_number), messages_list, key)
 
 def distribute(phone_number, messages_list, key):
     for message in messages_list:
@@ -110,8 +139,10 @@ def send_text(message):
     return resp
 
 def process_message(user, user_text_message):
+    print "process message: " + user_text_message
     tokenizer = Tokenizer(user_text_message)
     api = create_subprogram(tokenizer.api)
+    print api
     result = getattr(api, tokenizer.program)(user, **tokenizer.arguments_dict)
     return result
     
@@ -120,7 +151,7 @@ def create_subprogram(type):
     if type == "maps": return Maps()
     if type == "wikipedia": return Wikipedia()
     if type == "attractions": return Attractions()
-    assert 0, "Invalid string " + type 
+    #assert 0, "Invalid string " + type 
     return None 
 
 
