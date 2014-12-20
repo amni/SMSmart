@@ -11,7 +11,9 @@ To run the following project, you must first:
 - 2. In the backend directory run, pip install -r requirements.txt
 - 3. In the backend directory run python app.py
 
-To send a text message to our server, please text **973-828-0148**. 
+##### Phone Numbers
+- Production Server: **573-818-2146**
+- Testing Server: **973-828-0148** 
 
 #####Technology Stack
 Currently, we are using the following:
