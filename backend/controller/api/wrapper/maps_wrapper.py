@@ -8,9 +8,6 @@ direct = Directions()
 geo = Geocoding()
 
 TAG_RE = re.compile(r'<[^>]+>')
-startLoc = '2121 S. El Camino Real, San Mateo CA'
-endLoc = '820 E El Camino Real, Mountain View, CA'
-DEFAULT = 'Hollingsworth Drive, Mountain View CA'
 token = '\n'
 
 def remove_tags(text):

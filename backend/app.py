@@ -53,6 +53,8 @@ else:
 
 @app.route('/', methods=["GET", "POST"])
 def receive_message():
+    print "Multi message inputs: --- "
+    print multi_message_inputs
     user_text_message = request.values.get('Body')
     phone_number = request.values.get('From')
     wifi_request = 'Wifi' in request.values
