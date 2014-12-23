@@ -3,6 +3,7 @@ import api.wrapper.maps_wrapper as maps_wrapper
 from models import User, Query
 
 class Maps(Base):
+
     def default(self, user, **kwargs):
         return self.directions(user, **kwargs)
 
@@ -23,7 +24,8 @@ class Maps(Base):
         counter = 0
         for insn in instructionsList:
             counter += 1
-            cur_insn = maps_wrapper.remove_tags(insn['html_instructions'])
+            html_insn = insn['html_instructions'].replace('Destination', ' - Destination')
+            cur_insn = maps_wrapper.remove_tags(html_insn)
             cur_dist = insn['distance']['text']
             output += str(counter) + '|' + cur_insn + '|' + cur_dist + '^'
         result = (self.OK + key + "^" + output)[:-1]    # do this to remove the last excess ^

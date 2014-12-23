@@ -70,6 +70,11 @@ class TestMaps(unittest.TestCase):
         print 'Query: @ maps directions : key: d  to: Food  from: 37.2531484,-121.9049462 mode: driving'
         print app.process_message(default_user, "@ maps directions : key: e  to: Castro Street, Mountain View, CA  from: 37.253135,-121.904945 mode: driving")
 
+    def test_maps_missing_space(self):
+        default_user = User.objects(phone_number="5734894023").first()
+        print 'Query: @ maps directions : key: b to: 2001 W Worley St, Columbia, MO 65203 from: 38.94685757,-92.39766959 mode: driving'
+        print app.process_message(default_user, "@ maps directions : key: b to: 2001 W Worley St, Columbia, MO 65203 from: 38.94685757,-92.39766959 mode: driving")
+
     def test_maps_error(self):
         default_user = User.objects(phone_number="5734894023").first()
         print 'Query: @ maps directions : key: d  to: fdsfs231  from: fdsf13 mode: driving'
