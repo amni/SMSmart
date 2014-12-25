@@ -4,6 +4,7 @@ from mongoengine import *
 from parser.tokenizer import Tokenizer 
 from controller.yelp import Yelp
 from controller.maps import Maps
+from controller.onboard import Onboard
 from controller.attractions import Attractions
 from controller.default import Default
 import twilio.twiml
@@ -96,6 +97,7 @@ def create_subprogram(type):
     if type == "maps": return Maps()
     if type == "wikipedia": return Wikipedia()
     if type == "attractions": return Attractions()
+    if type == "onboard": return Onboard()
     assert 0, "Invalid string " + type 
     return None 
 

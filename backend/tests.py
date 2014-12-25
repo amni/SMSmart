@@ -11,6 +11,17 @@ class TestDistribute(unittest.TestCase):
     def test_distribute(self):
         pass
 
+
+class TestOnboard(unittest.TestCase):
+    def setup(self):
+        self.app = app.test_client(use_cookies=True)
+        new_user = User(phone_number="5734894023")
+        new_user.save()    
+
+    def test_onboard(self):
+        default_user = User.objects(phone_number="5734894023").first()
+        print app.process_message(default_user, "@Onboard")
+
 class TestWikipedia(unittest.TestCase):
     def setup(self):
         self.app = app.test_client(use_cookies=True)
