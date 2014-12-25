@@ -1,5 +1,15 @@
 # SMSmart Text Messaging Documentation
 
+##### 0) Onboard
+Client generated input request for Onboard is: ```@Onboard```. Server will send texts containing our custom response to the client's phone number from each of SMSmart's phone numbers (currently there are 5). 
+
+**Examples:** 
+```
+Text - '@Onboard'
+Response - 'Welcome to SMSmart. Please blacklist this number for the best experience'
+```
+
+
 ##### 1) Yelp  
 **Programs:** 
 - search (*default*)
@@ -75,7 +85,7 @@ Response - '0z^Ford Motor Company^Gerald Ford^List of Ford vehicles'
 {"results": "0a^Cat^The domestic cat (Felis catus or Felis silvestris catus) is a small, usually furry, domesticated, and carnivorous mammal. It is often called a housecat when kept as an indoor pet, or simply a cat when there is no need to distinguish it from other felids and felines. Cats are often valued by humans for companionship, and their ability to hunt vermin and household pests."}
 ```
 
-### Version 0.2 
-*last updated 12/17/14*
+### Version 0.3 
+*last updated 12/24/14*
 
 

@@ -6,5 +6,6 @@ class Onboard(Base):
 
     def default(self, user, **kwargs):
         results = [self.DEFAULT_ONBOARD_STRING for x in range(5)]
-        return results 
+        return {"messages":results, "key": ''}
+
         
