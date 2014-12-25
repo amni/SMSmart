@@ -74,30 +74,6 @@ def get_phone_number():
     numbers.append(from_number)
     return from_number
 
-def split_into_messages(output):
-    messages_list = []
-    key_position = output.find('^')
-    key = output[:key_position]
-    output = output[key_position+1:]
-    position = 0
-    remainder = len(output)
-    msg_number = 1
-    temp = remainder/MSG_SEGMENT_LENGTH
-    total_msg = temp + 1 if (remainder%MSG_SEGMENT_LENGTH != 0) else temp
-    while remainder > MSG_SEGMENT_LENGTH:
-        message = output[position:position+MSG_SEGMENT_LENGTH]
-        metadata = key + '(' + str(msg_number) + '/' + str(total_msg) + ')' + '*'
-        msg_number += 1        
-        remainder -= MSG_SEGMENT_LENGTH
-        position += MSG_SEGMENT_LENGTH
-        messages_list.append(metadata+message)
-    if remainder > 0:
-        message = output[position:]
-        metadata = key + '(' + str(msg_number) + '/' + str(total_msg) + ')' + '*'
-        msg_number += 1   
-        messages_list.append(metadata+message)
-    return messages_list
-
 def distribute(phone_number, messages_list, key):
     for message in messages_list:
         message = "".join([key, message])
