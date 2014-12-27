@@ -41,7 +41,8 @@ Response - '0z^1|Alley Twenty Six (Lounges)|320 E Chapel Hill St, Durham, NC 277
 - key (*required*)
 - from
 - to
-- mode (*default = "driving"*)
+- mode (*default = 'driving'*)
+- geo (*default = 'F'*)
 
 **Examples:**
 ```
@@ -52,7 +53,11 @@ Response - '0z^1|Head south on S Market St toward Park Ave|0.1 mi^2|Turn right o
 Text - '@Maps directions: from: chapel hill, NC to: Durham, NC key: z mode: walking'
 Response - '0z^1|Head southeast on N Columbia St toward W Franklin St|30 ft^2|Turn left onto E Franklin St|2.4 mi^3|Slight right to stay on E Franklin St|0.3 mi^4|Slight left onto Dobbins Dr|0.9 mi^5|Turn right onto Sage Rd|118 ft^6|Continue onto Scarlett Dr|210 ft^7|Slight left onto Old Durham Rd|0.5 mi^8|Continue onto Durham Rd|276 ft^9|Continue onto Old Chapel Hill Rd|0.5 mi^10|Slight right to stay on Old Chapel Hill Rd|210 ft^11|At the traffic circle, continue straight to stay on Old Chapel Hill Rd|0.5 mi^12|Slight left to stay on Old Chapel Hill Rd|0.7 mi^13|Slight right to stay on Old Chapel Hill Rd|0.6 mi^14|Continue onto University Dr|4.5 mi^15|Continue onto US-15 BUS N/US-501 BUS N/W Lakewood Ave|0.4 mi^16|Turn left onto US-15 BUS N/US-501 BUS N/S Roxboro St|0.4 mi^17|Turn left onto E Main StDestination will be on the right|112 ft'
 ```
-
+*Example with geo (lat/lng)*:
+```
+Text - '@Maps directions : key: e  to: Castro Street, Mountain View, CA  from: 37.253135,-121.904945 mode: driving geo: T'
+Response - '0e^1|Head north on Canberra Ct toward Wyndham Dr|102 ft^2|Take the 1st right onto Wyndham Dr|0.1 mi^3|Turn right onto Kirk Rd|295 ft^4|Turn right onto Branham Ln|0.4 mi^5|Take the California 85 N ramp on the left|0.2 mi^6|Merge onto CA-85 N|13.6 mi^7|Exit onto CA-82 N/E El Camino Real toward Mountain View|1.2 mi^8|Turn right onto Castro St|0.2mi#1|37.2534045,-121.9052406^2|37.2539644,-121.9030174^3|37.2532013,-121.9026889^4|37.2512019,-121.9104474^5|37.2507045,-121.9135202^6|37.378277,-122.0675624^7|37.3857917,-122.0838069^8|37.3883427,-122.0823537'
+```
 ##### 3) Wikipedia
 **Programs:**
 - search (*default*)
@@ -85,7 +90,7 @@ Response - '0z^Ford Motor Company^Gerald Ford^List of Ford vehicles'
 {"results": "0a^Cat^The domestic cat (Felis catus or Felis silvestris catus) is a small, usually furry, domesticated, and carnivorous mammal. It is often called a housecat when kept as an indoor pet, or simply a cat when there is no need to distinguish it from other felids and felines. Cats are often valued by humans for companionship, and their ability to hunt vermin and household pests."}
 ```
 
-### Version 0.3 
-*last updated 12/24/14*
+### Version 0.4 
+*last updated 12/26/14*
 
 
