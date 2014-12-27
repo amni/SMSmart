@@ -81,11 +81,6 @@ def distribute(phone_number, messages_list, key):
         message.encode('utf-8', 'ignore')
         client.messages.create(to=phone_number, from_=get_phone_number(), body=message)
 
-def send_text(message):
-    resp = twilio.twiml.Response()
-    resp.message(message)
-    return resp
-
 def process_message(user, user_text_message):
     tokenizer = Tokenizer(user_text_message)
     api = create_subprogram(tokenizer.api)
@@ -100,7 +95,6 @@ def create_subprogram(type):
     if type == "onboard": return Onboard()
     assert 0, "Invalid string " + type 
     return None 
-
 
 if __name__ == '__main__':
     app.run(debug=True) 

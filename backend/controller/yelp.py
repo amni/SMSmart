@@ -23,9 +23,9 @@ class Yelp(Base):
             query_results = yelp_wrapper.query(kwargs["near"], **optional_params)
         
         if self.is_error(query_results):
-            result = query_results + key + "^" + self.EMPTY_MSG
+            result = query_results + key + self.CARROT_TOKEN + self.EMPTY_MSG
             return self.split_result(result)
 
-        results = self.OK + key + "^" + "^".join([result.to_android_string() for result in query_results])
+        results = self.OK + key + self.CARROT_TOKEN + self.CARROT_TOKEN.join([result.to_android_string() for result in query_results])
         return self.split_result(results)
 

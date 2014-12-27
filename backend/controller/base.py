@@ -3,6 +3,10 @@ from models import User
 class Base(object):
     OK = '0'
     EMPTY_MSG = ' '
+    TRUE_TOKEN = 'T'
+    CARROT_TOKEN = '^'
+    GEO_TOKEN = '#'
+    SEPARATOR_TOKEN = '|'
 
     def find_results(self, **kwargs):
         pass
@@ -13,7 +17,7 @@ class Base(object):
     def split_result(self, results):
         MSG_SEGMENT_LENGTH = 150
         messages_list = []
-        key_position = results.find('^')
+        key_position = results.find(self.CARROT_TOKEN)
         key = results[:key_position]
         results = results[key_position+1:]
         position = 0

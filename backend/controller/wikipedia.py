@@ -18,15 +18,15 @@ class Wikipedia(Base):
 
     def wikipedia_query(self, query_type, query_limit, **kwargs):
         key = kwargs["key"]
-        results = ''      
+        results = self.EMPTY_MSG   
         term = kwargs["term"]  
         if "limit" in kwargs:
             query_limit = kwargs["limit"]
         results = getattr(wikipedia_wrapper, query_type)(term, query_limit)
     
         if self.is_error(results):
-            result = results + key + "^" + self.EMPTY_MSG
+            result = results + key + self.CARROT_TOKEN + self.EMPTY_MSG
             return self.split_result(result)
 
-        results = self.OK + key + "^" + results
+        results = self.OK + key + self.CARROT_TOKEN + results
         return self.split_result(results)   
