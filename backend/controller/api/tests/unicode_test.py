@@ -9,10 +9,8 @@ class TestUnicode(unittest.TestCase):
         """ Yelp Unicode Test """
         places = yelp.query('San Francisco, CA', 5.0, 'restaurants', 20)
         self.assertNotEqual(places, None)
-        for restaurant in places:
-            print restaurant.to_string()
-        print ' ----------------'
     
+print 'Running tests in backend/controller/api/tests/unicode_test.py ---'
 
 if __name__ == "__main__":
     unittest.main()

@@ -3,8 +3,7 @@
 Tests are located throughout the codebase:
 - for tests on queries: ```backend/tests.py```
 - for tests on the parser: ```backend/parser/test.py```
-- for tests on the subprograms: ```backend/controller/api/tests/```
-- for tests on the subprogram wrappers: ```backend/controller/api/verbose_tests```
+- for tests on the specific subprograms: ```backend/controller/api/tests/```
 
 To run all the tests, simply execute the harness script in backend/ dir:  ```./backend/test_harness.sh```
 

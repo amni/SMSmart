@@ -9,3 +9,4 @@ python wiki_test.py
 echo ''
 python yelp_test.py 
 echo ''
+python unicode_test.py
