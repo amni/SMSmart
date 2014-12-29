@@ -16,7 +16,7 @@ class Yelp(Base):
             if keyword in kwargs:
                 optional_params[keyword] = kwargs[keyword]
             
-        if "longlat" in kwargs: 
+        if "longlat" in kwargs and kwargs['longlat'].strip() == 'true':  
             longlat = kwargs["near"].split(',')
             query_results = yelp_wrapper.query_geo(float(longlat[0]), float(longlat[1]), **optional_params)
         else:
