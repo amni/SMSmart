@@ -11,7 +11,7 @@ class TestMaps(unittest.TestCase):
 
     def test_maps_directions(self):
         """Test Maps Directions"""
-        directions = maps.query('Duke University, Durham, NC', 'UNC Chapel Hill, Chapel Hill, NC')
+        directions = maps.get_directions('Duke University, Durham, NC', 'UNC Chapel Hill, Chapel Hill, NC')
         self.assertNotEqual(directions, None)
         self.assertTrue(len(directions)>=1)   
 
@@ -21,7 +21,8 @@ class TestMaps(unittest.TestCase):
         durham_location = "Durham, NC 27705"
         self.assertTrue(durham_location in location)
 
-
+print 'Running tests in backend/controller/api/tests/maps_test.py ---'
+ 
 if __name__ == "__main__":
     unittest.main()
 

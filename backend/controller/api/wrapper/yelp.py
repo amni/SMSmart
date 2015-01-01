@@ -134,7 +134,6 @@ def buildResponse(response, counter, location, verbose):
     ret = Restaurant(counter, name, endLocation, phone, rating, isClosed)
     return ret
 
-
 def getLocations(businesses, location, verbose, index):
     output = []
     counter = 0

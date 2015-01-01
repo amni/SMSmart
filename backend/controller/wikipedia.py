@@ -17,14 +17,16 @@ class Wikipedia(Base):
         return self.wikipedia_query("summary", Wikipedia.SUMMARY_LIMIT, **kwargs)        
 
     def wikipedia_query(self, query_type, query_limit, **kwargs):
-        try: 
-            key = kwargs["key"]
-            results = ''      
-            term = kwargs["term"]  
-            if "limit" in kwargs:
-                query_limit = kwargs["limit"]
-            results = getattr(wikipedia_wrapper, query_type)(term, query_limit)
-            results = key + "^" + results
-        except:
-            results = 'Wikipedia Error'
+        key = kwargs["key"]
+        results = self.EMPTY_MSG   
+        term = kwargs["term"]  
+        if "limit" in kwargs:
+            query_limit = kwargs["limit"]
+        results = getattr(wikipedia_wrapper, query_type)(term, query_limit)
+    
+        if self.is_error(results):
+            result = results + key + self.CARROT_TOKEN + self.EMPTY_MSG
+            return self.split_result(result)
+
+        results = self.OK + key + self.CARROT_TOKEN + results
         return self.split_result(results)   

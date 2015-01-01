@@ -4,8 +4,10 @@ from mongoengine import *
 from parser.tokenizer import Tokenizer 
 from controller.yelp import Yelp
 from controller.maps import Maps
+from controller.onboard import Onboard
 from controller.attractions import Attractions
 from controller.default import Default
+from controller.limit import Limit
 import twilio.twiml
 from models import User, Query
 from twilio.rest import TwilioRestClient
@@ -76,40 +78,11 @@ def get_phone_number():
     PHONE_NUMBERS.append(from_number)
     return from_number
 
-def split_into_messages(output):
-    messages_list = []
-    key_position = output.find('^')
-    key = output[:key_position]
-    output = output[key_position+1:]
-    position = 0
-    remainder = len(output)
-    msg_number = 1
-    temp = remainder/MSG_SEGMENT_LENGTH
-    total_msg = temp + 1 if (remainder%MSG_SEGMENT_LENGTH != 0) else temp
-    while remainder > MSG_SEGMENT_LENGTH:
-        message = output[position:position+MSG_SEGMENT_LENGTH]
-        metadata = key + '(' + str(msg_number) + '/' + str(total_msg) + ')' + '*'
-        msg_number += 1        
-        remainder -= MSG_SEGMENT_LENGTH
-        position += MSG_SEGMENT_LENGTH
-        messages_list.append(metadata+message)
-    if remainder > 0:
-        message = output[position:]
-        metadata = key + '(' + str(msg_number) + '/' + str(total_msg) + ')' + '*'
-        msg_number += 1   
-        messages_list.append(metadata+message)
-    return messages_list
-
 def distribute(phone_number, messages_list, key):
     for message in messages_list:
         message = "".join([key, message])
         message.encode('utf-8', 'ignore')
         client.messages.create(to=phone_number, from_=get_phone_number(), body=message)
-
-def send_text(message):
-    resp = twilio.twiml.Response()
-    resp.message(message)
-    return resp
 
 def process_message(user, user_text_message):
     tokenizer = Tokenizer(user_text_message)
@@ -122,9 +95,10 @@ def create_subprogram(type):
     if type == "maps": return Maps()
     if type == "wikipedia": return Wikipedia()
     if type == "attractions": return Attractions()
+    if type == "onboard": return Onboard()
+    if type == "limit": return Limit()
     assert 0, "Invalid string " + type 
     return None 
-
 
 if __name__ == '__main__':
     app.run(debug=True) 

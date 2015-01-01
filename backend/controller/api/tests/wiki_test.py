@@ -19,6 +19,8 @@ class TestWikipedia(unittest.TestCase):
             result = wiki.search(key, value)
             self.assertNotEqual(result, None)
 
+print 'Running tests in backend/controller/api/tests/wiki_test.py ---'
+
 if __name__ == "__main__":
     unittest.main()
 

@@ -15,14 +15,17 @@ class Yelp(Base):
         for keyword in keywords:
             if keyword in kwargs:
                 optional_params[keyword] = kwargs[keyword]
-        try: 
-            if "longlat" in kwargs: 
-                longlat = kwargs["near"].split(',')
-                query_results = yelp_wrapper.query_geo(float(longlat[0]), float(longlat[1]), **optional_params)
-            else:
-                query_results = yelp_wrapper.query(kwargs["near"], **optional_params)
-            results = key + "^" + "^".join([result.to_android_string() for result in query_results])
-        except:
-            results = "Yelp Error"
+            
+        if "longlat" in kwargs and kwargs['longlat'].strip() == 'true':  
+            longlat = kwargs["near"].split(',')
+            query_results = yelp_wrapper.query_geo(float(longlat[0]), float(longlat[1]), **optional_params)
+        else:
+            query_results = yelp_wrapper.query(kwargs["near"], **optional_params)
+        
+        if self.is_error(query_results):
+            result = query_results + key + self.CARROT_TOKEN + self.EMPTY_MSG
+            return self.split_result(result)
+
+        results = self.OK + key + self.CARROT_TOKEN + self.CARROT_TOKEN.join([result.to_android_string() for result in query_results])
         return self.split_result(results)
 
