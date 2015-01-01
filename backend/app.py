@@ -17,7 +17,7 @@ app = Flask(__name__)
 account_sid = "AC171ca34ca45bf15bb3f369b1ae5e9a9f"
 auth_token = "1d3ef112c1407035c6c6f5e5e17f75ad"
 client = TwilioRestClient(account_sid, auth_token)
-numbers = ["+15738182146", "+19738280148", "+16503534855", "+18704740576", "+18702802312"]
+PHONE_NUMBERS = ["+15738182146", "+19738280148", "+16503534855", "+18704740576", "+18702802312"]
 MSG_SEGMENT_LENGTH = 150
 #for heroku
 if 'PORT' in os.environ: 
@@ -57,6 +57,8 @@ def receive_message():
     if not user:
         user = User(phone_number=phone_number)
         user.save()
+    if user.is_over_limit():
+        user_text_message = "limit"
     results = process_message(user, user_text_message)
     messages_list = results.get("messages")
     key = results.get("key", "")
@@ -70,8 +72,8 @@ def receive_message():
     return jsonify(results=response_text_message)
 
 def get_phone_number():
-    from_number = numbers.pop(0)
-    numbers.append(from_number)
+    from_number = PHONE_NUMBERS.pop(0)
+    PHONE_NUMBERS.append(from_number)
     return from_number
 
 def split_into_messages(output):

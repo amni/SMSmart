@@ -25,7 +25,7 @@ class Maps(Base):
                 cur_insn = maps_wrapper.remove_tags(insn['html_instructions'])
                 cur_dist = insn['distance']['text']
                 output += str(counter) + '|' + cur_insn + '|' + cur_dist + '^'
-            result = "^".join(key, output)[:-1]
+            result = "^".join(key, result)[:-1]
         except:
             result = "Maps Search Error: Couldn't find a route please try with more specific locations"
         return self.split_result(result)
