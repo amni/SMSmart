@@ -20,6 +20,7 @@ account_sid = "AC171ca34ca45bf15bb3f369b1ae5e9a9f"
 auth_token = "1d3ef112c1407035c6c6f5e5e17f75ad"
 client = TwilioRestClient(account_sid, auth_token)
 PHONE_NUMBERS = ["+15738182146", "+19738280148", "+16503534855", "+18704740576", "+18702802312"]
+PLANS = ["Budget":50, "Pro": 100, "Premium":200]
 MSG_SEGMENT_LENGTH = 150
 #for heroku
 if 'PORT' in os.environ: 
@@ -55,10 +56,7 @@ def receive_message():
     user_text_message = request.values.get('Body')
     phone_number = request.values.get('From')
     wifi_request = 'Wifi' in request.values
-    user = User.objects(phone_number=phone_number).first()
-    if not user:
-        user = User(phone_number=phone_number)
-        user.save()
+    user = get_user(phone_number)
     if user.is_over_limit():
         user_text_message = "limit"
     results = process_message(user, user_text_message)
@@ -73,10 +71,28 @@ def receive_message():
         return ""
     return jsonify(results=response_text_message)
 
+@app.route('/upgrade', methods=["POST"])
+def upgrade_account():
+    try:
+        account_type = request.values.get('Account')
+        phone_number = request.values.get('From')
+        user = get_user(phone_number)
+        user.text_limit = PLANS[account_type]
+        return jsonify(success=True)
+    except:
+        return jsonify(success=False)
+
 def get_phone_number():
     from_number = PHONE_NUMBERS.pop(0)
     PHONE_NUMBERS.append(from_number)
     return from_number
+
+def get_user(phone_number):
+    user = User.objects(phone_number=phone_number).first()
+    if not user:
+        user = User(phone_number=phone_number)
+        user.save()
+    return user
 
 def distribute(phone_number, messages_list, key):
     for message in messages_list:
