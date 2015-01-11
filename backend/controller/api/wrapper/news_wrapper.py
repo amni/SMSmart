@@ -24,5 +24,3 @@ def get_tweets(news_handle = "BreakingNews"):
 			pos = tweet.text.find("http")
 		tweet.text = tweet.text[:pos]
 	return [tweet.text for tweet in new_tweets]
-
-print get_tweets()
