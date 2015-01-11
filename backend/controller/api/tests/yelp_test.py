@@ -16,7 +16,6 @@ class TestYelp(unittest.TestCase):
         self.assertNotEqual(places, None)
         self.assertTrue(len(places)>=1)
         
-print 'Running tests in backend/controller/api/tests/yelp_test.py ---'
 
 if __name__ == "__main__":
     unittest.main()

@@ -3,21 +3,14 @@ import yelp
 from restaurant import Restaurant
 
 def query(location, distance = 5.0, category='restaurant', limit = 6):
-    try:
-        result = yelp.query_api(category, location, distance, False, 1, limit)
-    except:
-        result = '1'
-    if result == None: #sometimes result will return None for an invalid category 
-        result = '1'
-    return result
+    return yelp.query_api(category, location, distance, False, 1, limit)
 
 def query_geo(lat, lng, distance = 5.0, category='restaurant', limit = 6):
-    try:
-        geo = str(lat)+','+str(lng)
-        result = yelp.query_api_geo(category, geo, distance, False, 1, limit)
-    except:      
-        result = '1'
-    if result == None:
-        result = '1'        
-    return result
+    #print str(maps.get_location_string(lat, lng)
+    geo = str(lat)+','+str(lng)
+    return yelp.query_api_geo(category, geo, distance, False, 1, limit)
 
+def getLocation(location, distance, index, category='restaurant'):
+    response = verbose(location, distance, index, category)
+    parse = response.split(' | ')
+    return parse[1]
