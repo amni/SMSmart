@@ -90,7 +90,14 @@ Response - '0z^Ford Motor Company^Gerald Ford^List of Ford vehicles'
 {"results": "0a^Cat^The domestic cat (Felis catus or Felis silvestris catus) is a small, usually furry, domesticated, and carnivorous mammal. It is often called a housecat when kept as an indoor pet, or simply a cat when there is no need to distinguish it from other felids and felines. Cats are often valued by humans for companionship, and their ability to hunt vermin and household pests."}
 ```
 
-### Version 0.4 
-*last updated 12/26/14*
+##### 5) User using over limit of text messsages
+
+**Response:**
+```
+{"results": "text_limit: 30"} //(number of text messages a user is allotted under current plan) 
+```
+
+### Version 0.5 
+*last updated 1/1/15*
 
 
