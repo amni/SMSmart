@@ -22,7 +22,6 @@ class TestUnicode(unittest.TestCase):
 
     def test_unicode(self):
         default_user = User.objects(phone_number="5734894023").first()
-        print app.process_message(default_user, "@ news feed: key: ib")
 #         print 'Query: @ wikipedia summary : key: ib term : Gerald Ford limit : 3'
 #         print app.process_message(default_user, "@ wikipedia summary : key: ib term : Gerald Ford limit : 3")
 #         print 
