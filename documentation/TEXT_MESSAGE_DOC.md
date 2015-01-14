@@ -71,11 +71,11 @@ Response - '0e^1|Head north on Canberra Ct toward Wyndham Dr|102 ft^2|Take the 1
 
 **Examples:**
 ```
-Text - '@ Wikipedia search: term: Ford limit: 3 key: z'
+Text - '@ Wikipedia summary: term: Ford limit: 3 key: z'
 Response - '0z^Car^A car is a wheeled, self-powered motor vehicle used for transportation. Most definitions of the term specify that cars are designed to run primarily on roads, to have seating for one to eight people, to typically have four wheels, and to be constructed principally for the transport of people rather than goods. The year 1886 is regarded as the birth year of the modern car. In that year, German inventor Karl Benz built the Benz Patent-Motorwagen. Cars did not become widely available until the early 20th century.'
 ```
 ```
-Text - '@ Wikipedia summary: search: cars limit: 5 key: z'
+Text - '@ Wikipedia search: term: cars limit: 5 key: z'
 Response - '0z^Ford Motor Company^Gerald Ford^List of Ford vehicles'
 ```
 
@@ -97,7 +97,7 @@ Response - '0z^Ford Motor Company^Gerald Ford^List of Ford vehicles'
 {"results": "text_limit: 30"} //(number of text messages a user is allotted under current plan) 
 ```
 
-### Version 0.5 
-*last updated 1/1/15*
+### Version 0.6
+*last updated 01/14/15*
 
 
