@@ -14,7 +14,16 @@ class BaseTest(unittest.TestCase):
         self.assertIsNotNone(response['messages'])
         self.assertIsInstance(response['messages'], list)         
 
+class TestNews(BaseTest):
+    def setup(self):
+        self.app = app.test_client(use_cookies=True)
+        new_user = User(phone_number="5734894023")
+        new_user.save()    
 
+    def test_news(self):
+        default_user = User.objects(phone_number="5734894023").first()
+        response = app.process_message(default_user, "@ news feed: key: a")
+        self.basic_test(response, '0')  
 
 #TODO: Write testing for news 
 class TestOnboard(BaseTest):

@@ -22,7 +22,6 @@ auth_token = "1d3ef112c1407035c6c6f5e5e17f75ad"
 client = TwilioRestClient(account_sid, auth_token)
 PHONE_NUMBERS = ["+15738182146", "+19738280148", "+16503534855", "+18704740576", "+18702802312"]
 PLANS = {"Free": 30, "Budget":50, "Pro": 100, "Premium":200, "Unlimited": 10000}
-numbers = ["+15738182146", "+19738280148", "+16503534855", "+18704740576", "+18702802312"]
 
 MSG_SEGMENT_LENGTH = 150
 #for heroku
@@ -101,10 +100,6 @@ def get_user(phone_number):
         user.save()
     return user
 
-def get_phone_number():
-    from_number = numbers.pop(0)
-    numbers.append(from_number)
-    return from_number
 
 def distribute(phone_number, messages_list, key):
     for message in messages_list:
