@@ -6,7 +6,7 @@ def summary(term, sentences = 3):
     try: 
         summary = wikipedia.summary(term, sentences)
         searched_term = wikipedia.search(term)[0]
-        result = '^'.join([searched_term, summary])
+        result = '|'.join([searched_term, summary])
     except wikipedia.exceptions.DisambiguationError as DisambiguationError:
         result = '1'
     except wikipedia.exceptions.PageError as PageError: 
