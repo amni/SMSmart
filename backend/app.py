@@ -62,9 +62,6 @@ def receive_message():
     if user.is_over_limit():
         user_text_message = "limit"
     user = User.objects(phone_number=phone_number).first()
-    if not user:
-        user = User(phone_number=phone_number)
-        user.save()
     results = process_message(user, user_text_message)
     messages_list = results.get("messages")
     key = results.get("key", "")
