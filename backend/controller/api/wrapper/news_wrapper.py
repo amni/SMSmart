@@ -18,7 +18,7 @@ api = API(auth)
 
 def get_tweets(news_handle = "BreakingNews"):
 	try: 
-		new_tweets = api.user_timeline(screen_name = news_handle, count=10)
+		new_tweets = api.user_timeline(screen_name = news_handle, count=7)
 		for tweet in new_tweets:
 			pos = tweet.text.find("- @")
 			if pos < 0: 
