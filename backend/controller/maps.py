@@ -9,8 +9,6 @@ class Maps(Base):
 
     def directions(self, user, **kwargs):
         key = kwargs["key"]
-        if not "from" or not "to" in kwargs:
-            return "Please make the text in the form of maps directions: from:(your starting location) to: (your destination)"
         if "mode" in kwargs:
             response = maps_wrapper.get_directions(kwargs["from"], kwargs["to"], kwargs["mode"])
         else:

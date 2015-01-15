@@ -26,3 +26,4 @@ class User(Document):
 
 	def is_over_limit(self):
 		return self.get_num_queries_this_month() > self.text_limit
+

@@ -8,6 +8,7 @@ from controller.onboard import Onboard
 from controller.attractions import Attractions
 from controller.default import Default
 from controller.limit import Limit
+from controller.news import News
 import twilio.twiml
 from models import User, Query
 from twilio.rest import TwilioRestClient
@@ -21,6 +22,8 @@ auth_token = "1d3ef112c1407035c6c6f5e5e17f75ad"
 client = TwilioRestClient(account_sid, auth_token)
 PHONE_NUMBERS = ["+15738182146", "+19738280148", "+16503534855", "+18704740576", "+18702802312"]
 PLANS = {"Free": 30, "Budget":50, "Pro": 100, "Premium":200, "Unlimited": 10000}
+numbers = ["+15738182146", "+19738280148", "+16503534855", "+18704740576", "+18702802312"]
+
 MSG_SEGMENT_LENGTH = 150
 #for heroku
 if 'PORT' in os.environ: 
@@ -59,6 +62,10 @@ def receive_message():
     user = get_user(phone_number)
     if user.is_over_limit():
         user_text_message = "limit"
+    user = User.objects(phone_number=phone_number).first()
+    if not user:
+        user = User(phone_number=phone_number)
+        user.save()
     results = process_message(user, user_text_message)
     messages_list = results.get("messages")
     key = results.get("key", "")
@@ -94,6 +101,11 @@ def get_user(phone_number):
         user.save()
     return user
 
+def get_phone_number():
+    from_number = numbers.pop(0)
+    numbers.append(from_number)
+    return from_number
+
 def distribute(phone_number, messages_list, key):
     for message in messages_list:
         message = "".join([key, message])
@@ -113,6 +125,7 @@ def create_subprogram(type):
     if type == "attractions": return Attractions()
     if type == "onboard": return Onboard()
     if type == "limit": return Limit()
+    if type == "news": return News()
     assert 0, "Invalid string " + type 
     return None 
 

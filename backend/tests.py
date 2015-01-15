@@ -2,6 +2,7 @@ import app
 import unittest
 from models import User, Query
 
+
 class BaseTest(unittest.TestCase):
     def setup(self):
         self.app = app.test_client(use_cookies=True)
@@ -14,6 +15,8 @@ class BaseTest(unittest.TestCase):
         self.assertIsInstance(response['messages'], list)         
 
 
+
+#TODO: Write testing for news 
 class TestOnboard(BaseTest):
     def setup(self):
         self.app = app.test_client(use_cookies=True)
@@ -28,6 +31,7 @@ class TestOnboard(BaseTest):
         for msg in onboard['messages']:
             self.assertEqual(msg, expected_onboard_msg)
 
+
 class TestWikipedia(BaseTest):
     def setup(self):
         self.app = app.test_client(use_cookies=True)
@@ -37,7 +41,7 @@ class TestWikipedia(BaseTest):
     def test_wiki_search(self):
         default_user = User.objects(phone_number="5734894023").first()
         response = app.process_message(default_user, "@ Wikipedia search: term: Ford key: z")        
-        self.basic_test(response, '0')         
+        self.basic_test(response, '0')     
         response = app.process_message(default_user, "@ Wikipedia search: term: zv#432v* limit: 3 key: z") 
         self.basic_test(response, '0')         
         response = app.process_message(default_user, "@ Wikipedia search: term: Mercury limit: 3 key: z")
@@ -134,12 +138,15 @@ class TestUnicode(BaseTest):
         response = app.process_message(default_user, "@ wikipedia summary : key: ob term : Coursera  limit : 3")        
         self.basic_test(response, '0')               
 
+class TestMain(BaseTest):
+
     def setup(self):
         self.app = app.test_client(use_cookies=True)
         new_user = User(phone_number="5734894023")
         new_user.save()
 
     def test_process_message(self):
+
         default_user = User.objects(phone_number="5734894023").first()
         response = app.process_message(default_user, "@ Wikipedia search: term: Ford limit: 3 key: z")
         self.basic_test(response, '0')         

@@ -17,10 +17,14 @@ api = API(auth)
 
 
 def get_tweets(news_handle = "BreakingNews"):
-	new_tweets = api.user_timeline(screen_name = news_handle, count=10)
-	for tweet in new_tweets:
-		pos = tweet.text.find("- @")
-		if pos < 0: 
-			pos = tweet.text.find("http")
-		tweet.text = tweet.text[:pos]
-	return [tweet.text for tweet in new_tweets]
+	try: 
+		new_tweets = api.user_timeline(screen_name = news_handle, count=10)
+		for tweet in new_tweets:
+			pos = tweet.text.find("- @")
+			if pos < 0: 
+				pos = tweet.text.find("http")
+			tweet.text = tweet.text[:pos]
+		result = [tweet.text for tweet in new_tweets]
+	except: 
+		result = 1
+	return result 
