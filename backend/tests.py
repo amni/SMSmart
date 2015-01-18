@@ -42,10 +42,9 @@ class TestWeather(BaseTest):
         new_user = User(phone_number="5734894023")
         new_user.save()    
 
-    def test_search(self):
+    def test_weather(self):
         default_user = User.objects(phone_number="5734894023").first()
         response = app.process_message(default_user, "@ weather search: near: london,uk key: a")
-        print response
         self.basic_test(response, '0')  
 
 class TestStock(BaseTest):
@@ -68,7 +67,7 @@ class TestOnboard(BaseTest):
     def test_onboard(self):
         default_user = User.objects(phone_number="5734894023").first()
         onboard = app.process_message(default_user, "@Onboard")
-        expected_onboard_msg = 'T Welcome to SMSmart. Please blacklist this number for the best experience.'
+        expected_onboard_msg = 'T|Welcome to SMSmart. Please blacklist this number for the best experience.'
         self.assertIsInstance(onboard['messages'], list)
         for msg in onboard['messages']:
             self.assertEqual(msg, expected_onboard_msg)

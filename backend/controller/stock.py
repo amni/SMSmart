@@ -9,7 +9,6 @@ class Stock(Base):
         key = kwargs["key"]
         symbol = kwargs["symbol"]
         results = stock_wrapper.get_share_price(symbol)
-        print results
         if self.is_error(results):
             return self.get_error_response(results, key)
         cleaned_results = self.prepend_key(key, results)
