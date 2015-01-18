@@ -3,10 +3,13 @@
 ##### 0) Onboard
 Client generated input request for Onboard is: ```@Onboard```. Server will send texts containing our custom response to the client's phone number from each of SMSmart's phone numbers (currently there are 5). 
 
+**Returns**
+Boolean|Message
+
 **Examples:** 
 ```
 Text - '@Onboard'
-Response - 'Welcome to SMSmart. Please blacklist this number for the best experience'
+Response - 'T|Welcome to SMSmart. Please blacklist this number for the best experience'
 ```
 
 
@@ -46,7 +49,7 @@ Response - '0z^1|Alley Twenty Six (Lounges)|320 E Chapel Hill St, Durham, NC 277
 
 **Examples:**
 ```
-Text - '@Maps directions: from: san jose, CA to: san francisco, CA key: z'
+Text - '@Maps directions: from: san jose, CA to: san francisco, CA key: zo'
 Response - '0z^1|Head south on S Market St toward Park Ave|0.1 mi^2|Turn right onto Park Ave|0.3 mi^3|Turn right onto the California 87 N ramp|0.1 mi^4|Merge onto CA-87 N|3.4 mi^5|Take the US-101 N exit on the left toward San Francisco|0.2 mi^6|Keep left, follow signs for US 101 N/San Francisco and merge onto US-101 N|42.8 mi^7|Keep left to stay on US-101 N|0.8 mi^8|Continue onto Central Fwy|0.4 mi^9|Turn right onto Market St|0.3 mi'
 ```
 ```
@@ -109,7 +112,7 @@ Response - '0z^Ford Motor Company^Gerald Ford^List of Ford vehicles'
 Text - '@ news feed: key: z'
 Response - '(1/5)*Several gunshots fired from vehicle passing Vice President Biden's Delaware home Saturday night ^5 Belgian nationals charged with participation in ter'
 ```
-##### 6) News
+##### 7) News
 **Programs:**
 - feed
 
@@ -125,7 +128,37 @@ Text - '@ search query: term: android key: a'
 Response - '(1/6)*Android|Official site provides information for users, developers and partners. Includes press releases, videos, screenshots and downloads.^Android (op', u'(2/6)*erating system) - Wikipedia, the free encyclopedia|Android is a mobile operating system (OS) based on the Linux kernel and currently developed by Goog','
 ```
 
-### Version 0.6
-*last updated 01/14/15*
+##### 8) Weather 
+**Programs:**
+- search
+
+**Parameters:**
+- key (*required*)
+- near (*required*) 
+
+**Examples:**
+```
+Text - @ weather search: near: london,uk key: a'
+Response - '(1/1)*london,uk|clear|32.54'
+```
+##### 9) Stock
+**Programs:**
+- search
+
+**Parameters:**
+- key (*required*)
+- symbol (*required*)
+
+**Returns**
+- stocksymbol|current price|starting price 
+
+**Examples:**
+```
+Text - '@ stock search: symbol: goog key: a'
+Response - '(1/1)*goog|508.08|500.00'
+```
+
+### Version 0.7
+*last updated 01/18/15*
 
 
