@@ -96,6 +96,34 @@ Response - '0z^Ford Motor Company^Gerald Ford^List of Ford vehicles'
 ```
 {"results": "text_limit: 30"} //(number of text messages a user is allotted under current plan) 
 ```
+##### 6) Search
+**Programs:**
+- query
+
+**Parameters:**
+- key (*required*)
+- term (*required*) 
+
+**Examples:**
+```
+Text - '@ news feed: key: z'
+Response - '(1/5)*Several gunshots fired from vehicle passing Vice President Biden's Delaware home Saturday night ^5 Belgian nationals charged with participation in ter'
+```
+##### 6) News
+**Programs:**
+- feed
+
+**Parameters:**
+- key (*required*)
+
+**Returns**
+- title|details 
+
+**Examples:**
+```
+Text - '@ search query: term: android key: a'
+Response - '(1/6)*Android|Official site provides information for users, developers and partners. Includes press releases, videos, screenshots and downloads.^Android (op', u'(2/6)*erating system) - Wikipedia, the free encyclopedia|Android is a mobile operating system (OS) based on the Linux kernel and currently developed by Goog','
+```
 
 ### Version 0.6
 *last updated 01/14/15*
