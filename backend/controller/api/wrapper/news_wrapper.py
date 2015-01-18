@@ -26,5 +26,5 @@ def get_tweets(news_handle = "BreakingNews"):
 			tweet.text = tweet.text[:pos]
 		result = [tweet.text for tweet in new_tweets]
 	except: 
-		result = 1
+		result = "1"
 	return result 

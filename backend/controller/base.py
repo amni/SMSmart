@@ -49,4 +49,7 @@ class Base(object):
 
     def get_result_list(self, key, results):
         delimited_results = "^".join(results)
-        return self.OK+key+"^"+delimited_results
+        return self.prepend_key(key, delimited_results)
+
+    def prepend_key(self, key, results):
+        return self.OK+key+"^"+results

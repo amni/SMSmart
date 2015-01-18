@@ -31,12 +31,34 @@ class TestSearch(BaseTest):
         new_user = User(phone_number="5734894023")
         new_user.save()    
 
-    def test_news(self):
+    def test_search(self):
         default_user = User.objects(phone_number="5734894023").first()
         response = app.process_message(default_user, "@ search query: term: android key: a")
         self.basic_test(response, '0')  
 
-#TODO: Write testing for news 
+class TestWeather(BaseTest):
+    def setup(self):
+        self.app = app.test_client(use_cookies=True)
+        new_user = User(phone_number="5734894023")
+        new_user.save()    
+
+    def test_search(self):
+        default_user = User.objects(phone_number="5734894023").first()
+        response = app.process_message(default_user, "@ weather search: near: london,uk key: a")
+        print response
+        self.basic_test(response, '0')  
+
+class TestStock(BaseTest):
+    def setup(self):
+        self.app = app.test_client(use_cookies=True)
+        new_user = User(phone_number="5734894023")
+        new_user.save()    
+
+    def test_stock(self):
+        default_user = User.objects(phone_number="5734894023").first()
+        response = app.process_message(default_user, "@ stock search: symbol: goog key: a")
+        self.basic_test(response, '0')  
+
 class TestOnboard(BaseTest):
     def setup(self):
         self.app = app.test_client(use_cookies=True)
@@ -46,7 +68,7 @@ class TestOnboard(BaseTest):
     def test_onboard(self):
         default_user = User.objects(phone_number="5734894023").first()
         onboard = app.process_message(default_user, "@Onboard")
-        expected_onboard_msg = 'Welcome to SMSmart. Please blacklist this number for the best experience'
+        expected_onboard_msg = 'T Welcome to SMSmart. Please blacklist this number for the best experience.'
         self.assertIsInstance(onboard['messages'], list)
         for msg in onboard['messages']:
             self.assertEqual(msg, expected_onboard_msg)

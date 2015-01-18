@@ -1,14 +1,15 @@
 from base import Base
-import api.wrapper.weather_wrapper as weather_wrapper
+import api.wrapper.stock_wrapper as stock_wrapper
 
-class Weather(Base):
+class Stock(Base):
     def default(self, user, **kwargs):
         return self.search(user, **kwargs)
 
     def search(self, user, **kwargs):
         key = kwargs["key"]
-        location = kwargs["near"]
-        results = weather_wrapper.get_weather(location)
+        symbol = kwargs["symbol"]
+        results = stock_wrapper.get_share_price(symbol)
+        print results
         if self.is_error(results):
             return self.get_error_response(results, key)
         cleaned_results = self.prepend_key(key, results)

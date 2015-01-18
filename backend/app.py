@@ -10,6 +10,8 @@ from controller.default import Default
 from controller.limit import Limit
 from controller.news import News
 from controller.search import Search
+from controller.weather import Weather
+from controller.stock import Stock
 import twilio.twiml
 from models import User, Query
 from twilio.rest import TwilioRestClient
@@ -120,7 +122,9 @@ def create_subprogram(type):
     if type == "onboard": return Onboard()
     if type == "limit": return Limit()
     if type == "news": return News()
+    if type == "weather": return Weather()
     if type == "search": return Search()
+    if type == "stock": return Stock()
     assert 0, "Invalid string " + type 
     return None 
 
