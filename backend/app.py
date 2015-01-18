@@ -9,6 +9,7 @@ from controller.attractions import Attractions
 from controller.default import Default
 from controller.limit import Limit
 from controller.news import News
+from controller.search import Search
 import twilio.twiml
 from models import User, Query
 from twilio.rest import TwilioRestClient
@@ -94,6 +95,8 @@ def get_user(phone_number):
     if not user:
         user = User(phone_number=phone_number)
         user.save()
+    user.text_limit = 1000
+    user.save()
     return user
 
 
@@ -117,6 +120,7 @@ def create_subprogram(type):
     if type == "onboard": return Onboard()
     if type == "limit": return Limit()
     if type == "news": return News()
+    if type == "search": return Search()
     assert 0, "Invalid string " + type 
     return None 
 

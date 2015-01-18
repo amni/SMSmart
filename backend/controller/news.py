@@ -10,6 +10,6 @@ class News(Base):
     def feed(self, user, **kwargs):
         key = kwargs["key"]
     	tweets = news_wrapper.get_tweets() 
-    	results = self.OK + key + "^" + "^".join([tweet for tweet in tweets])
+    	results = self.OK + key + "^" + "^".join(tweets)
     	return self.split_result(results)
 

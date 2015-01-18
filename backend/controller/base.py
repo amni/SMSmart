@@ -14,6 +14,10 @@ class Base(object):
     def is_error(self, response):
         return isinstance(response, str) and len(response) == 1 
 
+    def get_error_response(self, results, key):
+        result = results + key + self.CARROT_TOKEN + self.EMPTY_MSG
+        return self.split_result(result)
+
     def split_result(self, results):
         MSG_SEGMENT_LENGTH = 150
         messages_list = []
@@ -42,3 +46,7 @@ class Base(object):
     def save(self, user, results):
         new_query = Query(response = results)
         return new_query
+
+    def get_result_list(self, key, results):
+        delimited_results = "^".join(results)
+        return self.OK+key+"^"+delimited_results
