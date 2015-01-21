@@ -4,9 +4,9 @@ class Base(object):
     OK = '0'
     EMPTY_MSG = ' '
     TRUE_TOKEN = 'T'
-    CARROT_TOKEN = '^'
+    CARROT_TOKEN = '^^'
     GEO_TOKEN = '#'
-    SEPARATOR_TOKEN = '|'
+    SEPARATOR_TOKEN = '||'
 
     def find_results(self, **kwargs):
         pass
@@ -23,7 +23,7 @@ class Base(object):
         messages_list = []
         key_position = results.find(self.CARROT_TOKEN)
         key = results[:key_position]
-        results = results[key_position+1:]
+        results = results[key_position+2:] #2 because the token is of length 2
         position = 0
         remainder = len(results)
         msg_number = 1
@@ -48,8 +48,8 @@ class Base(object):
         return new_query
 
     def get_result_list(self, key, results):
-        delimited_results = "^".join(results)
+        delimited_results = self.CARROT_TOKEN.join(results)
         return self.prepend_key(key, delimited_results)
 
     def prepend_key(self, key, results):
-        return self.OK+key+"^"+results
+        return self.OK+key+self.CARROT_TOKEN+results

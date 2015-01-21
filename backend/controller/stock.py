@@ -11,5 +11,6 @@ class Stock(Base):
         results = stock_wrapper.get_share_price(symbol)
         if self.is_error(results):
             return self.get_error_response(results, key)
-        cleaned_results = self.prepend_key(key, results)
+        joined_results = self.SEPARATOR_TOKEN.join(results)        
+        cleaned_results = self.prepend_key(key, joined_results)
         return self.split_result(cleaned_results) 

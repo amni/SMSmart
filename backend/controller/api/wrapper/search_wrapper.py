@@ -35,7 +35,7 @@ def parse_results(results):
     return parsed_results
 
 def get_result(variables):
-    return "|".join(variables)
+    return "||".join(variables)
 
 if __name__ == "__main__":
     main()

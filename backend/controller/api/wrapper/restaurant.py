@@ -12,7 +12,7 @@ class Restaurant:
         return self.to_string_verbose()
         
     def to_string_verbose(self):
-        return str(self.counter) + '|' + self.name + '|' +  self.location + '|' + self.phone + '|' + self.rating + '|' + self.isClosed        
+        return str(self.counter) + '||' + self.name + '||' +  self.location + '||' + self.phone + '||' + self.rating + '||' + self.isClosed        
 
     def to_android_string(self):
         return self.to_string_verbose() 

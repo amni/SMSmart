@@ -11,5 +11,7 @@ class Weather(Base):
         results = weather_wrapper.get_weather(location)
         if self.is_error(results):
             return self.get_error_response(results, key)
-        cleaned_results = self.prepend_key(key, results)
+        
+        joined_results = self.SEPARATOR_TOKEN.join(results)
+        cleaned_results = self.prepend_key(key, joined_results)
         return self.split_result(cleaned_results) 

@@ -8,11 +8,7 @@ def get_weather(location):
         temperatures =  observation.get_temperature("fahrenheit")
         status = observation.get_status()
         cur_temp = temperatures["temp"]
-        result = get_result([location, status, str(cur_temp)])
+        result = [location, status, str(cur_temp)]
     except: 
         result = "1"
     return result
-
-
-def get_result(variables):
-    return "|".join(variables)
