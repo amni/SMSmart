@@ -5,7 +5,7 @@ from models import User
 class Wikipedia(Base):
 
     SEARCH_LIMIT = 5
-    SUMMARY_LIMIT = 3
+    SUMMARY_LIMIT = 7
 
     def default(self, user, **kwargs):
         return self.search(user, **kwargs)
