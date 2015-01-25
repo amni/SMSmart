@@ -1,7 +1,7 @@
 import wikipedia 
 
 
-def summary(term, sentences = 3):
+def summary(term, sentences = 7):
     """Summarizes first x sentences of a specific topic"""
     try: 
         summary = wikipedia.summary(term, sentences)
