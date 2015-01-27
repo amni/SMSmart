@@ -3,7 +3,7 @@ SMSmart
 *All of Your Favorite Applications, None of Data*
 
 ###Welcome to the Backend!
-Here is where out server lives.  This contains all of the Twilio code and Api interfacing. The code that is live here serves as the gateway for SMS messages from users and also sends SMS messages to users. To learn more about SMSmart, please visit our website at - http://www.getsmsmart.com/.   
+Here is where our server lives.  This contains all of the Twilio code and Api interfacing. The code that is live here serves as the gateway for SMS messages from users and also sends SMS messages to users. To learn more about SMSmart, please visit our website at - http://www.getsmsmart.com/.   
 
 ##### Getting Started
 To run the following project, you must first: 
