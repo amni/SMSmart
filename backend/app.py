@@ -74,7 +74,7 @@ def receive_message():
     if not wifi_request: 
         distribute(str(phone_number), messages_list, key)
         return ""
-    return jsonify(results=response_text_message)
+    return jsonify(results=prepend_key(messages_list, key))
 
 @app.route('/upgrade', methods=["POST"])
 def upgrade_account():
@@ -101,6 +101,8 @@ def get_user(phone_number):
     user.save()
     return user
 
+def prepend_key(messages_list, key):
+    return ["".join([key, message]).encode('utf-8', 'ignore') for message in messages_list]
 
 def distribute(phone_number, messages_list, key):
     for message in messages_list:
