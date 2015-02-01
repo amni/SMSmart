@@ -15,14 +15,18 @@ class Query(Document):
 		return (today.month == self.date_created.month) and (today.year == self.date_created.year)
 
 
+class Comment(Document):
+	content = StringField()
+
 class User(Document):
 	phone_number = StringField(required=True, unique=True)
 	queries = ListField(ReferenceField(Query))
 	date_created = DateTimeField(default=datetime.datetime.now)
 	text_limit = IntField(default=30)
+	comments = ListField(ReferenceField(Comment))
 
 	def get_num_queries_this_month(self):
-		return len([query for query in self.queries if query.is_less_than_month_old()])
+		return len([query for query in self.queries if query.is_less_than_month_old()]) - len(self.comments)
 
 	def is_over_limit(self):
 		return self.get_num_queries_this_month() > self.text_limit
