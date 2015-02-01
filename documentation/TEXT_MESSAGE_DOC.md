@@ -97,7 +97,7 @@ Response - '0z^^Ford Motor Company^^Gerald Ford^^List of Ford vehicles'
 
 **Response:**
 ```
-{"results": "text_limit: 30"} //(number of text messages a user is allotted under current plan) 
+{"results": "8b | 30"} //(number of text messages a user is allotted under current plan) 
 ```
 ##### 6) Search
 **Programs:**

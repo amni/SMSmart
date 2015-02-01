@@ -27,7 +27,6 @@ client = TwilioRestClient(account_sid, auth_token)
 PHONE_NUMBERS = ["+15738182146", "+19738280148", "+16503534855", "+18704740576", "+18702802312"]
 PLANS = {"Free": 30, "Budget":50, "Pro": 100, "Premium":200, "Unlimited": 10000}
 
-MSG_SEGMENT_LENGTH = 150
 #for heroku
 if 'PORT' in os.environ: 
     print os.environ
