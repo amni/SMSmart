@@ -12,6 +12,7 @@ from controller.news import News
 from controller.search import Search
 from controller.weather import Weather
 from controller.stock import Stock
+from controller.feedback import Feedback
 import twilio.twiml
 from models import User, Query
 from twilio.rest import TwilioRestClient
@@ -26,7 +27,7 @@ client = TwilioRestClient(account_sid, auth_token)
 PHONE_NUMBERS = ["+15738182146", "+19738280148", "+16503534855", "+18704740576", "+18702802312"]
 PLANS = {"Free": 30, "Budget":50, "Pro": 100, "Premium":200, "Unlimited": 10000}
 
-MSG_SEGMENT_LENGTH = 150
+MSG_SEGMENT_LENGTH = 140
 #for heroku
 if 'PORT' in os.environ: 
     print os.environ
@@ -62,11 +63,13 @@ def receive_message():
     phone_number = request.values.get('From')
     wifi_request = 'Wifi' in request.values
     user = get_user(phone_number)
-    if user.is_over_limit():
-        user_text_message = "limit"
     results = process_message(user, user_text_message)
-    messages_list = results.get("messages")
     key = results.get("key", "")
+    if user.is_over_limit():
+        user_text_message = "limit default: key: %s" % key[1:]
+        results = process_message(user, user_text_message)
+        key = results.get("key" "")
+    messages_list = results.get("messages")
     user_query = Query(query_id = key)
     user_query.save()
     user.queries.append(user_query)
@@ -127,6 +130,7 @@ def create_subprogram(type):
     if type == "weather": return Weather()
     if type == "search": return Search()
     if type == "stock": return Stock()
+    if type == "feedback": return Feedback()
     assert 0, "Invalid string " + type 
     return None 
 

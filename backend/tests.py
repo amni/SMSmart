@@ -40,6 +40,16 @@ class TestNews(BaseTest):
         self.basic_test(response, '0')  
         self.separator_test(response, self.CARROT_SEPARATOR)
 
+class TestNews(BaseTest):
+    def setup(self):
+        self.app = app.test_client(use_cookies=True)
+        new_user = User(phone_number="5734894023")
+        new_user.save()    
+
+    def test_news(self):
+        default_user = User.objects(phone_number="5734894023").first()
+        response = app.process_message(default_user, "@ feedback submit: content:test key: a")
+
 class TestSearch(BaseTest):
     def setup(self):
         self.app = app.test_client(use_cookies=True)
