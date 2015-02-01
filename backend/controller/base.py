@@ -19,7 +19,7 @@ class Base(object):
         return self.split_result(result)
 
     def split_result(self, results):
-        MSG_SEGMENT_LENGTH = 150
+        MSG_SEGMENT_LENGTH = 130
         messages_list = []
         key_position = results.find(self.CARROT_TOKEN)
         key = results[:key_position]
