@@ -20,6 +20,8 @@ class Base(object):
 
     def split_result(self, results):
         MSG_SEGMENT_LENGTH = 130
+        MSG_COUNT_THRESHOLD = 9
+        ERROR_CODE_MSG_LIMIT = '7'
         messages_list = []
         key_position = results.find(self.CARROT_TOKEN)
         key = results[:key_position]
@@ -41,6 +43,9 @@ class Base(object):
             metadata = '(' + str(msg_number) + '/' + str(total_msg) + ')' + '*'
             msg_number += 1   
             messages_list.append(metadata+message)
+        if len(messages_list) > MSG_COUNT_THRESHOLD:
+            messages_list = ['(1/1)*']
+            key = ERROR_CODE_MSG_LIMIT + key[1:]
         return {"messages":messages_list, "key": key}
 
     def save(self, user, results):

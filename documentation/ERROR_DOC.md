@@ -51,6 +51,19 @@ Text - '@ Wikipedia summary: term: zv#432v* limit: 3 key: z'
 Response - '2z(1/1)* '
 ```
 
-### Version 0.1
-*last updated 12/18/14*
+
+##### 4) Too Many Messages
+If a response has over 9 text messages, this error will be thrown. 
+**Error Codes**:
+- 7
+
+**Examples:**
+```
+Response - '7z(1/1)* '
+```
+
+
+
+### Version 0.2
+*last updated 02/02/15*
 

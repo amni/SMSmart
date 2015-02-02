@@ -34,6 +34,18 @@ class BaseTest(unittest.TestCase):
                 check = True
         return check         
 
+
+class TestTextLimit(BaseTest):
+    def setup(self):
+        self.app = app.test_client(use_cookies=True)
+        new_user = User(phone_number="5734894023")
+        new_user.save()    
+
+    def test_text_limit(self):
+        default_user = User.objects(phone_number="5734894023").first()
+        response = app.process_message(default_user, "@ Wikipedia search: term: Duke University limit: 20 key: z")
+        print response
+        
 class TestNews(BaseTest):
     def setup(self):
         self.app = app.test_client(use_cookies=True)
@@ -62,13 +74,13 @@ class TestTrailingCarrot(BaseTest):
         response = app.process_message(default_user, "@ news feed: key: a")
         self.trailing_carrot_test(response)      
 
-class TestNews(BaseTest):
+class TestFeedback(BaseTest):
     def setup(self):
         self.app = app.test_client(use_cookies=True)
         new_user = User(phone_number="5734894023")
         new_user.save()    
 
-    def test_news(self):
+    def test_feedback(self):
         default_user = User.objects(phone_number="5734894023").first()
         response = app.process_message(default_user, "@ feedback submit: content:test key: a")
 
