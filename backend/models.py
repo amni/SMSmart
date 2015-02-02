@@ -23,6 +23,7 @@ class User(Document):
 	queries = ListField(ReferenceField(Query))
 	date_created = DateTimeField(default=datetime.datetime.now)
 	text_limit = IntField(default=30)
+	email = StringField()
 	comments = ListField(ReferenceField(Comment))
 
 	def get_num_queries_this_month(self):
