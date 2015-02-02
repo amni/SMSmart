@@ -30,7 +30,7 @@ class Maps(Base):
             cur_lng = str(insn['end_location']['lng'])
             geo_output += str(counter) + self.SEPARATOR_TOKEN + cur_lat + ',' + cur_lng + self.CARROT_TOKEN
             output += str(counter) + self.SEPARATOR_TOKEN + cur_insn + self.SEPARATOR_TOKEN + cur_dist + self.CARROT_TOKEN
-        result = (self.OK + key + self.CARROT_TOKEN + output)[:-1]    # do this to remove the last excess ^
+        result = (self.OK + key + self.CARROT_TOKEN + output)[:-2]    # do this to remove the last excess ^
 
         if "geo" in kwargs:
             if kwargs["geo"].upper() == self.TRUE_TOKEN:

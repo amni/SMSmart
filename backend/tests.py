@@ -21,6 +21,12 @@ class BaseTest(unittest.TestCase):
         messages = response['messages']
         self.assertTrue(self.check_separator(messages, separator))
 
+    def trailing_carrot_test(self, response):
+        messages = response['messages']
+        last_msg = messages[len(messages)-1]
+        last_char = last_msg[-1:]
+        self.assertNotEqual(last_char, '^')  
+
     def check_separator(self, messages, separator):
         check = False
         for msg in messages:
@@ -39,6 +45,22 @@ class TestNews(BaseTest):
         response = app.process_message(default_user, "@ news feed: key: a")
         self.basic_test(response, '0')  
         self.separator_test(response, self.CARROT_SEPARATOR)
+
+class TestTrailingCarrot(BaseTest):
+    def setup(self):
+        self.app = app.test_client(use_cookies=True)
+        new_user = User(phone_number="5734894023")
+        new_user.save()    
+
+    def test_trailing_carrot_maps(self):
+        default_user = User.objects(phone_number="5734894023").first()
+        response = app.process_message(default_user, "@ maps directions: key: d v: 1 to:UNC chapel hill from:36.0039438,-78.9412973")
+        self.trailing_carrot_test(response)
+
+    def test_trailing_carrot_news(self):
+        default_user = User.objects(phone_number="5734894023").first()
+        response = app.process_message(default_user, "@ news feed: key: a")
+        self.trailing_carrot_test(response)      
 
 class TestNews(BaseTest):
     def setup(self):
