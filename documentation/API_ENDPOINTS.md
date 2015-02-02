@@ -14,12 +14,23 @@ Upgrades a user to a certain account type
 
 **Examples:** 
 ```
-//Possible Plans PLANS = ["Budget":50, "Pro": 100, "Premium":200, "Unlimited": 10000]
-Arguments - {Account: "Budget", From: 5734894023}
+//To add 40 text messages
+Arguments - {Texts: 40, From: 573489402
 Response - {success:True} 
 ```
 
-### Version 0.1
-*last updated 1/1/15*
+##### 3) url(testing or prod)/signup 
+
+Upgrades a user to a certain account type 
+
+**Examples:** 
+```
+//To add 40 text messages
+Arguments - {Email: amni2015@gmail.com, From: 5734894023}
+Response - {success:True} 
+```
+
+### Version 0.2
+*last updated 2/1/15*
 
 
