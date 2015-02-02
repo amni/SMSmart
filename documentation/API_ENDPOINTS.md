@@ -15,7 +15,7 @@ Upgrades a user to a certain account type
 **Examples:** 
 ```
 //To add 40 text messages
-Arguments - {Texts: 40, From: 573489402
+Arguments - {Texts: 40, From: 5734894023, Key: "bT7KZhQZUQ"}
 Response - {success:True} 
 ```
 
@@ -25,8 +25,8 @@ Upgrades a user to a certain account type
 
 **Examples:** 
 ```
-//To add 40 text messages
-Arguments - {Email: amni2015@gmail.com, From: 5734894023}
+//To add allow user signup
+Arguments - {Email: amni2015@gmail.com, From: 5734894023, Key: "bT7KZhQZUQ"}
 Response - {success:True} 
 ```
 
