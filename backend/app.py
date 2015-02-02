@@ -23,6 +23,7 @@ import os
 app = Flask(__name__)
 account_sid = "AC171ca34ca45bf15bb3f369b1ae5e9a9f"
 auth_token = "1d3ef112c1407035c6c6f5e5e17f75ad"
+android_key = "bT7KZhQZUQ"
 client = TwilioRestClient(account_sid, auth_token)
 PHONE_NUMBERS = ["+15738182146", "+19738280148", "+16503534855", "+18704740576", "+18702802312"]
 PLANS = {"Free": 30, "Budget":50, "Pro": 100, "Premium":200, "Unlimited": 10000}
@@ -81,13 +82,26 @@ def receive_message():
 @app.route('/upgrade', methods=["POST"])
 def upgrade_account():
     try:
-        account_type = request.values.get('Account')
+        text_increase = request.values.get('Texts')
         phone_number = request.values.get('From')
+        key = request.values.get('Key')
         user = get_user(phone_number)
-        user.text_limit = PLANS[account_type]
+        user.text_limit += text_increase
+        user.save()
         return jsonify(success=True)
     except:
         return jsonify(success=False)
+
+@app.route('/signup', methods=["POST"])
+def add_user():
+    email = request.values.get('Email')
+    phone_number = request.values.get('From')
+    key = request.values.get('Key')
+    if key == android_key:
+        user = User(phone_number = phone_number, email = email)
+        user.save()
+        return jsonify(success=True)
+    return jsonify(success=False)
 
 def get_phone_number():
     from_number = PHONE_NUMBERS.pop(0)
