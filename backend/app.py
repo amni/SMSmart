@@ -24,6 +24,7 @@ app = Flask(__name__)
 account_sid = "AC171ca34ca45bf15bb3f369b1ae5e9a9f"
 auth_token = "1d3ef112c1407035c6c6f5e5e17f75ad"
 android_key = "bT7KZhQZUQ"
+signups_open = True
 client = TwilioRestClient(account_sid, auth_token)
 PHONE_NUMBERS = ["+15738182146", "+19738280148", "+16503534855", "+18704740576", "+18702802312"]
 PLANS = {"Free": 30, "Budget":50, "Pro": 100, "Premium":200, "Unlimited": 10000}
@@ -97,9 +98,11 @@ def add_user():
     email = request.values.get('Email')
     phone_number = request.values.get('From')
     key = request.values.get('Key')
-    if key == android_key:
-        user = User(phone_number = phone_number, email = email)
-        user.save()
+    if key == android_key and signups_open:
+        user = User.objects(phone_number=str(phone_number)).first()
+        if not user: 
+            user = User(phone_number = str(phone_number), email = email)
+            user.save()
         return jsonify(success=True)
     return jsonify(success=False)
 
@@ -109,10 +112,10 @@ def get_phone_number():
     return from_number
 
 def get_user(phone_number):
-    user = User.objects(phone_number=phone_number).first()
+    user = User.objects(phone_number=str(phone_number)).first()
     if not user:
-        user = User(phone_number=phone_number)
-        user.save()
+        new_user = User(phone_number=str(phone_number))
+        new_user.save()
     user.text_limit = 1000
     user.save()
     return user
@@ -129,7 +132,10 @@ def distribute(phone_number, messages_list, key):
 def process_message(user, user_text_message):
     tokenizer = Tokenizer(user_text_message)
     api = create_subprogram(tokenizer.api)
-    result = getattr(api, tokenizer.program)(user, **tokenizer.arguments_dict)
+    try:
+        result = getattr(api, tokenizer.program)(user, **tokenizer.arguments_dict)
+    except: 
+        result = getattr(api, "default")(user, **tokenizer.arguments_dict)
     return result
     
 def create_subprogram(type):

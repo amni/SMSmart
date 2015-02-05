@@ -30,5 +30,5 @@ class User(Document):
 		return len([query for query in self.queries if query.is_less_than_month_old()]) - len(self.comments)
 
 	def is_over_limit(self):
-		return self.get_num_queries_this_month() > self.text_limit
+		return self.text_limit <= 0 
 

@@ -44,7 +44,6 @@ class TestTextLimit(BaseTest):
     def test_text_limit(self):
         default_user = User.objects(phone_number="5734894023").first()
         response = app.process_message(default_user, "@ Wikipedia search: term: Duke University limit: 20 key: z")
-        print response
         
 class TestNews(BaseTest):
     def setup(self):
@@ -128,12 +127,8 @@ class TestOnboard(BaseTest):
 
     def test_onboard(self):
         default_user = User.objects(phone_number="5734894023").first()
-        onboard = app.process_message(default_user, "@Onboard")
-        expected_onboard_msg = 'T||Welcome to SMSmart. Please blacklist this number for the best experience.'
+        onboard = app.process_message(default_user, "@Onboard: key:ab")
         self.assertIsInstance(onboard['messages'], list)
-        for msg in onboard['messages']:
-            self.assertEqual(msg, expected_onboard_msg)
-
 
 class TestWikipedia(BaseTest):
     def setup(self):
@@ -284,3 +279,4 @@ class TestMain(BaseTest):
 print 'Running tests in backend/tests.py ---'
 if __name__ == "__main__":
     unittest.main()
+

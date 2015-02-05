@@ -62,8 +62,6 @@ If a response has over 9 text messages, this error will be thrown.
 Response - '7z(1/1)* '
 ```
 
-
-
 ### Version 0.2
 *last updated 02/02/15*
 

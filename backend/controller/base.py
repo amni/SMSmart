@@ -19,34 +19,30 @@ class Base(object):
         return self.split_result(result)
 
     def split_result(self, results):
-        MSG_SEGMENT_LENGTH = 130
-        MSG_COUNT_THRESHOLD = 9
+        MSG_SEGMENT_LENGTH = 150
         ERROR_CODE_MSG_LIMIT = '7'
-        messages_list = []
         key_position = results.find(self.CARROT_TOKEN)
         key = results[:key_position]
-        results = results[key_position+2:] #2 because the token is of length 2
-        position = 0
-        remainder = len(results)
-        msg_number = 1
-        temp = remainder/MSG_SEGMENT_LENGTH
-        total_msg = temp + 1 if (remainder%MSG_SEGMENT_LENGTH != 0) else temp
-        while remainder > MSG_SEGMENT_LENGTH:
-            message = results[position:position+MSG_SEGMENT_LENGTH]
-            metadata = '(' + str(msg_number) + '/' + str(total_msg) + ')' + '*'
-            msg_number += 1        
-            remainder -= MSG_SEGMENT_LENGTH
-            position += MSG_SEGMENT_LENGTH
-            messages_list.append(metadata+message)
-        if remainder > 0:
-            message = results[position:]
-            metadata = '(' + str(msg_number) + '/' + str(total_msg) + ')' + '*'
-            msg_number += 1   
-            messages_list.append(metadata+message)
+        spliced_results = results[key_position+2:] #2 because the token is of length 2
+        message_list = [spliced_results[i:i+MSG_SEGMENT_LENGTH] for i in range(0, len(spliced_results), MSG_SEGMENT_LENGTH)]
+        return self.implement_standard_format(message_list, key)
+
+    def implement_standard_format(self, results, key):
+        MSG_COUNT_THRESHOLD = 15
+        total_msg = len(results)
+        messages_list=[]
         if len(messages_list) > MSG_COUNT_THRESHOLD:
             messages_list = ['(1/1)*']
             key = ERROR_CODE_MSG_LIMIT + key[1:]
+        else: 
+            for msg_number, message in enumerate(results):
+                metadata = '(' + str(msg_number+1) + '/' + str(total_msg) + ')' + '*'
+                messages_list.append(metadata+message)
+        if len(messages_list) > MSG_COUNT_THRESHOLD:
+            messages_list = ['(1/1)*']
+            key = ERROR_CODE_MSG_LIMIT + key[1:]                
         return {"messages":messages_list, "key": key}
+
 
     def save(self, user, results):
         new_query = Query(response = results)
