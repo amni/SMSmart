@@ -1,4 +1,5 @@
 import re
+from models import User, Query
 
 class Tokenizer():
     def __init__(self, query="help"):

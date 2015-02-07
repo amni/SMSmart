@@ -64,14 +64,16 @@ def receive_message():
     phone_number = request.values.get('From')
     wifi_request = 'Wifi' in request.values
     user = get_user(phone_number)
-    results = process_message(user, user_text_message)
+    user_query = Query()
+    user_query.save()
+    results = process_message(user, user_text_message, user_query)
     key = results.get("key", "")
     if user.is_over_limit():
         user_text_message = "limit default: key: %s" % key[1:]
-        results = process_message(user, user_text_message)
+        results = process_message(user, user_text_message, user_query)
         key = results.get("key" "")
     messages_list = results.get("messages")
-    user_query = Query(query_id = key)
+    user_query.response = messages_list[0]
     user_query.save()
     user.queries.append(user_query)
     user.save() 
@@ -116,7 +118,6 @@ def get_user(phone_number):
     if not user:
         new_user = User(phone_number=str(phone_number))
         new_user.save()
-    user.text_limit = 1000
     user.save()
     return user
 
@@ -129,9 +130,13 @@ def distribute(phone_number, messages_list, key):
         message.encode('utf-8', 'ignore')
         client.messages.create(to=phone_number, from_=get_phone_number(), body=message)
 
-def process_message(user, user_text_message):
+def process_message(user, user_text_message, query=None):
     tokenizer = Tokenizer(user_text_message)
     api = create_subprogram(tokenizer.api)
+    if query:
+        query.api = tokenizer.api
+        query.request = user_text_message
+        query.save() 
     try:
         result = getattr(api, tokenizer.program)(user, **tokenizer.arguments_dict)
     except: 
