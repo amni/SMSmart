@@ -13,21 +13,19 @@ from controller.search import Search
 from controller.weather import Weather
 from controller.stock import Stock
 from controller.feedback import Feedback
-import twilio.twiml
 from models import User, Query
-from twilio.rest import TwilioRestClient
 from controller.wikipedia import Wikipedia
-
+import plivo, plivoxml
 import os
 
 app = Flask(__name__)
-account_sid = "AC171ca34ca45bf15bb3f369b1ae5e9a9f"
-auth_token = "1d3ef112c1407035c6c6f5e5e17f75ad"
 android_key = "bT7KZhQZUQ"
 signups_open = True
-client = TwilioRestClient(account_sid, auth_token)
-PHONE_NUMBERS = ["+15738182146", "+19738280148", "+16503534855", "+18704740576", "+18702802312"]
 PLANS = {"Free": 30, "Budget":50, "Pro": 100, "Premium":200, "Unlimited": 10000}
+auth_id = "MAMJHJZDHJYZBJNJM1MZ"
+auth_token = "ODMxYTkzOWRhZmQ0ODZkZmQyYzQyNjAzMmU0NmE2"
+p = plivo.RestAPI(auth_id, auth_token)
+PHONE_NUMBERS = ["+14159856984", "+19195848629", "+14082143089", "+15733093911", "+15852285686"]
 
 #for heroku
 if 'PORT' in os.environ: 
@@ -59,8 +57,8 @@ else:
     connect('smsmart')
 
 @app.route('/', methods=["GET", "POST"])
-def receive_message():
-    user_text_message = request.values.get('Body')
+def receive_message(): 
+    user_text_message = request.values.get('Text')
     phone_number = request.values.get('From')
     wifi_request = 'Wifi' in request.values
     user = get_user(phone_number)
@@ -127,9 +125,18 @@ def prepend_key(messages_list, key):
 def distribute(phone_number, messages_list, key):
     for message in messages_list:
         message = "".join([key, message])
+        message = remove_non_ascii(message)
         message.encode('utf-8', 'ignore')
-        client.messages.create(to=phone_number, from_=get_phone_number(), body=message)
+        params = {
+            'src': get_phone_number(), 
+            'dst' : phone_number, 
+            'text' : message
+        }
+        p.send_message(params)
 
+def remove_non_ascii(s): 
+    return "".join(i for i in s if ord(i)<128)
+    
 def process_message(user, user_text_message, query=None):
     tokenizer = Tokenizer(user_text_message)
     api = create_subprogram(tokenizer.api)
