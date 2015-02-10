@@ -11,4 +11,5 @@ class Feedback(Base):
     	new_comment = Comment(content = kwargs["content"])
     	new_comment.save()
         user.comments.append(new_comment)
+      	user.save()
         return {"messages" :[]}     

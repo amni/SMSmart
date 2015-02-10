@@ -66,12 +66,12 @@ def receive_message():
     user_query.save()
     results = process_message(user, user_text_message, user_query)
     key = results.get("key", "")
-    if user.is_over_limit():
-        user_text_message = "limit default: key: %s" % key[1:]
-        results = process_message(user, user_text_message, user_query)
-        key = results.get("key" "")
+    # if user.is_over_limit():
+    #     user_text_message = "limit default: key: %s" % key[1:]
+    #     results = process_message(user, user_text_message, user_query)
+    #     key = results.get("key" "")
     messages_list = results.get("messages")
-    user_query.response = messages_list[0]
+    user_query.response = messages_list[0] if len(messages_list) else "Feedback"
     user_query.save()
     user.queries.append(user_query)
     user.save() 
@@ -84,7 +84,7 @@ def receive_message():
 def upgrade_account():
     try:
         text_increase = request.values.get('Texts')
-        phone_number = request.values.get('From')
+        phone_number = request.values.get('From')[-10:]
         key = request.values.get('Key')
         user = get_user(phone_number)
         user.text_limit += text_increase
@@ -96,11 +96,14 @@ def upgrade_account():
 @app.route('/signup', methods=["POST"])
 def add_user():
     email = request.values.get('Email')
-    phone_number = request.values.get('From')
+    phone_number = request.values.get('From')[-10:]
     key = request.values.get('Key')
+    print key
     if key == android_key and signups_open:
+        print "here"
         user = User.objects(phone_number=str(phone_number)).first()
         if not user: 
+            print "here2"
             user = User(phone_number = str(phone_number), email = email)
             user.save()
         return jsonify(success=True)
@@ -112,11 +115,11 @@ def get_phone_number():
     return from_number
 
 def get_user(phone_number):
-    user = User.objects(phone_number=str(phone_number)).first()
+    user = User.objects(phone_number=str(phone_number[-10:])).first()
     if not user:
-        new_user = User(phone_number=str(phone_number))
+        new_user = User(phone_number=str(phone_number[-10:]))
         new_user.save()
-    user.save()
+        return new_user
     return user
 
 def prepend_key(messages_list, key):

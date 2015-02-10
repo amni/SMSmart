@@ -20,7 +20,6 @@ class Base(object):
 
     def split_result(self, results):
         MSG_SEGMENT_LENGTH = 140
-        ERROR_CODE_MSG_LIMIT = '7'
         key_position = results.find(self.CARROT_TOKEN)
         key = results[:key_position]
         spliced_results = results[key_position+2:] #2 because the token is of length 2
@@ -29,6 +28,7 @@ class Base(object):
 
     def implement_standard_format(self, results, key):
         MSG_COUNT_THRESHOLD = 15
+        ERROR_CODE_MSG_LIMIT = '7'
         total_msg = len(results)
         messages_list=[]
         if len(messages_list) > MSG_COUNT_THRESHOLD:
