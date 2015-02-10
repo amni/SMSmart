@@ -15,6 +15,8 @@ from controller.stock import Stock
 from controller.feedback import Feedback
 from models import User, Query
 from controller.wikipedia import Wikipedia
+import phonenumbers 
+from util import PhoneNumbersUtil
 import plivo, plivoxml
 import os
 
@@ -25,7 +27,7 @@ PLANS = {"Free": 30, "Budget":50, "Pro": 100, "Premium":200, "Unlimited": 10000}
 auth_id = "MAMJHJZDHJYZBJNJM1MZ"
 auth_token = "ODMxYTkzOWRhZmQ0ODZkZmQyYzQyNjAzMmU0NmE2"
 p = plivo.RestAPI(auth_id, auth_token)
-PHONE_NUMBERS = ["+14159856984", "+19195848629", "+14082143089", "+15733093911", "+15852285686"]
+phone_util = PhoneNumbersUtil()
 
 #for heroku
 if 'PORT' in os.environ: 
@@ -59,7 +61,8 @@ else:
 @app.route('/', methods=["GET", "POST"])
 def receive_message(): 
     user_text_message = request.values.get('Text')
-    phone_number = request.values.get('From')
+    phone_number = '+' + request.values.get('From')
+    country_code = str(phonenumbers.parse(phone_number, None).country_code)
     wifi_request = 'Wifi' in request.values
     user = get_user(phone_number)
     user_query = Query()
@@ -76,7 +79,7 @@ def receive_message():
     user.queries.append(user_query)
     user.save() 
     if not wifi_request: 
-        distribute(str(phone_number), messages_list, key)
+        distribute(str(phone_number), messages_list, key, country_code)
         return ""
     return jsonify(results=prepend_key(messages_list, key))
 
@@ -98,21 +101,13 @@ def add_user():
     email = request.values.get('Email')
     phone_number = request.values.get('From')[-10:]
     key = request.values.get('Key')
-    print key
     if key == android_key and signups_open:
-        print "here"
         user = User.objects(phone_number=str(phone_number)).first()
         if not user: 
-            print "here2"
             user = User(phone_number = str(phone_number), email = email)
             user.save()
         return jsonify(success=True)
     return jsonify(success=False)
-
-def get_phone_number():
-    from_number = PHONE_NUMBERS.pop(0)
-    PHONE_NUMBERS.append(from_number)
-    return from_number
 
 def get_user(phone_number):
     user = User.objects(phone_number=str(phone_number[-10:])).first()
@@ -125,13 +120,13 @@ def get_user(phone_number):
 def prepend_key(messages_list, key):
     return ["".join([key, message]).encode('utf-8', 'ignore') for message in messages_list]
 
-def distribute(phone_number, messages_list, key):
+def distribute(phone_number, messages_list, key, country_code='1'):
     for message in messages_list:
         message = "".join([key, message])
         message = remove_non_ascii(message)
         message.encode('utf-8', 'ignore')
         params = {
-            'src': get_phone_number(), 
+            'src': phone_util.get_phone_number(country_code), 
             'dst' : phone_number, 
             'text' : message
         }
