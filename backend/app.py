@@ -29,6 +29,7 @@ auth_token = "ODMxYTkzOWRhZmQ0ODZkZmQyYzQyNjAzMmU0NmE2"
 p = plivo.RestAPI(auth_id, auth_token)
 phone_util = PhoneNumbersUtil()
 
+
 #for heroku
 if 'PORT' in os.environ: 
     print os.environ
@@ -45,6 +46,11 @@ if 'PORT' in os.environ:
     data = match.groupdict()
 
     # now connect
+    print data['database']
+    print data['host']
+    print int(data['port'])
+    print data['username']
+    print data['password']
     connect(data['database'], host=data['host'], port=int(data['port']), username=data['username'], password=data['password'])
 
     import logging
@@ -110,9 +116,9 @@ def add_user():
     return jsonify(success=False)
 
 def get_user(phone_number):
-    user = User.objects(phone_number=str(phone_number[-10:])).first()
+    user = User.objects(phone_number=str(phone_number)[-10:]).first()
     if not user:
-        new_user = User(phone_number=str(phone_number[-10:]))
+        new_user = User(phone_number=str(phone_number)[-10:])
         new_user.save()
         return new_user
     return user
