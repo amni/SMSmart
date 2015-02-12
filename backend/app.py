@@ -100,10 +100,8 @@ def add_user():
     key = request.values.get('Key')
     print key
     if key == android_key and signups_open:
-        print "here"
         user = User.objects(phone_number=str(phone_number)).first()
         if not user: 
-            print "here2"
             user = User(phone_number = str(phone_number), email = email)
             user.save()
         return jsonify(success=True)
@@ -115,9 +113,9 @@ def get_phone_number():
     return from_number
 
 def get_user(phone_number):
-    user = User.objects(phone_number=str(phone_number[-10:])).first()
+    user = User.objects(phone_number=str(phone_number)[-10:]).first()
     if not user:
-        new_user = User(phone_number=str(phone_number[-10:]))
+        new_user = User(phone_number=str(phone_number)[-10:])
         new_user.save()
         return new_user
     return user
