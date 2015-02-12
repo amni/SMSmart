@@ -25,8 +25,8 @@ PLANS = {"Free": 30, "Budget":50, "Pro": 100, "Premium":200, "Unlimited": 10000}
 auth_id = "MAMJHJZDHJYZBJNJM1MZ"
 auth_token = "ODMxYTkzOWRhZmQ0ODZkZmQyYzQyNjAzMmU0NmE2"
 p = plivo.RestAPI(auth_id, auth_token)
-#PHONE_NUMBERS = ["+14159856984", "+19195848629", "+14082143089", "+15733093911", "+15852285686"]
-PHONE_NUMBERS = ["+14159856984"]
+PHONE_NUMBERS = ["+14159856984", "+19195848629", "+14082143089", "+15733093911", "+15852285686"]
+
 
 #for heroku
 if 'PORT' in os.environ: 
@@ -44,6 +44,11 @@ if 'PORT' in os.environ:
     data = match.groupdict()
 
     # now connect
+    print data['database']
+    print data['host']
+    print int(data['port'])
+    print data['username']
+    print data['password']
     connect(data['database'], host=data['host'], port=int(data['port']), username=data['username'], password=data['password'])
 
     import logging
