@@ -69,12 +69,15 @@ def receive_message():
     user_text_message = request.values.get('Text')
     phone_number = '+' + request.values.get('From')
     country_code = str(phonenumbers.parse(phone_number, None).country_code)
+    tokenizer = Tokenizer(user_text_message)
     wifi_request = 'Wifi' in request.values
     user = get_user(phone_number)
     user_query = Query()
     user_query.save()
     results = process_message(user, user_text_message, user_query)
     key = results.get("key", "")
+    tokenizer = Tokenizer(user_text_message)
+    version_number = int(tokenizer.arguments_dict["v"])
     # if user.is_over_limit():
     #     user_text_message = "limit default: key: %s" % key[1:]
     #     results = process_message(user, user_text_message, user_query)
@@ -85,7 +88,7 @@ def receive_message():
     user.queries.append(user_query)
     user.save() 
     if not wifi_request: 
-        distribute(str(phone_number), messages_list, key, country_code)
+        distribute(str(phone_number), messages_list, key, country_code, version_number)
         return ""
     return jsonify(results=prepend_key(messages_list, key))
 
@@ -126,8 +129,10 @@ def get_user(phone_number):
 def prepend_key(messages_list, key):
     return ["".join([key, message]).encode('utf-8', 'ignore') for message in messages_list]
 
-def distribute(phone_number, messages_list, key, country_code='1'):
+def distribute(phone_number, messages_list, key, country_code='1', version_number=1):
     for message in messages_list:
+        if version_number > 6: 
+            message = rotate_text(message)
         message = "".join([key, message])
         message = remove_non_ascii(message)
         message.encode('utf-8', 'ignore')
@@ -140,7 +145,26 @@ def distribute(phone_number, messages_list, key, country_code='1'):
 
 def remove_non_ascii(s): 
     return "".join(i for i in s if ord(i)<128)
-    
+
+def rotate_text(message):
+    """rotates text by 13 characters"""
+    result_str = ""
+    for letter in message:
+        if letter.isalpha():
+            int_val = ord(letter) 
+            starting_val = ord('a')
+            if letter.isupper():
+                starting_val = ord('A')
+            index_val = (int_val - starting_val + 13) % 26 + starting_val
+            result_str+=str(unichr(index_val))
+        elif letter == "+": 
+            result_str+=" "
+        elif letter == " ":
+            result_str+= "+"
+        else:
+            result_str+=letter
+    return result_str
+
 def process_message(user, user_text_message, query=None):
     tokenizer = Tokenizer(user_text_message)
     api = create_subprogram(tokenizer.api)
