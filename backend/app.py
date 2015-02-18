@@ -46,11 +46,6 @@ if 'PORT' in os.environ:
     data = match.groupdict()
 
     # now connect
-    print data['database']
-    print data['host']
-    print int(data['port'])
-    print data['username']
-    print data['password']
     connect(data['database'], host=data['host'], port=int(data['port']), username=data['username'], password=data['password'])
 
     import logging
@@ -73,6 +68,11 @@ def receive_message():
     user = get_user(phone_number)
     user_query = Query()
     user_query.save()
+    tokenizer = Tokenizer(user_text_message)
+    version_number = int(tokenizer.arguments_dict["v"])
+    should_rotate = False
+    if tokenizer.api != "onboard" and version_number > 6:
+        should_rotate = True
     results = process_message(user, user_text_message, user_query)
     key = results.get("key", "")
     # if user.is_over_limit():
@@ -85,7 +85,7 @@ def receive_message():
     user.queries.append(user_query)
     user.save() 
     if not wifi_request: 
-        distribute(str(phone_number), messages_list, key, country_code)
+        distribute(str(phone_number), messages_list, key, country_code, should_rotate)
         return ""
     return jsonify(results=prepend_key(messages_list, key))
 
@@ -126,8 +126,10 @@ def get_user(phone_number):
 def prepend_key(messages_list, key):
     return ["".join([key, message]).encode('utf-8', 'ignore') for message in messages_list]
 
-def distribute(phone_number, messages_list, key, country_code='1'):
+def distribute(phone_number, messages_list, key, country_code ="1", should_rotate = False):
     for message in messages_list:
+        if should_rotate:
+            message = rotate_text(message)
         message = "".join([key, message])
         message = remove_non_ascii(message)
         message.encode('utf-8', 'ignore')
@@ -137,6 +139,25 @@ def distribute(phone_number, messages_list, key, country_code='1'):
             'text' : message
         }
         p.send_message(params)
+
+def rotate_text(message):
+    """rotates text by 13 characters"""
+    result_str = ""
+    for letter in message:
+        if letter.isalpha():
+            int_val = ord(letter) 
+            starting_val = ord('a')
+            if letter.isupper():
+                starting_val = ord('A')
+            index_val = (int_val - starting_val + 13) % 26 + starting_val
+            result_str+=str(unichr(index_val))
+        elif letter == "+": 
+            result_str+=" "
+        elif letter == " ":
+            result_str+= "+"
+        else:
+            result_str+=letter
+    return result_str
 
 def remove_non_ascii(s): 
     return "".join(i for i in s if ord(i)<128)
