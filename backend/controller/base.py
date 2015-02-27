@@ -19,7 +19,7 @@ class Base(object):
         return self.split_result(result)
 
     def split_result(self, results):
-        MSG_SEGMENT_LENGTH = 140
+        MSG_SEGMENT_LENGTH = 130
         key_position = results.find(self.CARROT_TOKEN)
         key = results[:key_position]
         spliced_results = results[key_position+2:] #2 because the token is of length 2
