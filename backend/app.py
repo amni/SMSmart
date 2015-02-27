@@ -63,12 +63,12 @@ else:
 def receive_message(): 
     user_text_message = request.values.get('Text')
     phone_number = '+' + request.values.get('From')
-    country_code = str(phonenumbers.parse(phone_number, None).country_code)
+    tokenizer = Tokenizer(user_text_message)
     wifi_request = 'Wifi' in request.values
     user = get_user(phone_number)
     user_query = Query()
     user_query.save()
-    tokenizer = Tokenizer(user_text_message)
+    country_tag = tokenizer.arguments_dict["c"]    
     version_number = int(tokenizer.arguments_dict["v"])
     should_rotate = False
     if tokenizer.api != "onboard" and version_number > 6:
@@ -85,7 +85,7 @@ def receive_message():
     user.queries.append(user_query)
     user.save() 
     if not wifi_request: 
-        distribute(str(phone_number), messages_list, key, country_code, should_rotate)
+        distribute(str(phone_number), messages_list, key, country_tag, should_rotate)
         return ""
     return jsonify(results=prepend_key(messages_list, key))
 
@@ -126,7 +126,7 @@ def get_user(phone_number):
 def prepend_key(messages_list, key):
     return ["".join([key, message]).encode('utf-8', 'ignore') for message in messages_list]
 
-def distribute(phone_number, messages_list, key, country_code ="1", should_rotate = False):
+def distribute(phone_number, messages_list, key, country_tag ='US', should_rotate = False):
     for message in messages_list:
         if should_rotate:
             message = rotate_text(message)
@@ -134,7 +134,7 @@ def distribute(phone_number, messages_list, key, country_code ="1", should_rotat
         message = remove_non_ascii(message)
         message.encode('utf-8', 'ignore')
         params = {
-            'src': phone_util.get_phone_number(country_code), 
+            'src': phone_util.get_phone_number(country_tag), 
             'dst' : phone_number, 
             'text' : message
         }
