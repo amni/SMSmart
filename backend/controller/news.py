@@ -9,7 +9,8 @@ class News(Base):
 
     def feed(self, user, **kwargs):
         key = kwargs["key"]
-    	tweets = news_wrapper.get_tweets() 
+        category = kwargs["category"]
+    	tweets = news_wrapper.get_tweets(category) 
     	results = self.OK + key + self.CARROT_TOKEN + self.CARROT_TOKEN.join(tweets)
     	return self.split_result(results)
 

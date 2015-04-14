@@ -13,12 +13,15 @@ from controller.search import Search
 from controller.weather import Weather
 from controller.stock import Stock
 from controller.feedback import Feedback
-from models import User, Query
+from controller.twitter import Twitter
+from controller.more import More 
+from models import User, Query, Referral, Auth
 from controller.wikipedia import Wikipedia
 import phonenumbers 
 from util import PhoneNumbersUtil
 import plivo, plivoxml
 import os
+import datetime
 
 app = Flask(__name__)
 android_key = "bT7KZhQZUQ"
@@ -63,17 +66,26 @@ else:
 def receive_message(): 
     user_text_message = request.values.get('Text')
     phone_number = '+' + request.values.get('From')
-    tokenizer = Tokenizer(user_text_message)
     wifi_request = 'Wifi' in request.values
     user = get_user(phone_number)
     user_query = Query()
     user_query.save()
-    country_tag = tokenizer.arguments_dict["c"]    
-    version_number = int(tokenizer.arguments_dict["v"])
+    tokenizer = Tokenizer(user_text_message)
+    if tokenizer.partial_text:
+        return ""
+    arguments = tokenizer.arguments_dict
+    if 'c' in arguments:
+        country_tag = arguments["c"]      
+    else:
+        country_tag = 'US'
+    if 'v' in arguments:
+        version_number = int(arguments["v"])
+    else:
+        version_number = 10000
     should_rotate = False
     if tokenizer.api != "onboard" and version_number > 6:
         should_rotate = True
-    results = process_message(user, user_text_message, user_query)
+    results = process_message(user, user_text_message, tokenizer)
     key = results.get("key", "")
     # if user.is_over_limit():
     #     user_text_message = "limit default: key: %s" % key[1:]
@@ -114,6 +126,42 @@ def add_user():
             user.save()
         return jsonify(success=True)
     return jsonify(success=False)
+
+@app.route('/share', methods=["POST"])
+def share_to_friends():
+    phone_numbers = request.values.get('Nums')
+    referrer = request.values.get('From')
+    user = User.objects(phone_number = str(referrer)[-10:]).first()
+    time = request.values.get('Timestamp')
+    for phone_number in phone_numbers:
+        referral = Referral(phone_number = str(phone_number)[-10:], date_referred = datetime.datetime.fromtimestamp(time/1000.0))
+        referral.save()
+        user.referrals.append(referral)
+    user.save()
+    return jsonify(success = True)
+
+@app.route('/sharestatus', methods=["GET"])
+def check_referral():
+    phone_number = request.values.get('From')[-10:]
+    key = request.values.get('Key')
+    user = User.objects(phone_number=str(phone_number)).first()
+    status = [{"num":referral.phone_number, "complete":referral.check_legal_referral()} for referral in user.referrals]
+    return jsonify(status = status, success = True)
+
+
+@app.route('/auth', methods=["POST"])
+def add_tokens(): 
+    phone_number = request.values.get('From')[-10:]
+    user = User.objects(phone_number=str(phone_number)).first()
+    api = request.values.get('API')
+    secret = request.values.get('Secret')
+    access = request.values.get('Access')
+    auth = Auth(api = api, secret = secret, access = access)
+    auth.save()
+    user.auths.append(auth)
+    user.save()
+    return jsonify(success = True)
+
 
 def get_user(phone_number):
     user = User.objects(phone_number=str(phone_number)[-10:]).first()
@@ -162,8 +210,7 @@ def rotate_text(message):
 def remove_non_ascii(s): 
     return "".join(i for i in s if ord(i)<128)
     
-def process_message(user, user_text_message, query=None):
-    tokenizer = Tokenizer(user_text_message)
+def process_message(user, user_text_message, tokenizer, query=None):
     api = create_subprogram(tokenizer.api)
     if query:
         query.api = tokenizer.api
@@ -187,6 +234,8 @@ def create_subprogram(type):
     if type == "search": return Search()
     if type == "stock": return Stock()
     if type == "feedback": return Feedback()
+    if type == "twitter": return Twitter()
+    if type == "more": return More() 
     assert 0, "Invalid string " + type 
     return None 
 

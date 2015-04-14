@@ -1,4 +1,4 @@
-from models import User
+from models import User, Page, PageItem
 
 class Base(object):
     OK = '0'
@@ -54,3 +54,16 @@ class Base(object):
 
     def prepend_key(self, key, results):
         return self.OK+key+self.CARROT_TOKEN+results
+
+    def cut_results(self, user, key, results, num_results):
+        saved_results = results[num_results:]
+        results = results[:num_results]
+        page = Page(retrieval_key = key)
+        user.pages.append(page)
+        for result in saved_results:
+            page_item = PageItem(content = result)
+            page_item.save()
+            page.items.append(page_item)
+        page.save() 
+        user.save()
+        return (results, len(saved_results)> 0)

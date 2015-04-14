@@ -20,4 +20,3 @@ def query_geo(lat, lng, distance = 5.0, category='restaurant', limit = 6):
     if result == None:
         result = '1'        
     return result
-

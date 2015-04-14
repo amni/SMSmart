@@ -34,6 +34,16 @@ class BaseTest(unittest.TestCase):
                 check = True
         return check         
 
+class TestTwitter(BaseTest):
+    def setup(self):
+        self.app = app.test_client(use_cookies=True)
+        new_user = User(phone_number="5734894023")
+        new_user.save()   
+
+    def test_twitter(self):
+        default_user = User.objects(phone_number="5734894023").first()
+        response = app.process_message(default_user, "@ twitter feed: key: z")
+        response = app.process_message(default_user, "@ twitter retweet: tweet_id: 583028425213935616 key: db")
 
 class TestTextLimit(BaseTest):
     def setup(self):
