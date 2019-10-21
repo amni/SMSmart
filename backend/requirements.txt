@@ -4,7 +4,7 @@ Flask-RESTful==0.2.12
 Jinja2==2.7.3
 MarkupSafe==0.23
 PyYAML==3.11
-Werkzeug==0.9.6
+Werkzeug==0.15.3
 aniso8601==0.83
 argparse==1.2.1
 beautifulsoup4==4.3.2
