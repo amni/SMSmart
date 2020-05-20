@@ -13,7 +13,7 @@ eventlet==0.15.2
 googlemaps==1.0.2
 greenlet==0.4.4
 gunicorn==19.0.0
-httplib2==0.9
+httplib2==0.18.0
 itsdangerous==0.24
 jieba==0.35
 lxml==3.3.5
