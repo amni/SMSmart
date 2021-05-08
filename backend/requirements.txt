@@ -9,7 +9,7 @@ aniso8601==0.83
 argparse==1.2.1
 beautifulsoup4==4.3.2
 cssselect==0.9.1
-eventlet==0.15.2
+eventlet==0.31.0
 googlemaps==1.0.2
 greenlet==0.4.4
 gunicorn==19.0.0
