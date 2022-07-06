@@ -16,7 +16,7 @@ gunicorn==19.0.0
 httplib2==0.9
 itsdangerous==0.24
 jieba==0.35
-lxml==3.3.5
+lxml==4.9.1
 mock==1.0.1
 mongoengine==0.8.7
 newrelic==2.32.0.28
